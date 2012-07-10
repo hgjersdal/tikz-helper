@@ -32,7 +32,7 @@
 (defun draw-plottingarea-rectangle (plottingarea)
   (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%" (width plottingarea) (height plottingarea)))
 
-(defun draw-tikz-x (plottingarea x-list names &optional (numberp t) (precision 2))
+(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2))
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
@@ -43,7 +43,7 @@
 			 x x name)))
        x-list names))
 
-(defun draw-tikz-y (plottingarea x-list names &optional (numberp t) (precision 2))
+(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2))
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
@@ -54,11 +54,11 @@
 			 x x name)))
        x-list names))
 
-(defun draw-tikz-x-transformed (plottingarea x-list &optional (precision 2))
-  (draw-tikz-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision))
+(defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2))
+  (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision))
 
-(defun draw-tikz-y-transformed (plottingarea y-list &optional (precision 2))
-  (draw-tikz-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision))
+(defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2))
+  (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision))
 
 (defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
   (let ((stream-name (gensym)))
@@ -79,10 +79,10 @@
      ,@body
      (format (ostream ,plottingarea) "\\end{scope}~%")))
 
-(defun make-flat-list (min size nbins)
+(defun make-range (min stepsize steps)
   (let ((my-list nil))
-    (dotimes (n (1+ nbins))
-      (setf my-list (append my-list (list (+ min (* n size))))))
+    (dotimes (n (1+ steps))
+      (setf my-list (append my-list (list (+ min (* n stepsize))))))
     my-list))
 
 (defun draw-tikz-line (plottingarea x-from y-from x-to y-to style)
@@ -107,7 +107,7 @@
 (defun draw-histogram-top (tikz histo style)
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
-		     (make-flat-list (getf histo :min) (getf histo :bin-size) (length data)))))
+		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
     (draw-tikz-line tikz  (aref x-pos 0) (aref data 0) (aref x-pos 1) (aref data 0) style)
     (dotimes (n (- (length data) 1))
       (format (ostream tikz) "\\draw[~a] (~f,~f) -- (~f,~f) -- (~f,~f);~%"
@@ -119,7 +119,7 @@
 (defun draw-histogram (tikz histo style)
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
-		     (make-flat-list (getf histo :min) (getf histo :bin-size) (length data)))))
+		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
     (dotimes (n (length data))
       (format (ostream tikz) "\\filldraw[~a] (~f,~f) -- (~f,~f) -- (~f,~f) -- (~f,~f);~%"
 	      style
