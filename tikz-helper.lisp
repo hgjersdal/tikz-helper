@@ -32,33 +32,33 @@
 (defun draw-plottingarea-rectangle (plottingarea)
   (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%" (width plottingarea) (height plottingarea)))
 
-(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2))
+(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0))
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
-			 "\\draw (~a,2pt) -- (~a, -1pt) node[below] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-			 x x (floor precision) name)
+			 "\\draw (~a,~acm + 2pt) -- (~a, ~acm -2pt) node[below] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+			 x y-pos x y-pos (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (~a,2pt) -- (~a, -1pt) node[below] {\\scriptsize ~a};~%"
-			 x x name)))
+			 "\\draw (~a,~acm + 2pt) -- (~a, ~acm-2pt) node[below] {\\scriptsize ~a};~%"
+			 x y-pos x y-pos name)))
        x-list names))
 
-(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2))
+(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0))
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
-			 "\\draw (2pt,~g) -- (-1pt,~g) node[left] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-			 x x (floor precision) name)
+			 "\\draw (~acm + 2pt,~g) -- (~acm-2pt,~g) node[left] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+			 x-pos x x-pos x (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (2pt,~g) -- (-1pt,~g) node[left] {\\scriptsize ~a};~%"
-			 x x name)))
+			 "\\draw (~acm+2pt,~g) -- (~acm-2pt,~g) node[left] {\\scriptsize ~a};~%"
+			 x-pos x x-pos x name)))
        x-list names))
 
-(defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2))
-  (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision))
+(defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2) (y-pos 0))
+  (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision y-pos))
 
-(defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2))
-  (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision))
+(defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2) (x-pos 0))
+  (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos))
 
 (defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
   (let ((stream-name (gensym)))
@@ -96,13 +96,14 @@
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
 
 (defun draw-profilepoint (plottingarea x y y-error style)
-  (let ((yy (apply (make-transformation-y plottingarea) (list y)))
+  (let ((xx (apply (make-transformation-x plottingarea) (list x)))
+	(yy (apply (make-transformation-y plottingarea) (list y)))
 	(yy-error (apply (make-vector-transform (height plottingarea) (plot-y-min plottingarea)
 						(plot-y-max plottingarea)) (list y-error))))
-    (draw-line plottingarea x (- yy yy-error) x (+ yy yy-error) style)
-    (draw-circle plottingarea x yy style)
-    (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style x (- yy yy-error) x (- yy yy-error))
-    (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style x (+ yy yy-error) x (+ yy yy-error))))
+    (draw-line plottingarea xx (- yy yy-error) xx (+ yy yy-error) style) 
+   (draw-circle plottingarea xx yy style)
+    (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style xx (- yy yy-error) xx (- yy yy-error))
+    (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style xx (+ yy yy-error) xx (+ yy yy-error))))
 
 
 (defun make-histogram (min bin-size data)

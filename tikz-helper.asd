@@ -1,24 +1,33 @@
 (defpackage #:tikz-helper
   (:use :cl)
   (:nicknames :tikz)
-  (:documentation
-   "A common lisp package for making tikz drwings")
-  (:export :plottingarea
-	   :with-tikz-plot
-	   :make-transformation-x
-	   :make-transformation-y
-	   :tikz-clip
-	   :draw-histogram
-	   :draw-histogram-top
-	   :draw-plottingarea-rectangle
-	   :draw-tikz-x-transformed 
-	   :draw-tikz-y-transformed
-	   :draw-tikz-line 
-	   :draw-tikz-node
-	   :draw-tikz-x
-	   :draw-tikz-y
-	   :tikz-transform-x
-	   :tikz-transform-y))
+  (:documentation "A package for making tikz drawings")
+  (:export plottingarea
+	   with-tikz-plot
+	   clip
+	   make-range
+	   make-histogram
+	   draw-histogram
+	   draw-histogram-top
+	   draw-graph
+	   draw-graph-line
+	   draw-function
+	   draw-profilepoint
+	   draw-legend-line
+	   draw-legend-rectangle
+	   draw-axis-ticks-x-transformed 
+	   draw-axis-ticks-y-transformed 
+	   draw-axis-ticks-x
+	   draw-axis-ticks-y
+	   draw-plottingarea-rectangle
+	   draw-line
+	   draw-node
+	   tikz-transform-x
+	   tikz-transform-y
+	   gauss
+	   gaussian-random
+	   levmar-optimize
+	   levmar-optimize-errors))
 
 (defsystem tikz-helper
   :name "tikz-helper"

@@ -1,6 +1,6 @@
 (in-package :tikz-helper)
-(defparameter *epsillon-1* 0.00000001d0)
-(defparameter *epsillon-2* 0.00000001d0)
+(defparameter *epsillon-1* 0.0000000001d0)
+(defparameter *epsillon-2* 0.00000000001d0)
 (defparameter *tau* 1.0d-8)
 (defparameter kmax 1000)
   
@@ -84,7 +84,8 @@
 		(reduce #'+ (map 'vector (lambda (x) (* x x)) (funcall function parameters)))
 		(reduce #'+ (map 'vector (lambda (x) (* x x)) (funcall function params))))
 	       (+ (L0-Lhm h g mu) 0.0000000000000000001))));vector sum of sorts
-    (cond ((< (get-vector-abs h) (* *epsillon-2* (+ (get-vector-abs parameters) *epsillon-2*))) (progn (format t "Converged!~%") parameters))
+    (cond ((< (get-vector-abs h) (* *epsillon-2* (+ (get-vector-abs parameters) *epsillon-2*))) 
+	   (progn (format t "Converged after ~a iterations!~% ~a~%" iteration parameters) parameters))
 	  ((>= iteration kmax) (progn (format t "Reached maximum number of iterations") parameters))
 	  ((<= Q 0) (levmar-iterate function parameters (+ 1 iteration) A g (* mu nu) (* 1.1 nu) nparam nmeas))
 	  ((> Q 0) (levmar-update function (+ 1 iteration)
@@ -96,5 +97,5 @@
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
 
 (defun levmar-optimize-errors (function parameters meas-x meas-y error-y)
-  (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos err) (/ (- y-pos (funcall function x-pos params)) err)) meas-x meas-y error-y))
+  (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos err) (/ (- y-pos (funcall function x-pos params)) (+ err double-float-epsilon))) meas-x meas-y error-y))
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
