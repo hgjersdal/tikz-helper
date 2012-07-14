@@ -132,14 +132,23 @@
 	      (aref x-pos (+ n 1)) (aref data n)
 	      (aref x-pos (+ n 1)) 0))))
 
+(defun draw-graph-line (tikz x y line-style &optional (transformp t))
+  (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
+	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
+    (unless (or (null (cdr x)) (null (cdr y)))
+      (draw-line tikz (car xx) (car yy) (cadr xx) (cadr yy) line-style)
+      (draw-graph-line tikz (cdr xx) (cdr yy) line-style nil))))
+
 (defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
-    (unless (or (null x) (null y))
-      (draw-circle tikz (car xx) (car yy) mark-style))
-    (unless (or (null (cdr x)) (null (cdr y)))
-      (draw-line tikz (car xx) (car yy) (cadr xx) (cadr yy) line-style)
-      (draw-graph tikz (cdr xx) (cdr yy) line-style mark-style nil))))
+    (if (> (length mark-style) 0) (mapcar (lambda (px py) (draw-circle tikz px py mark-style)) xx yy))
+    (if (> (length line-style) 0) (draw-graph-line tikz xx yy line-style nil))))
+
+(defun draw-function (tikz function samples line-style)
+  (let* ((x-vals (make-range (plot-x-min tikz) (/ (- (plot-x-max tikz) (plot-x-min tikz)) samples) samples))
+	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
+    (draw-graph-line tikz x-vals y-vals line-style t)))
 
 (defun draw-legend-point (tikz x y width line-style mark-style)
   (draw-circle tikz x y mark-style)

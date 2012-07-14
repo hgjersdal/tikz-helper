@@ -20,12 +20,12 @@
 	   :tikz-transform-x
 	   :tikz-transform-y))
 
-
-
 (defsystem tikz-helper
   :name "tikz-helper"
   :version "0.0.1"
   :maintainer "haavagj"
   :description "tikz-helper"
-  :depends-on ()
-  :components ((:file "tikz-helper")))
+  :depends-on (:lla)
+  :components ((:file "utils")
+	       (:file "levmar")
+	       (:file "tikz-helper")))
