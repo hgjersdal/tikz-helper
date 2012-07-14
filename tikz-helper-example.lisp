@@ -107,7 +107,7 @@
 	   (y-poses (mapcar (lambda (x) (tuned-sin x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
 	   (y-errors (mapcar (lambda (x) (* 0.4 (sqrt (abs x)))) y-poses))
 	   (y-smeared (mapcar (lambda (x err) (+ x (* err (gaussian-random)))) y-poses y-errors))
-	   (params (levmar-optimize-errors #'tuned-sin #(0.5 -1.0d0 -2.0d0 3.0d0) x-poses y-smeared y-errors)))
+	   (params (levmar-optimize-errors #'tuned-sin #(1.0 1.0d0 1.0d0 1.0d0) x-poses y-smeared y-errors)))
       (clip (tikz)
 	(mapcar (lambda (x y err) (draw-profilepoint tikz x y err "draw=red,fill=red"))
 		x-poses y-smeared y-errors)
