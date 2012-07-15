@@ -95,13 +95,14 @@
 (defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
 
-(defun draw-profilepoint (plottingarea x y y-error style)
-  (let ((xx (apply (make-transformation-x plottingarea) (list x)))
-	(yy (apply (make-transformation-y plottingarea) (list y)))
-	(yy-error (apply (make-vector-transform (height plottingarea) (plot-y-min plottingarea)
-						(plot-y-max plottingarea)) (list y-error))))
+(defun draw-profilepoint (plottingarea x y y-error style &optional (transformp t))
+  (let ((xx (if transformp (apply (make-transformation-x plottingarea) (list x)) x))
+	(yy (if transformp (apply (make-transformation-y plottingarea) (list y)) y))
+	(yy-error (if transformp (apply (make-vector-transform (height plottingarea) 
+							       (plot-y-min plottingarea) 
+							       (plot-y-max plottingarea)) (list y-error)) y-error)))
     (draw-line plottingarea xx (- yy yy-error) xx (+ yy yy-error) style) 
-   (draw-circle plottingarea xx yy style)
+    (draw-circle plottingarea xx yy style)
     (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style xx (- yy yy-error) xx (- yy yy-error))
     (format (ostream plottingarea) "\\draw[~a] (~fcm -2pt,~f) -- (~fcm + 2pt,~f);~%" style xx (+ yy yy-error) xx (+ yy yy-error))))
 
@@ -155,9 +156,10 @@
   (draw-circle tikz x y mark-style)
   (draw-line tikz (- x (* 0.5 width)) y (+ x (* 0.5 width)) y line-style))
 
-(defun draw-legend-line (tikz x y width name line-style mark-style name-style)
+(defun draw-legend-line (tikz x y width name line-style mark-style name-style &optional (error-style "") (error-height 0.1))
   (if (> (length mark-style) 0) (draw-circle tikz (+ (* 0.5 width) x) y mark-style))
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
+  (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x) y error-height error-style nil))
   (draw-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
 (defun draw-legend-rectangle (tikz x y width height name line-style fill-style name-style)
