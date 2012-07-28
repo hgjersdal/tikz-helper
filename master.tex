@@ -5,6 +5,10 @@
 \usetikzlibrary{arrows,shapes}
 \usepackage{xifthen}
 
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+
+
 \begin{document}
 
 \input{test-graph}
@@ -13,8 +17,10 @@
 \input{test-fitter}
 \input{test-fitter2}
 \input{test-fitter3}
+\input{gamma}
 
 \end{document}
+
 
   
 %%% Local Variables: 

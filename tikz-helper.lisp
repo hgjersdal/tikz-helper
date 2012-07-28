@@ -147,8 +147,10 @@
     (if (> (length mark-style) 0) (mapcar (lambda (px py) (draw-circle tikz px py mark-style)) xx yy))
     (if (> (length line-style) 0) (draw-graph-line tikz xx yy line-style nil))))
 
-(defun draw-function (tikz function samples line-style)
-  (let* ((x-vals (make-range (plot-x-min tikz) (/ (- (plot-x-max tikz) (plot-x-min tikz)) samples) samples))
+(defun draw-function (tikz function samples line-style &optional (x-min nil) (x-max nil))
+  (when (null x-min) (setf x-min (plot-x-min tikz)))
+  (when (null x-max) (setf x-max (plot-x-max tikz)))
+  (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) samples))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (draw-graph-line tikz x-vals y-vals line-style t)))
 
