@@ -1,22 +1,80 @@
 \documentclass{article}
 \usepackage{tikz}
 \usepackage{siunitx}
+\usepackage{float}
 
 \usetikzlibrary{arrows,shapes}
 \usepackage{xifthen}
 
 \begin{document}
 
-\input{test-graph}
-\input{test-histo1}
-\input{test-histo2}
-\input{test-fitter}
-\input{test-fitter2}
-\input{test-fitter3}
+\section{Basic plots}
+\label{sec:basic}
+
+\begin{figure}[H]
+  \centering
+  \input{test-graph}
+  \caption{Data points with and without errors}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{test-histo1}
+  \caption{Basic histogram}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{test-histo2}
+  \caption{Two histograms in the same figure}
+\end{figure}
+
+\section{Fitting with Levenberg marquart algorithm}
+\label{sec:LMA}
+
+\begin{figure}[H]
+  \centering
+  \input{test-fitter}
+  \caption{The Gaussian function fitted to a set of noisy measurements}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{test-fitter2}
+  \caption{The Gaussian function fitted to histogram made from 2000 gaussian random numbers}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{test-fitter3}
+  \caption{A polynomial fit to noisy data}
+\end{figure}
+
+\section{Radioactive decay}
+\label{sec:decay}
+
+\begin{figure}[H]
+  \centering
+  \input{half-life}
+  \caption{Graph of radioactive decay.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{decay-rate2}
+  \caption{Simulated number of decays per time.  Estimated half-widths from LMA.}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \input{half-life1000000}
+  \caption{ Attempt to show all data in one plot.}
+\end{figure}
 
 \end{document}
 
-  
+ 
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: t

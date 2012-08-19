@@ -71,12 +71,21 @@
 	 (format ,stream-name "\\end{tikzpicture}~%")
 	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: \"master\" ~%%%% End:~%~%")))))
 
-(defmacro clip ((plottingarea) &body body)
+
+(defmacro scope ((plottingarea &optional (style "")) &body body)
   `(progn
-     (format (ostream ,plottingarea) "\\begin{scope}~%")
-     (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" (width ,plottingarea) (height ,plottingarea))
+     (format (ostream ,plottingarea) "\\begin{scope}[~a]~%" ,style)
      ,@body
      (format (ostream ,plottingarea) "\\end{scope}~%")))
+
+(defmacro clip ((plottingarea &optional x y) &body body)
+  (if (or (null x) (null y))
+      `(scope (,plottingarea)
+	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" (width ,plottingarea) (height ,plottingarea))
+	 ,@body)
+      `(scope (,plottingarea)
+	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" ,x ,y)
+	 ,@body)))
 
 (defun make-range (min stepsize steps)
   (let ((my-list nil))
@@ -114,26 +123,27 @@
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
 		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
-    (draw-line tikz  (aref x-pos 0) (aref data 0) (aref x-pos 1) (aref data 0) style)
-    (dotimes (n (- (length data) 1))
-      (format (ostream tikz) "\\draw[~a] (~f,~f) -- (~f,~f) -- (~f,~f);~%"
-	      style
-	      (aref x-pos (+ n 1)) (aref data n)
-	      (aref x-pos (+ n 1)) (aref data (+ n 1))
-	      (aref x-pos (+ n 2)) (aref data (+ n 1))))))
+    (scope (tikz style)
+      (draw-line tikz  (aref x-pos 0) (aref data 0) (aref x-pos 1) (aref data 0) "")
+      (dotimes (n (- (length data) 1))
+	(format (ostream tikz) "\\draw (~f,~f) -- (~f,~f) -- (~f,~f);~%"
+		(aref x-pos (+ n 1)) (aref data n)
+		(aref x-pos (+ n 1)) (aref data (+ n 1))
+		(aref x-pos (+ n 2)) (aref data (+ n 1)))))))
 
 (defun draw-histogram (tikz histo style)
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
 		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
-    (dotimes (n (length data))
-      (format (ostream tikz) "\\filldraw[~a] (~f,~f) -- (~f,~f) -- (~f,~f) -- (~f,~f);~%"
-	      style
-	      (aref x-pos (+ n 0)) 0
-	      (aref x-pos (+ n 0)) (aref data n)
-	      (aref x-pos (+ n 1)) (aref data n)
-	      (aref x-pos (+ n 1)) 0))))
-
+    (scope (tikz style)
+      (dotimes (n (length data))
+	(format (ostream tikz) "\\filldraw[~a] (~f,~f) -- (~f,~f) -- (~f,~f) -- (~f,~f);~%"
+		""
+		(aref x-pos (+ n 0)) 0
+		(aref x-pos (+ n 0)) (aref data n)
+		(aref x-pos (+ n 1)) (aref data n)
+		(aref x-pos (+ n 1)) 0)))))
+  
 (defun draw-graph-line (tikz x y line-style &optional (transformp t))
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
@@ -145,12 +155,15 @@
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
     (if (> (length mark-style) 0) (mapcar (lambda (px py) (draw-circle tikz px py mark-style)) xx yy))
-    (if (> (length line-style) 0) (draw-graph-line tikz xx yy line-style nil))))
+    (if (> (length line-style) 0) 
+	(scope (tikz line-style)
+	  (draw-graph-line tikz xx yy "" nil)))))
 
 (defun draw-function (tikz function samples line-style)
   (let* ((x-vals (make-range (plot-x-min tikz) (/ (- (plot-x-max tikz) (plot-x-min tikz)) samples) samples))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
-    (draw-graph-line tikz x-vals y-vals line-style t)))
+    (scope (tikz line-style)
+      (draw-graph-line tikz x-vals y-vals "" t))))
 
 (defun draw-legend-point (tikz x y width line-style mark-style)
   (draw-circle tikz x y mark-style)

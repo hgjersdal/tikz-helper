@@ -4,8 +4,10 @@
   (:documentation "A package for making tikz drawings")
   (:export plottingarea
 	   with-tikz-plot
+	   scope
 	   clip
 	   make-range
+	   make-transformation
 	   make-histogram
 	   draw-histogram
 	   draw-histogram-top
