@@ -139,8 +139,8 @@
   "A histogram as a simple plist"
   (list :min min :bin-size bin-size :data data))
 
-(defun draw-histogram-top (tikz histo style)
-  "Draw the top of a histogram, no explicit separation of bins"
+(defun draw-histogram (tikz histo style)
+  "Draw the top of a histogram, no explicit visual separation of bins"
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
 		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
@@ -152,7 +152,7 @@
 		(aref x-pos (+ n 1)) (aref data (+ n 1))
 		(aref x-pos (+ n 2)) (aref data (+ n 1)))))))
 
-(defun draw-histogram (tikz histo style)
+(defun draw-histogram-bins (tikz histo style)
   "Draw a histogram, each bin is drawn individually"
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
@@ -193,12 +193,14 @@
       (draw-graph-line tikz x-vals y-vals "" t))))
 
 (defun draw-legend-line (tikz x y width name line-style mark-style name-style &optional (error-style "") (error-height 0.1))
+  "Draw a legent entry for a plot, with a line, and or marks with or without error bars. For graphs, functions, datapoints, most histograms"
   (if (> (length mark-style) 0) (draw-circle tikz (+ (* 0.5 width) x) y mark-style))
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
   (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x) y error-height error-style nil))
   (draw-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
 (defun draw-legend-rectangle (tikz x y width height name line-style fill-style name-style)
+  "Draw a (filled) rectangle with a legend entry. This is for histograms drawn with draw-histogram-bins"
   (if (> (length fill-style) 0) (draw-rectangle tikz x (- y (* 0.5 height))
 						(+ x width) (+ y (* 0.5 height)) fill-style))
   (if (> (length line-style) 0) (draw-rectangle tikz x (- y (* 0.5 height))

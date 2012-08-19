@@ -1,5 +1,5 @@
 #|
-Implementation of Levenberg Marquart algorithm.
+Implementation of Levenberg Marquart algorithm, by someone with limitedknowledge of both the algorithm and lla by t.papp.
 From:
 Methods for Non-Linear Least Squares Problems by K. Madsen, H.B. Nielsen, O. Tingleff
 http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
@@ -12,6 +12,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 (defparameter kmax 1000)
   
 (defun get-diff-vector (function parameters step param)
+  "Extract numerical partial derivates using the three point rule."
   (flet ((step-and-call (step)
 	   (setf (aref parameters param) (+ (aref parameters param) step))
 	   (prog1 (funcall function parameters)
@@ -21,6 +22,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
       (map 'vector (lambda (x y) (/ (- x y) (* 2 step))) plus-h minus-h))))
 
 (defun get-J (function parameters nparameters nmeas)
+  "Get jacobian and its transverse."
   (let ((J  (lla:make-matrix 'lla:dense nmeas nparameters :element-type 'double-float))
 	(JT (lla:make-matrix 'lla:dense nparameters nmeas :element-type 'double-float)))
     (dotimes (i nparameters)
@@ -31,6 +33,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     (values J JT)))
     
 (defun get-g (function parameters JT nmeas)
+  "g = J^T f"
   (let ((g (lla:make-matrix 'lla:dense nmeas 1 :element-type 'double-float))
 	(funres (funcall function parameters)))
     (dotimes (i nmeas)
@@ -38,9 +41,11 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     (lla:mm JT g)))
     
 (defun get-vector-abs (vec)
-  (reduce #'+ (map 'vector (lambda (x) (* x x)) vec)))
+  "||vec||"
+  (sqrt (reduce #'+ (map 'vector (lambda (x) (* x x)) vec))))
 
 (defun L0-Lhm (h g mu)
+  "L(0) - L(H_m)"
   (let ((ht (lla:make-matrix 'lla:dense 1 4))
 	(hg (lla:make-matrix 'lla:dense 4 1)))
     (dotimes (i (length h))
@@ -57,6 +62,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     Amu))
 	
 (defun levmar-update (function iteration mu nu params nparams nmeas)
+  "Updating estimate, preparing next iretarion"
   (multiple-value-bind (J JT) (get-J function params nparams nmeas)
     (let ((A (lla:mm JT J)))
       (when (null mu)
@@ -70,6 +76,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 			    mu nu nparams nmeas))))
   
 (defun as-array (matrix nparams)
+  "Get array from matrix vector"
   (let ((array (make-array nparams :element-type 'double-float)))
     (dotimes (i nparams)
       (setf (aref array i) (lla:mref matrix i 0)))
@@ -82,6 +89,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     matrix2))
       
 (defun levmar-iterate (function parameters iteration A g mu nu nparam nmeas)
+  "An iteration in levenberg marquart."
   (when (> mu 1.0d15) (setf mu 10000.d0 nu 2))
   (if  (= (mod iteration 10) 0) (format t "iteration ~a, mu=~a , params=~a ~%" iteration mu parameters))
   (let* ((A-prime (add-mu A mu nparam))
@@ -100,9 +108,13 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 					2 params nparam nmeas)))))
     
 (defun levmar-optimize (function parameters meas-x meas-y)
+  "Find the parameters that makes function closest to measurement.
+Function must be a function (lambda x parameters) that returns a double-float."
   (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos) (- y-pos (funcall function x-pos params))) meas-x meas-y))
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
 
 (defun levmar-optimize-errors (function parameters meas-x meas-y error-y)
+  "Find the parameters that makes function closest to measurement.
+Function must be a function (lambda x parameters) that returns a double-float."
   (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos err) (/ (- y-pos (funcall function x-pos params)) (+ err double-float-epsilon))) meas-x meas-y error-y))
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))

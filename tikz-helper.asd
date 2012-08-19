@@ -10,7 +10,7 @@
 	   make-transformation
 	   make-histogram
 	   draw-histogram
-	   draw-histogram-top
+	   draw-histogram-bins
 	   draw-graph
 	   draw-graph-line
 	   draw-function
