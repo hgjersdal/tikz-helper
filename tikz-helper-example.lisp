@@ -211,8 +211,6 @@
       (draw-decay-rate 1000 1.0 "purple!80,thick" 4.0)
       (draw-decay-rate 1000000 1.0 "orange!80,thick" 3.6))))
 	     
-      
-	 
 (defun make-half-life-plot (a0 half-life initial-guess fname)
   (with-tikz-plot (tikz (concatenate 'string *plotting-dir* fname) 10 5 0 5 0.0d0 (* 0.2 a0))
     (flet ((intensity (x params)
@@ -278,6 +276,5 @@
   (draw-node tikz 5 -0.4 "$z$" "below")
   (draw-line tikz 0 0 10.2 0 "thick,->")
   (draw-line tikz 0 0 0 5.2 "thick,->")))
-  ;;(draw-plottingarea-rectangle tikz)))
+;;(draw-plottingarea-rectangle tikz)))
     
->>>>>>> cf70c271d9773d54d4434bd4ee2dd3eef93470ca

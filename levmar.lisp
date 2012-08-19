@@ -1,6 +1,13 @@
+#|
+Implementation of Levenberg Marquart algorithm.
+From:
+Methods for Non-Linear Least Squares Problems by K. Madsen, H.B. Nielsen, O. Tingleff
+http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
+|#
+
 (in-package :tikz-helper)
-(defparameter *epsillon-1* 0.0000000001d0)
-(defparameter *epsillon-2* 0.00000000001d0)
+;(defparameter *epsillon-1* 0.0000000001d0 "Convergance parameter")
+(defparameter *epsillon-2* 0.00000000001d0 "Convergance parameter")
 (defparameter *tau* 1.0d-8)
 (defparameter kmax 1000)
   

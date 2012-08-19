@@ -29,7 +29,8 @@
 	   gauss
 	   gaussian-random
 	   levmar-optimize
-	   levmar-optimize-errors))
+	   levmar-optimize-errors
+	   gamma))
 
 (defsystem tikz-helper
   :name "tikz-helper"

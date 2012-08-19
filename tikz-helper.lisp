@@ -1,14 +1,14 @@
 (in-package :tikz-helper)
 
-(defclass plottingarea ()
-  "Contains output-stream for latex file as well as ingo needed for transformations"
+(defclass plottingarea () 
   ((width  :initform 05 :initarg :width  :reader width)
    (height :initform 10 :initarg :height :reader height)
    (plot-x-min :initform 0 :initarg :plot-x-min :reader plot-x-min)
    (plot-x-max :initform 1 :initarg :plot-x-max :reader plot-x-max)
    (plot-y-min :initform 0 :initarg :plot-y-min :reader plot-y-min)
    (plot-y-max :initform 1 :initarg :plot-y-max :reader plot-y-max)
-   (ostream :initform t :initarg :stream :accessor ostream)))
+   (ostream :initform t :initarg :stream :accessor ostream))
+  (:documentation "Contains output-stream for latex file as well as ingo needed for transformations"))
 
 (defun make-transformation (cmax pmin pmax)
   "Makes a linear transformation from data space(pmin-pmax) to figura space 0-cmax"
@@ -82,22 +82,24 @@
 	 (format ,stream-name "\\begin{tikzpicture}~%")
 	 ,@body
 	 (format ,stream-name "\\end{tikzpicture}~%")
-	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%" master-file)))))
+	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%" ,master-file)))))
 
 
 (defmacro scope ((plottingarea &optional (style "")) &body body)
+  "Make a tikz scope."
   `(progn
      (format (ostream ,plottingarea) "\\begin{scope}[~a]~%" ,style)
      ,@body
      (format (ostream ,plottingarea) "\\end{scope}~%")))
 
-(defmacro clip ((plottingarea &optional x y) &body body)
+(defmacro clip ((plottingarea &optional x-from x y-from y) &body body)
+  "Clip a rectangle from origin."
   (if (or (null x) (null y))
       `(scope (,plottingarea)
 	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" (width ,plottingarea) (height ,plottingarea))
 	 ,@body)
       `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" ,x ,y)
+	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%" ,x-from ,x ,y-from ,y)
 	 ,@body)))
 
 (defun make-range (min stepsize steps)
@@ -138,6 +140,7 @@
   (list :min min :bin-size bin-size :data data))
 
 (defun draw-histogram-top (tikz histo style)
+  "Draw the top of a histogram, no explicit separation of bins"
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
 		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
@@ -150,6 +153,7 @@
 		(aref x-pos (+ n 2)) (aref data (+ n 1)))))))
 
 (defun draw-histogram (tikz histo style)
+  "Draw a histogram, each bin is drawn individually"
   (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
 	 (x-pos (map 'vector (make-transformation-x tikz)
 		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
@@ -163,6 +167,7 @@
 		(aref x-pos (+ n 1)) 0)))))
   
 (defun draw-graph-line (tikz x y line-style &optional (transformp t))
+  "Draw a line between a bunch of points"
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
     (unless (or (null (cdr x)) (null (cdr y)))
@@ -170,6 +175,7 @@
       (draw-graph-line tikz (cdr xx) (cdr yy) line-style nil))))
 
 (defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
+  "Draw a graph, either as one circle per point, a line between points, or both"
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
     (if (> (length mark-style) 0) (mapcar (lambda (px py) (draw-circle tikz px py mark-style)) xx yy))
@@ -178,16 +184,13 @@
 	  (draw-graph-line tikz xx yy "" nil)))))
 
 (defun draw-function (tikz function samples line-style &optional (x-min nil) (x-max nil))
+  "Draw a function y = f(x)"
   (when (null x-min) (setf x-min (plot-x-min tikz)))
   (when (null x-max) (setf x-max (plot-x-max tikz)))
   (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) samples))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (scope (tikz line-style)
       (draw-graph-line tikz x-vals y-vals "" t))))
-
-(defun draw-legend-point (tikz x y width line-style mark-style)
-  (draw-circle tikz x y mark-style)
-  (draw-line tikz (- x (* 0.5 width)) y (+ x (* 0.5 width)) y line-style))
 
 (defun draw-legend-line (tikz x y width name line-style mark-style name-style &optional (error-style "") (error-height 0.1))
   (if (> (length mark-style) 0) (draw-circle tikz (+ (* 0.5 width) x) y mark-style))
