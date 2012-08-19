@@ -1,6 +1,7 @@
 (in-package :tikz-helper)
 
 (defclass plottingarea ()
+  "Contains output-stream for latex file as well as ingo needed for transformations"
   ((width  :initform 05 :initarg :width  :reader width)
    (height :initform 10 :initarg :height :reader height)
    (plot-x-min :initform 0 :initarg :plot-x-min :reader plot-x-min)
@@ -10,29 +11,37 @@
    (ostream :initform t :initarg :stream :accessor ostream)))
 
 (defun make-transformation (cmax pmin pmax)
+  "Makes a linear transformation from data space(pmin-pmax) to figura space 0-cmax"
   (let ((scale (/ (- pmax pmin) cmax)))
     (lambda (x) (/ (- x pmin) scale))))
 
 (defun make-vector-transform (cmax pmin pmax)
+  "Same transformation as above, but without translations"
   (let ((scale (/ (- pmax pmin) cmax)))
     (lambda (x) (/ x scale))))
 
 (defun make-transformation-x (plottingarea)
+  "Returns a transformation function from data space to figure space in the x-direction"
   (make-transformation (width plottingarea) (plot-x-min plottingarea) (plot-x-max plottingarea)))
 
 (defun make-transformation-y (plottingarea)
+  "Returns a transformation function from data space to figure space in the y-direction"
   (make-transformation (height plottingarea) (plot-y-min plottingarea) (plot-y-max plottingarea)))
 
 (defun tikz-transform-x (plottingarea data)
+  "Preform transformations on sequence of data"
   (mapcar (make-transformation-x plottingarea) data))
 
 (defun tikz-transform-y (plottingarea data)
+  "Preform transformations on sequence of data"
   (mapcar (make-transformation-y plottingarea) data))
 
 (defun draw-plottingarea-rectangle (plottingarea)
+  "Draw a thick square around the ploting area"
   (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%" (width plottingarea) (height plottingarea)))
 
 (defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0))
+  "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
@@ -44,6 +53,7 @@
        x-list names))
 
 (defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0))
+  "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
@@ -55,12 +65,15 @@
        x-list names))
 
 (defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2) (y-pos 0))
+  "Draw axis tick marks where the tick title is the data space value"
   (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision y-pos))
 
 (defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2) (x-pos 0))
+  "Draw axis tick marks where the tick title is the data space value"
   (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos))
 
-(defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
+(defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max &optional (master-file "master")) &body body)
+  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
   (let ((stream-name (gensym)))
     `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
        (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
@@ -69,7 +82,7 @@
 	 (format ,stream-name "\\begin{tikzpicture}~%")
 	 ,@body
 	 (format ,stream-name "\\end{tikzpicture}~%")
-	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: \"master\" ~%%%% End:~%~%")))))
+	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%" master-file)))))
 
 (defmacro clip ((plottingarea) &body body)
   `(progn
@@ -79,23 +92,27 @@
      (format (ostream ,plottingarea) "\\end{scope}~%")))
 
 (defun make-range (min stepsize steps)
+  "Returns a list with steps elements, where the first is min the next is min+stepsize etc"
   (let ((my-list nil))
     (dotimes (n (1+ steps))
       (setf my-list (append my-list (list (+ min (* n stepsize))))))
     my-list))
 
 (defun draw-line (plottingarea x-from y-from x-to y-to style)
+  "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
 (defun draw-node (plottingarea x y text style)
+  "Generate tikz code to draw a text node."
   (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
-(defun draw-vert-2pt (plottingarea x y style)
-  (format (ostream plottingarea) "\\draw[~a] (~f,~fcm+1pt) -- (~f,~fcm - 1pt); ~%" style x y x y))
 (defun draw-circle (plottingarea x y style)
+  "Generate tikz code to draw a text circle."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) circle(1pt); ~%" style x y))
 (defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
+  "Generate tikz code to draw a rectangle."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
 
 (defun draw-profilepoint (plottingarea x y y-error style &optional (transformp t))
+  "Draw a data-point with error bars in y direction"
   (let ((xx (if transformp (apply (make-transformation-x plottingarea) (list x)) x))
 	(yy (if transformp (apply (make-transformation-y plottingarea) (list y)) y))
 	(yy-error (if transformp (apply (make-vector-transform (height plottingarea) 
@@ -108,6 +125,7 @@
 
 
 (defun make-histogram (min bin-size data)
+  "A histogram as a simple plist"
   (list :min min :bin-size bin-size :data data))
 
 (defun draw-histogram-top (tikz histo style)
