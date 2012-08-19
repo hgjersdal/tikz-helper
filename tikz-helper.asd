@@ -12,9 +12,11 @@
 	   draw-histogram
 	   draw-histogram-bins
 	   draw-graph
+	   draw-graph-error
 	   draw-graph-line
 	   draw-function
 	   draw-profilepoint
+	   draw-profilepoints
 	   draw-legend-line
 	   draw-legend-rectangle
 	   draw-axis-ticks-x-transformed 

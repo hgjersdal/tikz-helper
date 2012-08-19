@@ -122,6 +122,9 @@
   "Generate tikz code to draw a rectangle."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
 
+(defun draw-profilepoints (plottingarea x y y-error style &optional (transformp t))
+  (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style transformp)) x y y-error))
+
 (defun draw-profilepoint (plottingarea x y y-error style &optional (transformp t))
   "Draw a data-point with error bars in y direction"
   (let ((xx (if transformp (apply (make-transformation-x plottingarea) (list x)) x))
@@ -173,6 +176,13 @@
     (unless (or (null (cdr x)) (null (cdr y)))
       (draw-line tikz (car xx) (car yy) (cadr xx) (cadr yy) line-style)
       (draw-graph-line tikz (cdr xx) (cdr yy) line-style nil))))
+
+(defun draw-graph-error (tikz x y y-error line-style mark-style error-style &optional (transformp t))
+  (draw-graph tikz x y line-style mark-style transformp)
+  (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
+	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y))
+	 (err (if transformp (mapcar (make-vector-transform (height tikz) (plot-y-min tikz) (plot-y-max tikz)) y-error) y-error)))
+    (mapcar (lambda (x y er) (draw-profilepoint tikz x y er error-style)) xx yy err)))
 
 (defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
   "Draw a graph, either as one circle per point, a line between points, or both"

@@ -115,6 +115,7 @@ Function must be a function (lambda x parameters) that returns a double-float."
 
 (defun levmar-optimize-errors (function parameters meas-x meas-y error-y)
   "Find the parameters that makes function closest to measurement.
-Function must be a function (lambda x parameters) that returns a double-float."
+Function must be a function (lambda x parameters) that returns a double-float.
+I am not sure this is legal."
   (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos err) (/ (- y-pos (funcall function x-pos params)) (+ err double-float-epsilon))) meas-x meas-y error-y))
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
