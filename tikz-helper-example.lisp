@@ -1,7 +1,7 @@
 ;(ql:quickload "tikz-helper")
 (use-package :tikz-helper)
 
-(defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/" "The plots produced in the code below will end up in this directory")
+(defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example" "The plots produced in the code below will end up in this directory")
 
 (defun make-random-list (size)
   "returns a list of size gaussian random numbers"
