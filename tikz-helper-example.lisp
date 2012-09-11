@@ -1,7 +1,7 @@
 ;(ql:quickload "tikz-helper")
 (use-package :tikz-helper)
 
-(defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example" "The plots produced in the code below will end up in this directory")
+(defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/" "The plots produced in the code below will end up in this directory")
 
 (defun make-random-list (size)
   "returns a list of size gaussian random numbers"
@@ -16,14 +16,10 @@ Add a simple plot of some gauss smeared measurements around dotted lines.
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-graph.tex") 10 5 0 10 0 20) 
   ;;Clip the figure area
   (clip (tikz)
-    ;;Draw a graph with 10 points with no line between, and filled blue cirlces at each data point.
-    (draw-graph tikz (make-range 0 1 10) (mapcar #'+ (make-range 0 2 10) (make-random-list 11)) "" "blue,fill=blue")
     ;;Draw data points with red errorbars
-    (draw-profilepoints tikz 
-			(make-range 0 1 10) 
-			(mapcar #'- (make-range 20 -2 10) (make-random-list 11))
-			(make-range 1.0 0 10)
-			"draw=red,fill=red")
+    (draw-profilepoints tikz  (make-range 0 1 10) (mapcar #'- (make-range 20 -2 10) (make-random-list 11)) (make-range 1.0 0 10) "draw=red,fill=red")
+    ;;Draw 10 datapoints, and filled blue cirlces at each data point.
+    (draw-datapoints tikz (make-range 0 1 10) (mapcar #'+ (make-range 0 2 10) (make-random-list 11)) "draw=blue,fill=blue" t "circle(1pt)")
     ;;Add legend entries
     (draw-legend-line tikz 0.5 3.0 0.5 "Expected" "thick,dotted" "" "")
     (draw-legend-line tikz 0.5 2.6 0.5 "Graph" "" "blue,fill=blue" "")

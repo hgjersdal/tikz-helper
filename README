@@ -1,4 +1,4 @@
-tikx-helper
+tikz-helper
 
 Uses common lisp to generate tikz code for simple data representation. Graphs, histograms, functions. 
 
