@@ -2,7 +2,7 @@ tikx-helper
 
 Uses common lisp to generate tikz code for simple data representation. Graphs, histograms, functions. 
 
-Also contains an implementation of the Levenberg-Martquart algorithm for fitting fuctions to plots or histograms.
+Also contains an implementation of the Levenberg-Martquart algorithm for fitting fuctions to plots or histograms, as well as cubic spline interpolation.
 
 The file tikz-helper-example.lisp contains code that generates a few simple plots. The plots can be viewed by compiling master.tex.
 
