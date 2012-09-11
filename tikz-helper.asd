@@ -25,14 +25,17 @@
 	   draw-axis-ticks-y
 	   draw-plottingarea-rectangle
 	   draw-line
+	   draw-text-node
 	   draw-node
+	   draw-datapoints
 	   tikz-transform-x
 	   tikz-transform-y
 	   gauss
 	   gaussian-random
 	   levmar-optimize
 	   levmar-optimize-errors
-	   gamma))
+	   gamma
+	   get-spline-fun))
 
 (defsystem tikz-helper
   :name "tikz-helper"
@@ -42,4 +45,5 @@
   :depends-on (:lla)
   :components ((:file "utils")
 	       (:file "levmar")
+	       (:file "spline")
 	       (:file "tikz-helper")))

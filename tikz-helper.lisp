@@ -112,15 +112,18 @@
 (defun draw-line (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
-(defun draw-node (plottingarea x y text style)
+(defun draw-text-node (plottingarea x y text style)
   "Generate tikz code to draw a text node."
   (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
+(defun draw-node (tikz x y style node)
+  "Draw a node at point."
+  (format (ostream tikz) "\\draw[~a] (~f,~f) ~a; ~%" style x y node))
 (defun draw-circle (plottingarea x y style)
   "Generate tikz code to draw a text circle."
-  (format (ostream plottingarea) "\\draw[~a] (~f,~f) circle(1pt); ~%" style x y))
+  (draw-node plottingarea x y style "circle(1pt)"))
 (defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a rectangle."
-  (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
+  (draw-node plottingarea x-from y-from style (format nil "rectangle (~f,~f);~%" x-to y-to)))
 
 (defun draw-profilepoints (plottingarea x y y-error style &optional (transformp t))
   (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style transformp)) x y y-error))
@@ -170,7 +173,7 @@
 		(aref x-pos (+ n 1)) 0)))))
   
 (defun draw-graph-line (tikz x y line-style &optional (transformp t))
-  "Draw a line between a bunch of points"
+  "Connect data points with straight lines."
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
     (unless (or (null (cdr x)) (null (cdr y)))
@@ -178,11 +181,18 @@
       (draw-graph-line tikz (cdr xx) (cdr yy) line-style nil))))
 
 (defun draw-graph-error (tikz x y y-error line-style mark-style error-style &optional (transformp t))
+  "Draw error bars"
   (draw-graph tikz x y line-style mark-style transformp)
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y))
 	 (err (if transformp (mapcar (make-vector-transform (height tikz) (plot-y-min tikz) (plot-y-max tikz)) y-error) y-error)))
     (mapcar (lambda (x y er) (draw-profilepoint tikz x y er error-style)) xx yy err)))
+
+(defun draw-datapoints (tikz x y style &optional (transformp t) (node "circle(1pt)"))
+  "Draw a set of datapoints"
+  (let* ((xx (if transformp (map 'list (make-transformation-x tikz) x) x))
+	 (yy (if transformp (map 'list (make-transformation-y tikz) y) y)))
+    (mapcar (lambda (x y) (draw-node tikz x y style node)) xx yy)))
 
 (defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
   "Draw a graph, either as one circle per point, a line between points, or both"
@@ -207,7 +217,7 @@
   (if (> (length mark-style) 0) (draw-circle tikz (+ (* 0.5 width) x) y mark-style))
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
   (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x) y error-height error-style nil))
-  (draw-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
+  (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
 (defun draw-legend-rectangle (tikz x y width height name line-style fill-style name-style)
   "Draw a (filled) rectangle with a legend entry. This is for histograms drawn with draw-histogram-bins"
@@ -215,4 +225,4 @@
 						(+ x width) (+ y (* 0.5 height)) fill-style))
   (if (> (length line-style) 0) (draw-rectangle tikz x (- y (* 0.5 height))
 						(+ x width) (+ y (* 0.5 height)) line-style))
-  (draw-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
+  (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
