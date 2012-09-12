@@ -79,7 +79,7 @@ Some Gaussian histograms
   (draw-plottingarea-rectangle tikz)
   (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Filled histogram" "blue!80!black" "draw=blue!20,fill=blue!20" "")
   (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black" "" "")
-  (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparebt histo" "" "opacity=0.7,draw=green!80!black,fill=green!20" ""))
+  (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparent histo" "" "opacity=0.7,draw=green!80!black,fill=green!20" ""))
 
 #|
 Som Gauss smeared datapoints, with a fitted function
@@ -209,26 +209,6 @@ A plot trying to show the connection between half-lifes and remaining nuclei
 #|
 Simulating and estimating the number of decays as function of time.
 |#
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "decay-rate.tex") 10 5 0 5 0.0d0 0.2)
-  (labels ((draw-decay-rate (a0 half-life color y-pos) 
-	     (let* ((y-smeared (map 'vector (lambda (x) (/ x a0)) (decay-rate2 a0 0.2 25 half-life))))
-	       (draw-legend-line tikz 3.0 y-pos 1.0 (format nil "Simulated decay for ~a nuclei" a0) color "" "")
-	       (draw-histogram tikz (make-histogram 0.0 0.25 y-smeared) color))))
-    (draw-text-node tikz 5.0 5.2 (format nil "$-\\Delta N = \\lambda N \\Delta t$") "")
-    (draw-line tikz 0 0 0 5.2 "thick,->")
-    (draw-line tikz 0 0 10.2 0 "thick,->")
-    (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0 1 5))
-		       (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$") nil) 
-    (draw-axis-ticks-y tikz (tikz-transform-y tikz (make-range 0 0.05 5))
-		       (list "$0.0$" "$0.05 A_0$" "$0.10 A_0$" "$0.15 A_0$" "$0.20 A_0$") nil) 
-    (clip (tikz)
-      (draw-decay-rate 50 1.0 "blue!80,thick" 4.4)
-      (draw-decay-rate 1000 1.0 "purple!80,thick" 4.0)
-      (draw-decay-rate 1000000 1.0 "green!80,thick" 3.6))))
-
-#|
-Simulating and estimating the number of decays as function of time.
-|#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "decay-rate2.tex") 10 5 0 5 0.0d0 0.2)
   (labels ((intensity2 (x params)
 	     (* (aref params 0) 0.20 (/ (log 2) (aref params 1)) (expt 2 (/ (- x) (aref params 1)))))
@@ -294,35 +274,9 @@ Simulating and estimating the number of decays as function of time.
       (draw-line tikz 10 0 10 5.2 "red,thick,->")
       (draw-line tikz 0 0 10.2 0 "thick,->"))))
 
-;;(make-half-life-plot 50 1.0 #(1.0d0 .5d0) "half-life10.tex")
-;;(make-half-life-plot 1000 1.0 #(1000.0d0 .9d0) "half-life1000.tex")
 (make-half-life-plot 100000 1.0 #(0.0d0 1.0d0) "half-life1000000.tex")
 
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "gamma.tex") 10 5 0 1 -2 2)
-  (labels ((bethe-heitler (z thickness)
-	     (let* ((c (/ thickness (log 2)))
-		    (bh (/ (expt (- (log z)) (- c 1)) (gamma c))))
-	       (cond ((>= bh 10) 10)
-		     (t (log bh 10))))))
-    (clip (tikz)
-      (draw-function tikz (lambda (x) (bethe-heitler x 0.02)) 500 "red!80"   0.0000001 0.9999999)
-      (draw-function tikz (lambda (x) (bethe-heitler x 0.05)) 500 "blue!80"  0.0000001 0.9999999)
-      (draw-function tikz (lambda (x) (bethe-heitler x 0.1))  500 "orange!80" 0.0000001 0.9999999)
-      (draw-function tikz (lambda (x) (bethe-heitler x 0.2))  500 "green!80"  0.0000001 0.9999999)
-      (draw-legend-line tikz 0.4 3.4 1.0 "$t = 0.02$" "red!80" "" "")
-      (draw-legend-line tikz 0.4 3.8 1.0 "$t = 0.05$" "blue!80" "" "")
-      (draw-legend-line tikz 0.4 4.2 1.0 "$t = 0.1$" "orange!80" "" "")
-      (draw-legend-line tikz 0.4 4.6 1.0 "$t = 0.2$" "green!80" "" ""))
-  (draw-axis-ticks-x-transformed tikz (make-range 0 0.1 10) 1)
-  (draw-axis-ticks-y tikz (tikz-transform-y tikz (list -2.0 -1.0 0.0 1.0 2.0))
-		     (list "$10^{-2}$" "$10^{-1}$" "$10^{0}$" "$10^{1}$" "$10^{2}$") nil)
-  (draw-text-node tikz 5 5.0 "Bethe-Heitler" "")
-  (draw-text-node tikz 0 5.2 "$f(z)$" "above")
-  (draw-text-node tikz 5 -0.4 "$z$" "below")
-  (draw-line tikz 0 0 10.2 0 "thick,->")
-  (draw-line tikz 0 0 0 5.2 "thick,->")))
-    
-(with-tikz-plot (tikz "/home/haavagj/src/tikz-helper/spline.tex" 10 5 4.0 6.0 4.0 7.0)
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0)
   (let ((x #(4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y #(4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
     (draw-axis-ticks-x-transformed tikz (make-range 4 0.2 10) 1)
@@ -338,5 +292,3 @@ Simulating and estimating the number of decays as function of time.
     (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80" "" "")
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (draw-line tikz 0 0 0 5.2 "thick,->")))
-
-

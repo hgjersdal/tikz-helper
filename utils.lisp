@@ -1,6 +1,7 @@
 (in-package :tikz-helper)
 
 (defun gaussian-random ()
+  "Returns two Gaussian random numbers"
   (let (x1 x2 (w 2.d0))
     (loop until (< w 1.d0) do
 	 (setf x1 (- (random 2.d0) 1.d0) 
@@ -10,6 +11,7 @@
     (values (* x1 w) (* x2 w))))
 
 (defun gauss (x params)
+  "Gaussian function, the params are #(scale mean sigma"
   (let* ((scale (aref params 0))
 	 (mean (aref params 1))
 	 (sigma (aref params 2))
@@ -33,8 +35,31 @@
 (defconstant numcoeff (length tcoeff))
  
 (defun gamma (x)
+  "Gamma function"
   (let ((y (- x 1.0))
         (sum (nth (- numcoeff 1) tcoeff)))
     (loop for i from (- numcoeff 2) downto 0 do 
           (setf sum (+ (* sum y) (nth i tcoeff))))
     (/ 1.0 sum)))
+
+
+(defun erf (x)
+  (let* ((sign (if (>= x 0) 1 -1))
+	 (x (abs x))
+	 (a1  0.254829592)
+	 (a2 -0.284496736)
+	 (a3  1.421413741)
+	 (a4 -1.453152027)
+	 (a5  1.061405429)
+	 (p   0.3275911)
+	 (tc (/ 1.0 (+ 1.0 (* p x))))
+	 (y (- 1.0
+	       (* tc (exp (* x x -1.0d0))
+		  (+ a1 (* tc (+ a2 (* tc (+ a3 (* tc (+ a4 (* a5 tc))))))))))))
+    (* sign y)))
+
+def erf(x):
+    # A&S formula 7.1.26
+    t = 1.0/(1.0 + p*x)
+    y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*math.exp(-x*x)
+    return sign*y # erf(-x) = -erf(x)

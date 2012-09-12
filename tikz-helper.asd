@@ -30,11 +30,12 @@
 	   draw-datapoints
 	   tikz-transform-x
 	   tikz-transform-y
-	   gauss
 	   gaussian-random
 	   levmar-optimize
 	   levmar-optimize-errors
 	   gamma
+	   gauss
+	   erf
 	   get-spline-fun))
 
 (defsystem tikz-helper
