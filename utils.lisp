@@ -44,6 +44,7 @@
 
 
 (defun erf (x)
+  "Error function"
   (let* ((sign (if (>= x 0) 1 -1))
 	 (x (abs x))
 	 (a1  0.254829592)
@@ -57,9 +58,3 @@
 	       (* tc (exp (* x x -1.0d0))
 		  (+ a1 (* tc (+ a2 (* tc (+ a3 (* tc (+ a4 (* a5 tc))))))))))))
     (* sign y)))
-
-def erf(x):
-    # A&S formula 7.1.26
-    t = 1.0/(1.0 + p*x)
-    y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*math.exp(-x*x)
-    return sign*y # erf(-x) = -erf(x)
