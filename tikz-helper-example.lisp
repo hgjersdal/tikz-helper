@@ -156,23 +156,10 @@ Make some noisy datapoints from polynomial, fit and plot.
   (draw-line tikz 0 2.5 10.2 2.5 "thick,->")
   (draw-line tikz 5 0 5 5.2 "thick,->"))
 
-(defun decay-rate (A0 delta-time nbins half-life)
-  "Get the number of ramaining nuclei"
-  (let* ((events (make-array nbins))
-	 (decay-constant (/ (log 2) half-life))
-	 (probability (exp (* -1 delta-time decay-constant)))
-	 (N0 A0))
-    (dotimes (bin nbins)
-      (let ((decayed 0))
-	(dotimes (n N0)
-	  (when (> (random 1.0d0) probability) (incf decayed)))
-	(setf (aref events bin) N0)
-	(setf N0 (- N0 decayed))))
-    events))
-
 (defun decay-rate2 (A0 delta-time nbins half-life)
   "Get the number of decays per time"
   (let* ((events (make-array nbins))
+	 (remaining (make-array nbins))
 	 (decay-constant (/ (log 2) half-life))
 	 (probability (exp (* -1 delta-time decay-constant)))
 	 (N0 A0))
@@ -180,9 +167,10 @@ Make some noisy datapoints from polynomial, fit and plot.
       (let ((decayed 0))
 	(dotimes (n N0)
 	  (when (> (random 1.0d0) probability) (incf decayed)))
+	(setf (aref remaining bin) N0)
 	(setf (aref events bin) decayed)
 	(setf N0 (- N0 decayed))))
-    events))
+    (values events remaining)))
 
 #|
 A plot trying to show the connection between half-lifes and remaining nuclei 
@@ -242,27 +230,27 @@ Simulating and estimating the number of decays as function of time.
 	     (* 0.2 (aref params 0) (expt 2 (/ (- x) (aref params 1)))))
 	   (intensity2 (x params)
 	     (* (aref params 0) 0.25 (/ (log 2) (aref params 1)) (expt 2 (/ (- x) (aref params 1))))))
-      (let* ((x-poses (make-range 0.125 0.25 20))
-	     (y-smeared (decay-rate2 a0 0.25 25 half-life))
-	     (params (levmar-optimize #'intensity2 initial-guess x-poses y-smeared)))
-	(clip (tikz)
-	  (draw-histogram tikz (make-histogram 0.0 0.25 y-smeared) "draw=blue")
-	  (draw-function tikz (lambda (x) (intensity x (vector a0 half-life))) 100 "red")
-	  (draw-function tikz (lambda (x) (intensity2 x params)) 100 "black,dashed")
-	  (draw-function tikz (lambda (x) (intensity x params)) 100 "black,dashed")
-	  (draw-legend-line tikz 3.0 3.4 1.0 (format nil "Simulated $T_{1/2}$: ~5,2f, $A_0$: ~a"
-						     half-life a0) "blue" "" "")
-	  (draw-legend-line tikz 3.0 3.0 1.0 (format nil "Estimated $T_{1/2}$: ~5,2f, $A_0$: ~a" 
-						     (aref params 1) (floor (aref params 0))) "black,thick,dashed" "" "")
-	  (draw-legend-line tikz 3.0 3.8 1.0 (format nil "Theoretical $T_{1/2}$: ~5,2f, $A_0$: ~a" 
-						     half-life a0) "red" "" "")))
+      (multiple-value-bind (decayed remaining) (decay-rate2 a0 0.25 25 half-life)
+	  (let* ((x-poses (make-range 0.125 0.25 20))
+		 (params (levmar-optimize #'intensity2 initial-guess x-poses decayed)))
+	    (clip (tikz)
+	      (draw-histogram tikz (make-histogram 0.0 0.25 decayed) "draw=blue")
+	      (draw-histogram tikz (make-histogram -0.125 0.25 (map 'vector (lambda (x) (* 0.2 x)) remaining)) "draw=red")
+	      (draw-function tikz (lambda (x) (intensity2 x params)) 100 "black,dashed")
+	      (draw-function tikz (lambda (x) (intensity x params)) 100 "black,dashed")
+	      (draw-legend-line tikz 3.0 3.4 1.0 (format nil "Decays\\ \\ \\ \\ \\ \\ $T_{1/2}$: ~5,2f, $A_0$: ~a"
+							 half-life a0) "blue" "" "")
+	      (draw-legend-line tikz 3.0 3.0 1.0 (format nil "Estimated \\ $T_{1/2}$: ~5,2f, $A_0$: ~a" 
+							 (aref params 1) (floor (aref params 0))) "black,thick,dashed" "" "")
+	      (draw-legend-line tikz 3.0 3.8 1.0 (format nil "Remaining $T_{1/2}$: ~5,2f, $A_0$: ~a" 
+							 half-life a0) "red" "" ""))))
       (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0 1 5))
 			 (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$") nil) 
       (draw-axis-ticks-y-transformed tikz (make-range 0 (/ a0 50) 10) 2)
       (mapcar (lambda (x)
 		(let ((y-pos (* 5 (/ 1.0 (expt 2 x)))))
 		  (draw-line tikz (* 2 x) y-pos 10.1 y-pos "thin,gray")
-		  (if (> x 0)
+		  (if (> x 0) 
 		      (progn (draw-line tikz (* x 2) 0 (* x 2) y-pos "thin,gray")
 			     (draw-text-node tikz 10 y-pos (format nil "\\scriptsize{$A_0/~a$}" (expt 2 x)) "right"))
 		      (draw-text-node tikz 10 y-pos (format nil "\\scriptsize{$A_0 = ~a$}" a0) "right"))))
