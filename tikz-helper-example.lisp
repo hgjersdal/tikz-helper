@@ -19,11 +19,11 @@ Add a simple plot of some gauss smeared measurements around dotted lines.
     ;;Draw data points with red errorbars
     (draw-profilepoints tikz  (make-range 0 1 10) (mapcar #'- (make-range 20 -2 10) (make-random-list 11)) (make-range 1.0 0 10) "draw=red,fill=red")
     ;;Draw 10 datapoints, and filled blue cirlces at each data point.
-    (draw-datapoints tikz (make-range 0 1 10) (mapcar #'+ (make-range 0 2 10) (make-random-list 11)) "draw=blue,fill=blue" t "circle(1pt)")
+    (draw-datapoints tikz (make-range 0 1 10) (mapcar #'+ (make-range 0 2 10) (make-random-list 11)) "draw=blue,fill=blue")
     ;;Add legend entries
-    (draw-legend-line tikz 0.5 3.0 0.5 "Expected" "thick,dotted" "" "")
-    (draw-legend-line tikz 0.5 2.6 0.5 "Graph" "" "blue,fill=blue" "")
-    (draw-legend-line tikz 0.5 2.2 0.5 "Profile" "" "" "" "red, fill=red" 0.1))
+    (draw-legend-line tikz 0.5 3.0 0.5 "Expected" "thick,dotted")
+    (draw-legend-line tikz 0.5 2.6 0.5 "Graph" "" "blue,fill=blue")
+    (draw-legend-line tikz 0.5 2.2 0.5 "Profile" "" "" "" "" "red, fill=red" 0.1))
   ;;Axis markings in x and y. 
   (draw-axis-ticks-x-transformed tikz (make-range 0 1 10) 1) 
   (draw-axis-ticks-y-transformed tikz (make-range 0 2 10) 1)
@@ -78,7 +78,7 @@ Some Gaussian histograms
   (draw-axis-ticks-y-transformed tikz (make-range 0 15 10) 1)
   (draw-plottingarea-rectangle tikz)
   (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Filled histogram" "blue!80!black" "draw=blue!20,fill=blue!20" "")
-  (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black" "" "")
+  (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black")
   (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparent histo" "" "opacity=0.7,draw=green!80!black,fill=green!20" ""))
 
 #|
@@ -96,9 +96,9 @@ Som Gauss smeared datapoints, with a fitted function
       (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"))
     (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0.5 1 9)) (make-range 0 1 9) t 2)
     (draw-axis-ticks-y-transformed tikz (make-range 0 2 10) 1)
-    (draw-legend-line tikz 0.5 4.5 1 "Noisy data" "" "draw=blue,fill=blue" "")
-    (draw-legend-line tikz 0.5 4.1 1 "Spline fit" "draw=green,thick" "" "")
-    (draw-legend-line tikz 0.5 3.7 1 "Gauss fit" "thick,dotted" "" "")
+    (draw-legend-line tikz 0.5 4.5 1 "Noisy data" "" "draw=blue,fill=blue")
+    (draw-legend-line tikz 0.5 4.1 1 "Spline fit" "draw=green,thick")
+    (draw-legend-line tikz 0.5 3.7 1 "Gauss fit" "thick,dotted")
     ;;Print the fit parameters to the plot.
     (draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref fit-params 1)) "left")
     (draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)) "left")
@@ -123,8 +123,8 @@ Gaussian histogram, with a fitted function
 	(draw-function tikz (lambda (x) (gauss x parameters)) 200 "thick,red")))
     (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0.5 1 9)) (make-range 0 1 9) t 2)
     (draw-axis-ticks-y-transformed tikz (make-range 0 30 10) 1)
-    (draw-legend-line tikz 0.5 4.5 1 "2000 Gauss-rand" "draw=blue,fill=blue" "" "")
-    (draw-legend-line tikz 0.5 4.1 1 "Gauss fit" "thick,red" "" "")
+    (draw-legend-line tikz 0.5 4.5 1 "2000 Gauss-rand" "draw=blue,fill=blue")
+    (draw-legend-line tikz 0.5 4.1 1 "Gauss fit" "thick,red")
     (draw-plottingarea-rectangle tikz)))
 
 #|
@@ -150,9 +150,9 @@ Make some noisy datapoints from polynomial, fit and plot.
 	(draw-function tikz (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) 200 "dotted"))))
   (draw-axis-ticks-x-transformed tikz (remove 0 (make-range -7 1 14)) 1 2.5)
   (draw-axis-ticks-y-transformed tikz (remove 0 (make-range -100 20 10)) 1 5.0)
-  (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "dotted" "" "")
-  (draw-legend-line tikz 0.0 4.2 1 "noisy measurements" "red" "draw=red,fill=red" "")
-  (draw-legend-line tikz 0.0 3.8 1 "Fitted polynomial" "blue" "" "")
+  (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "dotted")
+  (draw-legend-line tikz 0.0 4.2 1 "noisy measurements" "red" "draw=red,fill=red")
+  (draw-legend-line tikz 0.0 3.8 1 "Fitted polynomial" "blue")
   (draw-line tikz 0 2.5 10.2 2.5 "thick,->")
   (draw-line tikz 5 0 5 5.2 "thick,->"))
 
@@ -206,7 +206,7 @@ Simulating and estimating the number of decays as function of time.
 		    (params (levmar-optimize (lambda (x params) (intensity2 x params))
 					     (vector 1.0d0 1.0d0) x-poses y-smeared)))
 	       (draw-legend-line tikz 3.0 y-pos 1.0 (format nil "Estimated half-life for ~a is ~5,2f" a0 (aref params 1)) 
-				 (concatenate 'string "dashed," color) "" "")
+				 (concatenate 'string "dashed," color))
 	       (draw-histogram tikz (make-histogram 0.0 0.20 y-smeared) color)
 	       (draw-function tikz (lambda (x) (intensity2 x params)) 100 (concatenate 'string "dashed," color)))))
     (draw-text-node tikz 5.0 5.2 (format nil "$-\\Delta N = \\lambda N \\Delta t$") "")
@@ -239,11 +239,11 @@ Simulating and estimating the number of decays as function of time.
 	      (draw-function tikz (lambda (x) (intensity2 x params)) 100 "black,dashed")
 	      (draw-function tikz (lambda (x) (intensity x params)) 100 "black,dashed")
 	      (draw-legend-line tikz 3.0 3.4 1.0 (format nil "Decays\\ \\ \\ \\ \\ \\ $T_{1/2}$: ~5,2f, $A_0$: ~a"
-							 half-life a0) "blue" "" "")
+							 half-life a0) "blue")
 	      (draw-legend-line tikz 3.0 3.0 1.0 (format nil "Estimated \\ $T_{1/2}$: ~5,2f, $A_0$: ~a" 
-							 (aref params 1) (floor (aref params 0))) "black,thick,dashed" "" "")
+							 (aref params 1) (floor (aref params 0))) "black,thick,dashed")
 	      (draw-legend-line tikz 3.0 3.8 1.0 (format nil "Remaining $T_{1/2}$: ~5,2f, $A_0$: ~a" 
-							 half-life a0) "red" "" ""))))
+							 half-life a0) "red"))))
       (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0 1 5))
 			 (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$") nil) 
       (draw-axis-ticks-y-transformed tikz (make-range 0 (/ a0 50) 10) 2)
@@ -271,12 +271,13 @@ Simulating and estimating the number of decays as function of time.
     (draw-axis-ticks-y-transformed tikz (make-range 4 0.2 15) 1)
     (draw-text-node tikz 5 5.0 "Cubic splines" "")
     (clip (tikz)
-      (draw-datapoints tikz x y "draw=black!80,fill=black!80")
+      ;;Using diamonds instead of circles for datapoints
+      (draw-datapoints tikz x y "draw=black!80,fill=black!80" t (make-node-string "diamond" 3 3))
       (let ((fun (get-spline-fun x y)))
 	(draw-function tikz fun 100 "blue!80" 3.5d0 6.0d0))
       (let ((fun (get-spline-fun x y t)))
 	(draw-function tikz fun 100 "red!80" 3.5d0 6.0d0)))
-    (draw-legend-line tikz 5.5 4.0 1 "Not-a-knot spline" "blue!80" "" "")
-    (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80" "" "")
+    (draw-legend-line tikz 5.5 4.0 1 "Not-a-knot spline" "blue!80")
+    (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80")
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (draw-line tikz 0 0 0 5.2 "thick,->")))

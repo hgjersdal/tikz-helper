@@ -109,21 +109,26 @@
       (setf my-list (append my-list (list (+ min (* n stepsize))))))
     my-list))
 
+
+(defun make-node-string (shape width height)
+  "Make a node string"
+  (format nil "~a,inner sep=0pt,minimum width =~apt,minimum height=~apt"
+	  shape width height))
 (defun draw-line (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
 (defun draw-text-node (plottingarea x y text style)
   "Generate tikz code to draw a text node."
   (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
-(defun draw-node (tikz x y style node)
+(defun draw-node (tikz x y style node-string)
   "Draw a node at point."
-  (format (ostream tikz) "\\draw[~a] (~f,~f) ~a; ~%" style x y node))
+  (format (ostream tikz) "\\node at (~f,~f) [~a] {}; ~%" x y (concatenate 'string style "," node-string)))
 (defun draw-circle (plottingarea x y style)
-  "Generate tikz code to draw a text circle."
-  (draw-node plottingarea x y style "circle(1pt)"))
+  "Generate tikz code to draw a circle."
+  (draw-node plottingarea x y style (make-node-string "circle" 2 2)))
 (defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a rectangle."
-  (draw-node plottingarea x-from y-from style (format nil "rectangle (~f,~f);~%" x-to y-to)))
+  (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%" style x-from y-from x-to y-to))
 
 (defun draw-profilepoints (plottingarea x y y-error style &optional (transformp t))
   (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style transformp)) x y y-error))
@@ -188,11 +193,16 @@
 	 (err (if transformp (mapcar (make-vector-transform (height tikz) (plot-y-min tikz) (plot-y-max tikz)) y-error) y-error)))
     (mapcar (lambda (x y er) (draw-profilepoint tikz x y er error-style)) xx yy err)))
 
-(defun draw-datapoints (tikz x y style &optional (transformp t) (node "circle(1pt)"))
+(defun draw-datapoints (tikz x y style &optional (transformp t) (node (make-node-string "circle" 2 2)))
   "Draw a set of datapoints"
   (let* ((xx (if transformp (map 'list (make-transformation-x tikz) x) x))
 	 (yy (if transformp (map 'list (make-transformation-y tikz) y) y)))
     (mapcar (lambda (x y) (draw-node tikz x y style node)) xx yy)))
+
+(defun draw-graph-spline (tikz x y style &optional (node (make-node-string "circle" 2 2)))
+  (let ((n  (min (length x) (length y))))
+    (draw-function tikz (get-spline-fun x y) 100 style (elt x 0) (elt x (- n 1))))
+  (draw-datapoints tikz x y style t node))
 
 (defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
   "Draw a graph, either as one circle per point, a line between points, or both"
@@ -212,9 +222,10 @@
     (scope (tikz line-style)
       (draw-graph-line tikz x-vals y-vals "" t))))
 
-(defun draw-legend-line (tikz x y width name line-style mark-style name-style &optional (error-style "") (error-height 0.1))
+(defun draw-legend-line (tikz x y width name line-style &optional (mark-style "") (node-string (make-node-string "circle" 2 2)) (name-style "") 
+							  (error-style "") (error-height 0.1))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars. For graphs, functions, datapoints, most histograms"
-  (if (> (length mark-style) 0) (draw-circle tikz (+ (* 0.5 width) x) y mark-style))
+  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style node-string))
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
   (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x) y error-height error-style nil))
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))

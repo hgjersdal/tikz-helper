@@ -9,6 +9,7 @@
 	   make-range
 	   make-transformation
 	   make-histogram
+	   make-node-string
 	   draw-histogram
 	   draw-histogram-bins
 	   draw-graph
@@ -28,6 +29,7 @@
 	   draw-text-node
 	   draw-node
 	   draw-datapoints
+	   draw-graph-spline
 	   tikz-transform-x
 	   tikz-transform-y
 	   gaussian-random

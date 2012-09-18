@@ -66,26 +66,30 @@ by John Stockie
 	 (setf (aref d i) (/ (- (lla:mref m (+ i 1) 0) (lla:mref m i 0)) (* 6.0d0 (aref h i)))))
     (values a b c d)))
 
-(defun select-region (x xx)
+(defun select-region (x xx n)
   "Figure out which spline segment to draw."
   (loop
-     for i from 1 below (length x)
+     for i from 1 below n
      when (<= xx (aref x i)) do
        (return (- i 1))
-     finally (return (- (length x) 2))))
+     finally (return (- n 2))))
   
 (defun get-spline-fun (x y &optional (natural nil))
   "Returns the spline function fitted to x and y. If natural is T, get a natural cubic spline. If natural is NIL, a cubic spline with not-a-knot."
-  (let* ((h (get-h x))
-	 (ms (lla:solve (if natural 
-			    (make-natural-spline-matrix h (length x))
-			    (make-not-a-know-matrix h (length x))) 
-			(make-right-hand-side y h (length x)))))
-    (multiple-value-bind (a b c d) (get-coeffs h y ms (length x))
-      (lambda (xx)
-	(let* ((index (select-region x xx))
-	       (x-diff (- xx (aref x index))))
-	  (+ (aref a index)
-	     (* (aref b index) x-diff)
-	     (* (aref c index) x-diff x-diff)
-	     (* (aref d index) x-diff x-diff x-diff)))))))
+  (let ((x (map 'vector (lambda (x) (float x 1.d0)) x))
+	(y (map 'vector (lambda (x) (float x 1.d0)) y))
+	(n (min (length x) (length y))))
+    (let* ((h (get-h x))
+	   (ms (lla:solve (if natural 
+			      (make-natural-spline-matrix h n)
+			      (make-not-a-know-matrix h n)) 
+			  (make-right-hand-side y h n))))
+      (multiple-value-bind (a b c d) (get-coeffs h y ms n)
+	(lambda (xx)
+	  (let* ((index (select-region x xx n))
+		 (x-diff (- xx (aref x index))))
+	    (+ (aref a index)
+	       (* (aref b index) x-diff)
+	       (* (aref c index) x-diff x-diff)
+	       (* (aref d index) x-diff x-diff x-diff))))))))
+  
