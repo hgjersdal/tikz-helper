@@ -12,9 +12,9 @@
 	   make-node-string
 	   draw-histogram
 	   draw-histogram-bins
+	   draw-path
 	   draw-graph
 	   draw-graph-error
-	   draw-graph-line
 	   draw-function
 	   draw-profilepoint
 	   draw-profilepoints

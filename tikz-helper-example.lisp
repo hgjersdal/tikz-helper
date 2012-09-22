@@ -11,41 +11,35 @@
     rands))
 
 #|
-Add a simple plot of some gauss smeared measurements around dotted lines.
+Different styles of graphs
 |#
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-graph.tex") 10 5 0 10 0 20) 
-  ;;Clip the figure area
-  (clip (tikz)
-    ;;Draw data points with red errorbars
-    (draw-profilepoints tikz  (make-range 0 1 10) (mapcar #'- (make-range 20 -2 10) (make-random-list 11)) (make-range 1.0 0 10) "draw=red,fill=red")
-    ;;Draw 10 datapoints, and filled blue cirlces at each data point.
-    (draw-datapoints tikz (make-range 0 1 10) (mapcar #'+ (make-range 0 2 10) (make-random-list 11)) "draw=blue,fill=blue")
-    ;;Add legend entries
-    (draw-legend-line tikz 0.5 3.0 0.5 "Expected" "thick,dotted")
-    (draw-legend-line tikz 0.5 2.6 0.5 "Graph" "" "blue,fill=blue")
-    (draw-legend-line tikz 0.5 2.2 0.5 "Profile" "" "" "" "" "red, fill=red" 0.1))
-  ;;Axis markings in x and y. 
-  (draw-axis-ticks-x-transformed tikz (make-range 0 1 10) 1) 
-  (draw-axis-ticks-y-transformed tikz (make-range 0 2 10) 1)
-  ;;Dotted lines representing the expected values
-  (draw-line tikz 0 0 10 5 "thick,dotted")
-  (draw-line tikz 0 5 10 0 "thick,dotted")
-  ;;Draw a thick rectangle around the figure
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-styles.tex") 10 5 0 10 0 12)
+  (let ((x-vals (make-range 0 1 10))
+	(y-vals (make-range 0 0.5 10)))
+    ;;Clip the figure area
+    (clip (tikz)
+      (draw-graph tikz x-vals y-vals 
+		  "blue" "fill=blue,draw=blue")
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ x 1.0)) y-vals) 
+		  "red,thick" "fill=red" (make-node-string "circle" 3 3))
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ x 2.0)) y-vals) 
+		  "black,dashed" "draw=black,fill=yellow" (make-node-string "star,star points=5" 7 7))
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ x 3.0)) y-vals) 
+		  "green!80!black" "draw=green!80!black,fill=green" (make-node-string "rectangle" 3 3))
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ x 4.0)) y-vals) 
+		  "orange!80!black" "draw=orange!80!black,fill=orange" (make-node-string "diamond" 3 3))
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ 5.0 x )) y-vals)
+		  "black,thick" "draw=black,fill=black!20" (make-node-string "ellipse" 2 4))
+      (draw-graph tikz x-vals (mapcar (lambda (x) (+ x 6.0)) y-vals)
+		  "purple!80!black,thick" "draw=purple!80!black,fill=purple!20" (make-node-string "regular polygon,regular polygon sides=5" 4 4))
+      (let ((y-vals (mapcar (lambda (x) (+ x 7.0)) y-vals)))
+	(draw-path tikz x-vals y-vals "red")
+	(draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 10) "draw=red,fill=red"))))
+  (draw-axis-ticks-x-transformed tikz (make-range 0 1 10) 1 -0.15 3 0) 
+  (draw-line tikz 0 -0.15 10 -0.15 "black,thick")
+  (draw-axis-ticks-y-transformed tikz (make-range 0 1 12) 1 -0.15 3 0)
+  (draw-line tikz -0.15 0 -0.15 5 "black,thick")
   (draw-plottingarea-rectangle tikz))
-
-#|
-Add a simple histogram. Uniform with Gaussian uncertainties.
-|#
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-histo1.tex") 10 5 0 10 0 20)
-  (clip (tikz)
-    ;;Draw a histogram as a blue line. Bins are not separated.
-    (draw-histogram tikz (make-histogram 0 1 (mapcar (lambda (x) (+ (* 2 x) 10)) (make-random-list 10))) "blue"))
-  (draw-axis-ticks-x-transformed tikz (make-range 0 1 10) 1)
-  (draw-axis-ticks-y-transformed tikz (make-range 0 2 10) 1)
-  (draw-plottingarea-rectangle tikz)
-  (draw-line tikz 0 2.5 10 2.5 "thick,dotted")
-  (draw-text-node tikz 10 2.5 "Mean" "right")
-  (draw-legend-line tikz 0.5 4.5 1 "Outlined histogram" "blue" "" ""))
 
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
   "Generate a Gaussian histogram with from ndraws random numbers."
@@ -80,6 +74,51 @@ Some Gaussian histograms
   (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Filled histogram" "blue!80!black" "draw=blue!20,fill=blue!20" "")
   (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black")
   (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparent histo" "" "opacity=0.7,draw=green!80!black,fill=green!20" ""))
+
+#|
+Plotting some functions
+|#
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "functions.tex") 10 5 -7 7 -1.2 1.2)
+  (draw-function tikz #'sin 100 "red")
+  (draw-function tikz #'cos 100 "blue")
+  (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range (* -2 pi) pi 5)) (list "-2\\pi" "-1\\pi" "0" "1\\pi" "2\\pi"))
+  (draw-axis-ticks-y-transformed tikz (make-range -1.0 0.5 4))
+  (draw-plottingarea-rectangle tikz)
+  (draw-legend-line tikz 0.5 4.75 0.6 "sin(x)" "red")
+  (draw-legend-line tikz 2.5 4.75 0.6 "cos(x)" "blue"))
+
+#|
+Gaussian function, with some clipping, filling, text and more
+|#
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "gaussian-distribution.tex") 10 5 -3.2 3.2 0 0.5)
+  (let* ((x (make-range -3.2 0.05 128))
+	 (y (mapcar (lambda (x) (gauss x #( 1.0 0.0 1.0))) x))
+	 (x-vals (append (list -3.2) x (list 3.2)))
+	 (y-vals (append (list 0)  y (list 0)))
+	 (sigma (tikz-transform-x tikz (list -2.0 -1.0 0 1.0 2.0))))
+    (flet ((clip-draw (x-min x-max x color text)
+	     (clip (tikz x-min x-max 0 5)
+	       (draw-path tikz x-vals y-vals color t t)
+	       (draw-text-node tikz
+			       (/ (+ x-max x-min) 2.0) 
+			       (* 5.0 (gauss x #(1.0 0.0 1.0)))
+			       text ""))))
+      (clip-draw 0 (elt sigma 0) -1.4 "fill=red!80" "2.2\\%")
+      (clip-draw (elt sigma 0) (elt sigma 1) -1.5 "fill=orange!60" "13.6\\%")
+      (clip-draw (elt sigma 1) (elt sigma 2) -0.5 "fill=blue!40" "34.1\\%")
+      (clip-draw (elt sigma 2) (elt sigma 3) 0.5 "fill=blue!40" "34.1\\%")
+      (clip-draw (elt sigma 3) (elt sigma 4) 1.5 "fill=orange!60" "13.6\\%")
+      (clip-draw (elt sigma 4) 10.5 1.4 "fill=red!80" "2.2\\%")
+      (let ((y (* 5.0 (gauss 1.4 #(1.0 0.0 1.0))))
+	    (x1 (* 0.5 (+ (elt sigma 4) 10.0)))
+	    (x2 (* 0.5 (+ (elt sigma 0) 0.0))))
+	(draw-line tikz x1 (* 0.1 y) x1 (* 0.8 y) "black")
+	(draw-line tikz x2 (* 0.1 y) x2 (* 0.8 y) "black"))))
+  (draw-axis-ticks-x tikz 
+		     (tikz-transform-x tikz (make-range -3 1 6))
+		     (mapcar (lambda (x) (if (= x 0) "$\\mu$" (format nil "$~a\\sigma$" x))) (make-range -3 1 6)) nil)
+  (draw-line tikz 0.0 0 10.0 0 "thick,<->")
+  (draw-line tikz 5 0 5 5 "thick,->"))
 
 #|
 Som Gauss smeared datapoints, with a fitted function
@@ -139,7 +178,7 @@ Make some noisy datapoints from polynomial, fit and plot.
 	   (params (levmar-optimize-errors #'polynomial #(1.0 1.0d0 1.0d0 1.0d0) x-poses y-smeared y-errors)))
       (clip (tikz)
 	;;Draw noisy datapoints
-	(draw-profilepoints tikz x-poses y-poses y-errors "draw=red,fill=red")
+	(draw-profilepoints tikz x-poses y-smeared y-errors "draw=red,fill=red")
 	;;Draw the fitted polynomial
 	(draw-function tikz (lambda (x) (polynomial x params)) 200 "blue")
 	(draw-text-node tikz 5.1 1.4 "Fitted parameters: " "right")
@@ -236,8 +275,8 @@ Simulating and estimating the number of decays as function of time.
 	    (clip (tikz)
 	      (draw-histogram tikz (make-histogram 0.0 0.25 decayed) "draw=blue")
 	      (draw-histogram tikz (make-histogram -0.125 0.25 (map 'vector (lambda (x) (* 0.2 x)) remaining)) "draw=red")
-	      (draw-function tikz (lambda (x) (intensity2 x params)) 100 "black,dashed")
-	      (draw-function tikz (lambda (x) (intensity x params)) 100 "black,dashed")
+	      (draw-function tikz (lambda (x) (intensity2 x params)) 100 "blue,dashed")
+	      (draw-function tikz (lambda (x) (intensity x params)) 100 "red,dashed")
 	      (draw-legend-line tikz 3.0 3.4 1.0 (format nil "Decays\\ \\ \\ \\ \\ \\ $T_{1/2}$: ~5,2f, $A_0$: ~a"
 							 half-life a0) "blue")
 	      (draw-legend-line tikz 3.0 3.0 1.0 (format nil "Estimated \\ $T_{1/2}$: ~5,2f, $A_0$: ~a" 

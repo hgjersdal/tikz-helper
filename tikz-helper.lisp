@@ -40,37 +40,37 @@
   "Draw a thick square around the ploting area"
   (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%" (width plottingarea) (height plottingarea)))
 
-(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0))
+(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0) (pt- 2) (pt+ 2))
   "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
-			 "\\draw (~a,~acm + 2pt) -- (~a, ~acm -2pt) node[below] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-			 x y-pos x y-pos (floor precision) name)
+			 "\\draw (~f,~fcm + ~apt) -- (~f, ~fcm -~apt) node[below] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+			 x y-pos pt+ x y-pos pt- (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (~a,~acm + 2pt) -- (~a, ~acm-2pt) node[below] {\\scriptsize ~a};~%"
-			 x y-pos x y-pos name)))
+			 "\\draw (~f,~fcm + ~apt) -- (~f, ~fcm-~apt) node[below] {\\scriptsize ~a};~%"
+			 x y-pos pt+ x y-pos pt- name)))
        x-list names))
 
-(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0))
+(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0) (pt- 2) (pt+ 2))
   "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
-			 "\\draw (~acm + 2pt,~g) -- (~acm-2pt,~g) node[left] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-			 x-pos x x-pos x (floor precision) name)
+			 "\\draw (~fcm + ~apt,~f) -- (~fcm-~apt,~f) node[left] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+			 x-pos pt+ x x-pos pt- x (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (~acm+2pt,~g) -- (~acm-2pt,~g) node[left] {\\scriptsize ~a};~%"
-			 x-pos x x-pos x name)))
+			 "\\draw (~fcm+~apt,~f) -- (~fcm-~apt,~f) node[left] {\\scriptsize ~a};~%"
+			 x-pos pt+ x x-pos pt- x name)))
        x-list names))
 
-(defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2) (y-pos 0))
+(defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2) (y-pos 0) (pt- 2) (pt+ 2))
   "Draw axis tick marks where the tick title is the data space value"
-  (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision y-pos))
+  (draw-axis-ticks-x plottingarea (mapcar (make-transformation-x plottingarea) x-list) x-list t precision y-pos pt- pt+))
 
-(defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2) (x-pos 0))
+(defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2) (x-pos 0) (pt- 2) (pt+ 2))
   "Draw axis tick marks where the tick title is the data space value"
-  (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos))
+  (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos pt- pt+))
 
 (defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max &optional (master-file "master")) &body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
@@ -99,7 +99,7 @@
 	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%" (width ,plottingarea) (height ,plottingarea))
 	 ,@body)
       `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%" ,x-from ,x ,y-from ,y)
+	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%" ,x-from ,y-from ,x ,y)
 	 ,@body)))
 
 (defun make-range (min stepsize steps)
@@ -122,7 +122,7 @@
   (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
 (defun draw-node (tikz x y style node-string)
   "Draw a node at point."
-  (format (ostream tikz) "\\node at (~f,~f) [~a] {}; ~%" x y (concatenate 'string style "," node-string)))
+  (format (ostream tikz) "\\node at (~f,~f) [~a] {}; ~%" x y (concatenate 'string node-string "," style)))
 (defun draw-circle (plottingarea x y style)
   "Generate tikz code to draw a circle."
   (draw-node plottingarea x y style (make-node-string "circle" 2 2)))
@@ -177,13 +177,21 @@
 		(aref x-pos (+ n 1)) (aref data n)
 		(aref x-pos (+ n 1)) 0)))))
   
-(defun draw-graph-line (tikz x y line-style &optional (transformp t))
+(defun add-path-point (tikz x y)
+  (unless (or (null x) (null y))
+    (format (ostream tikz) "\\pgfpathlineto{ \\pgfqpoint {~fcm} {~fcm}}~%" (car x) (car y))
+    (add-path-point tikz (cdr x) (cdr y))))
+
+(defun draw-path (tikz x y style &optional (transformp t) (fill nil))
   "Connect data points with straight lines."
   (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
 	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
-    (unless (or (null (cdr x)) (null (cdr y)))
-      (draw-line tikz (car xx) (car yy) (cadr xx) (cadr yy) line-style)
-      (draw-graph-line tikz (cdr xx) (cdr yy) line-style nil))))
+    (scope (tikz style)
+      (format (ostream tikz) "\\pgfpathmoveto{ \\pgfqpoint {~fcm} {~fcm}}~%" (car xx) (car yy))
+      (add-path-point tikz (cdr xx) (cdr yy))
+      (if fill
+	  (format (ostream tikz) "\\pgfusepath{ fill,stroke }~%")
+	  (format (ostream tikz) "\\pgfusepath{ stroke }~%")))))
 
 (defun draw-graph-error (tikz x y y-error line-style mark-style error-style &optional (transformp t))
   "Draw error bars"
@@ -199,19 +207,16 @@
 	 (yy (if transformp (map 'list (make-transformation-y tikz) y) y)))
     (mapcar (lambda (x y) (draw-node tikz x y style node)) xx yy)))
 
-(defun draw-graph-spline (tikz x y style &optional (node (make-node-string "circle" 2 2)))
-  (let ((n  (min (length x) (length y))))
-    (draw-function tikz (get-spline-fun x y) 100 style (elt x 0) (elt x (- n 1))))
-  (draw-datapoints tikz x y style t node))
+(defun draw-graph (tikz x y line-style mark-style &optional (node (make-node-string "circle" 2 2)))
+  "Draw a graph, with a line connecting datapoints"
+  (draw-path tikz x y line-style)
+  (draw-datapoints tikz x y mark-style t node))
 
-(defun draw-graph (tikz x y line-style mark-style &optional (transformp t))
-  "Draw a graph, either as one circle per point, a line between points, or both"
-  (let* ((xx (if transformp (mapcar (make-transformation-x tikz) x) x))
-	 (yy (if transformp (mapcar (make-transformation-y tikz) y) y)))
-    (if (> (length mark-style) 0) (mapcar (lambda (px py) (draw-circle tikz px py mark-style)) xx yy))
-    (if (> (length line-style) 0) 
-	(scope (tikz line-style)
-	  (draw-graph-line tikz xx yy "" nil)))))
+(defun draw-graph-spline (tikz x y line-style mark-style  &optional (node (make-node-string "circle" 2 2)))
+  "Draw a graph, with a spline connecting datapoints"
+  (let ((n  (min (length x) (length y))))
+    (draw-function tikz (get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
+  (draw-datapoints tikz x y mark-style t node))
 
 (defun draw-function (tikz function samples line-style &optional (x-min nil) (x-max nil))
   "Draw a function y = f(x)"
@@ -219,15 +224,14 @@
   (when (null x-max) (setf x-max (plot-x-max tikz)))
   (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) samples))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
-    (scope (tikz line-style)
-      (draw-graph-line tikz x-vals y-vals "" t))))
+    (draw-path tikz x-vals y-vals line-style t)))
 
 (defun draw-legend-line (tikz x y width name line-style &optional (mark-style "") (node-string (make-node-string "circle" 2 2)) (name-style "") 
 							  (error-style "") (error-height 0.1))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars. For graphs, functions, datapoints, most histograms"
-  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style node-string))
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
   (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x) y error-height error-style nil))
+  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style node-string))
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
 (defun draw-legend-rectangle (tikz x y width height name line-style fill-style name-style)
