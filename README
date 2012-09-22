@@ -6,4 +6,4 @@ The package also contains an implementation of the Levenberg-Martquart algorithm
 
 The file tikz-helper-example.lisp contains code that generates a few simple plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex.
 
-Only tested on SBCL on linux, and relies on the package lla by github user tpapp, also available through quicklisp.
+Only tested on SBCL on linux, and relies on the package lla(available through quicklisp) by github user tpapp.
