@@ -82,7 +82,12 @@ Some Gaussian histograms
       (draw-node tikz 0.0 0.75 "right" "" (format nil "$\\sigma = ~a$" sigma))
       (draw-line tikz 0 0 10 0 "black")
       (draw-line tikz 0 0 0 1.5 "black")
-      (when axis (draw-axis-ticks-x-transformed tikz (make-range -5 1 10))))))
+      (if axis 
+	  (draw-axis-ticks-x-transformed tikz (make-range -5 1 10))
+	  (draw-axis-ticks-x tikz 
+			     (tikz-transform-x tikz (make-range -5 1 10))
+			     (list "" "" "" "" "" "" "" "" "" "")
+			     nil 2 0 2 2 "above")))))
     
 (histograms "histo1" "draw=blue!80!black,fill=blue!20" nil 1.5 t nil)
 (histograms "histo2" "draw=red!80!black" nil 2.0 nil nil)
