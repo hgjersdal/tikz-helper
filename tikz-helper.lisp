@@ -72,18 +72,29 @@
   "Draw axis tick marks where the tick title is the data space value"
   (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos pt- pt+))
 
-(defmacro with-tikz-plot-standalone ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
-  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
+(defmacro with-tikz-plot-standalone ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max 
+					   &optional (compile-and-show nil) (tex-command "pdflatex") (show-command "evince")) &body body)
+  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment. Can also compile the tex file. and show the resulting pdf. Compilation happens in output directory of plot."
   (let ((stream-name (gensym)))
-    `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
-       (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
-				   :plot-x-min ,plot-x-min :plot-x-max ,plot-x-max
-				   :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
-	 (format ,stream-name "\\documentclass{standalone}~%\\usepackage{tikz}~%\\usepackage{color}~%\\usepackage{siunitx}~%\\begin{document}~%\\begin{tikzpicture}~%")
-	 ,@body
-	 (format ,stream-name "\\end{tikzpicture}~%\\end{document}~%")))))
+    `(progn
+       (with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
+	 (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
+				     :plot-x-min ,plot-x-min :plot-x-max ,plot-x-max
+				     :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
+	   (format ,stream-name "\\documentclass{standalone}~%\\usepackage{tikz}~%\\usepackage{color}~%\\usepackage{siunitx}~%\\usetikzlibrary{arrows,shapes}~%\\begin{document}~%\\begin{tikzpicture}~%")
+	   ,@body
+	   (format ,stream-name "\\end{tikzpicture}~%\\end{document}~%")))
+       (when ,compile-and-show
+	 (sb-ext:run-program ,tex-command 
+			     (list 
+				   "-output-directory"
+				   (sb-ext:native-namestring (make-pathname :directory (pathname-directory ,filename)))
+				   ,filename)
+			     :wait t :search t :output *standard-output*)
+	 (sb-ext:run-program ,show-command
+			     (list (sb-ext:native-namestring (make-pathname :type "pdf" :defaults ,filename)))
+			     :wait nil :search t)))))
   
-
 (defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max &optional (master-file "master")) &body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
   (let ((stream-name (gensym)))
@@ -95,7 +106,6 @@
 	 ,@body
 	 (format ,stream-name "\\end{tikzpicture}~%")
 	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%" ,master-file)))))
-
 
 (defmacro scope ((plottingarea &optional (style "")) &body body)
   "Make a tikz scope."

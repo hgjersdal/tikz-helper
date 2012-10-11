@@ -336,6 +336,7 @@ Simulating and estimating the number of decays as function of time.
 
 (make-half-life-plot 100000 1.0 #(0.0d0 1.0d0) "half-life1000000.tex")
 
+;;(with-tikz-plot-standalone (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0 t)
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0)
   (let ((x #(4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y #(4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
@@ -353,4 +354,5 @@ Simulating and estimating the number of decays as function of time.
     (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80")
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (draw-line tikz 0 0 0 5.2 "thick,->")))
+
  

@@ -1,6 +1,6 @@
 tikz-helper
 
-Tikz is a great LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations. Graphs, histograms, functions.
+Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations. Graphs, histograms, functions.
 
 The package also contains an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points.
 
