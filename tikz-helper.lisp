@@ -40,7 +40,7 @@
   "Draw a thick square around the ploting area"
   (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%" (width plottingarea) (height plottingarea)))
 
-(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0) (pt- 2) (pt+ 2))
+(defun draw-axis-ticks-x (plottingarea x-list names &optional (numberp t) (precision 2) (y-pos 0) (pt- 2) (pt+ 2) (style "below"))
   "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
@@ -48,20 +48,20 @@
 			 "\\draw (~f,~fcm + ~apt) -- (~f, ~fcm -~apt) node[below] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
 			 x y-pos pt+ x y-pos pt- (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (~f,~fcm + ~apt) -- (~f, ~fcm-~apt) node[below] {\\scriptsize ~a};~%"
-			 x y-pos pt+ x y-pos pt- name)))
+			 "\\draw (~f,~fcm + ~apt) -- (~f, ~fcm-~apt) node[~a] {\\scriptsize ~a};~%"
+			 x y-pos pt+ x y-pos pt- style name)))
        x-list names))
 
-(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0) (pt- 2) (pt+ 2))
+(defun draw-axis-ticks-y (plottingarea x-list names &optional (numberp t) (precision 2) (x-pos 0) (pt- 2) (pt+ 2) (style "left"))
   "Draw axis tick marks"
   (map nil (lambda (x name) 
 	     (if numberp
 		 (format (ostream plottingarea)
-			 "\\draw (~fcm + ~apt,~f) -- (~fcm-~apt,~f) node[left] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-			 x-pos pt+ x x-pos pt- x (floor precision) name)
+			 "\\draw (~fcm + ~apt,~f) -- (~fcm-~apt,~f) node[~a] {\\scriptsize{\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+			 x-pos pt+ x x-pos pt- x style (floor precision) name)
 		 (format (ostream plottingarea)
-			 "\\draw (~fcm+~apt,~f) -- (~fcm-~apt,~f) node[left] {\\scriptsize ~a};~%"
-			 x-pos pt+ x x-pos pt- x name)))
+			 "\\draw (~fcm+~apt,~f) -- (~fcm-~apt,~f) node[~a] {\\scriptsize ~a};~%"
+			 x-pos pt+ x x-pos pt- x style name)))
        x-list names))
 
 (defun draw-axis-ticks-x-transformed (plottingarea x-list &optional (precision 2) (y-pos 0) (pt- 2) (pt+ 2))
@@ -71,6 +71,18 @@
 (defun draw-axis-ticks-y-transformed (plottingarea y-list &optional (precision 2) (x-pos 0) (pt- 2) (pt+ 2))
   "Draw axis tick marks where the tick title is the data space value"
   (draw-axis-ticks-y plottingarea (mapcar (make-transformation-y plottingarea) y-list) y-list t precision x-pos pt- pt+))
+
+(defmacro with-tikz-plot-standalone ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
+  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
+  (let ((stream-name (gensym)))
+    `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
+       (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
+				   :plot-x-min ,plot-x-min :plot-x-max ,plot-x-max
+				   :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
+	 (format ,stream-name "\\documentclass{standalone}~%\\usepackage{tikz}~%\\usepackage{color}~%\\usepackage{siunitx}~%\\begin{document}~%\\begin{tikzpicture}~%")
+	 ,@body
+	 (format ,stream-name "\\end{tikzpicture}~%\\end{document}~%")))))
+  
 
 (defmacro with-tikz-plot ((name filename width height plot-x-min plot-x-max plot-y-min plot-y-max &optional (master-file "master")) &body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
@@ -110,19 +122,19 @@
     my-list))
 
 
-(defun make-node-string (shape width height)
+(defun make-node-string (shape width height &optional (inner-sep 0))
   "Make a node string"
-  (format nil "~a,inner sep=0pt,minimum width =~apt,minimum height=~apt"
-	  shape width height))
+  (format nil "~a,inner sep=~apt,minimum width =~apt,minimum height=~apt"
+	  shape inner-sep width height))
 (defun draw-line (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
 (defun draw-text-node (plottingarea x y text style)
   "Generate tikz code to draw a text node."
   (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
-(defun draw-node (tikz x y style node-string)
+(defun draw-node (tikz x y style node-string &optional (text ""))
   "Draw a node at point."
-  (format (ostream tikz) "\\node at (~f,~f) [~a] {}; ~%" x y (concatenate 'string node-string "," style)))
+  (format (ostream tikz) "\\node at (~f,~f) [~a] {~a}; ~%" x y (concatenate 'string node-string "," style) text))
 (defun draw-circle (plottingarea x y style)
   "Generate tikz code to draw a circle."
   (draw-node plottingarea x y style (make-node-string "circle" 2 2)))
@@ -150,18 +162,35 @@
   "A histogram as a simple plist"
   (list :min min :bin-size bin-size :data data))
 
-(defun draw-histogram (tikz histo style)
-  "Draw the top of a histogram, no explicit visual separation of bins"
-  (let* ((data (map 'vector (make-transformation-y tikz) (getf histo :data)))
-	 (x-pos (map 'vector (make-transformation-x tikz)
-		     (make-range (getf histo :min) (getf histo :bin-size) (length data)))))
-    (scope (tikz style)
-      (draw-line tikz  (aref x-pos 0) (aref data 0) (aref x-pos 1) (aref data 0) "")
-      (dotimes (n (- (length data) 1))
-	(format (ostream tikz) "\\draw (~f,~f) -- (~f,~f) -- (~f,~f);~%"
-		(aref x-pos (+ n 1)) (aref data n)
-		(aref x-pos (+ n 1)) (aref data (+ n 1))
-		(aref x-pos (+ n 2)) (aref data (+ n 1)))))))
+(defun make-histogram-path (histo)
+  (let* ((y-pos (getf histo :data))
+	 (x-pos (make-range (getf histo :min) (getf histo :bin-size) (length y-pos)))
+	 (path-x nil)
+	 (path-y nil))
+    (push (elt x-pos 0) path-x)
+    (push 0 path-y)
+    (dotimes (i (- (length x-pos) 1))
+      (push (elt x-pos i) path-x)
+      (push (elt y-pos i) path-y)
+      (push (elt x-pos (+ 1 i)) path-x)
+      (push (elt y-pos i) path-y))
+    (push (elt x-pos (- (length x-pos) 1)) path-x)
+    (push 0 path-y)
+    (values path-x path-y)))
+
+(defun draw-histogram-horizontal (tikz histo style &optional (fill nil) (separate-bins nil))
+  "Draw a histogram"
+  (multiple-value-bind (y x) (make-histogram-path histo)
+    (draw-path tikz x y style t fill)
+    (when separate-bins 
+      (mapcar (lambda (x y) (draw-path tikz (list 0 x) (list y y) style t nil)) x y))))
+
+(defun draw-histogram (tikz histo style &optional (fill nil) (separate-bins nil))
+  "Draw a histogram"
+  (multiple-value-bind (x y) (make-histogram-path histo)
+    (draw-path tikz x y style t fill)
+    (when separate-bins 
+      (mapcar (lambda (x y) (draw-path tikz (list x x) (list y 0) style t nil)) x y))))
 
 (defun draw-histogram-bins (tikz histo style)
   "Draw a histogram, each bin is drawn individually"
