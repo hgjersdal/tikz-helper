@@ -61,11 +61,10 @@ Some Gaussian histograms
 	(histo3 (make-gaussian-histogram 0.0 0.5 20 7.0 1.0 450)))
     (clip (tikz)
       ;;Draw a histogram as a blue line. Bins are not separated, but the histogram is filled with light blue.
-      (draw-histogram-bins tikz  histo1 "draw=blue!20,fill=blue!20") ;Filling
-      (draw-histogram tikz histo1 "blue!80!black") ;Top line
+      (draw-histogram tikz histo1 "draw=blue!80!black,fill=blue!20" t)
       ;;Draw a histogram where each bin is surronded by a dark green line, filled with light green.
       ;;Transparent to show the histo below
-      (draw-histogram-bins tikz histo3 "opacity=0.7,draw=green!80!black,fill=green!20")
+      (draw-histogram tikz histo3 "opacity=0.7,draw=green!80!black,fill=green!20" t t)
       ;;Draw a histogram as a red line. Simple and in most cases probably best.
       (draw-histogram tikz histo2 "red!80!black")))
   (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0.5 1 9)) (make-range 0 1 9) t 2)
@@ -74,6 +73,20 @@ Some Gaussian histograms
   (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Filled histogram" "blue!80!black" "draw=blue!20,fill=blue!20" "")
   (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black")
   (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparent histo" "" "opacity=0.7,draw=green!80!black,fill=green!20" ""))
+
+#|
+Histogram with horizontal bins.
+|#
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-histo1.tex") 10 5 0 350 0 10)
+  (let ((histo (make-gaussian-histogram 0.0 1.0 10 5.0 2.0 1000)))
+    (draw-histogram-horizontal tikz (make-histogram (getf histo :min) (getf histo :bin-size) 
+						    (mapcar (lambda (x) (+ x 100)) (sort (getf histo :data) #'<)))
+			       "draw=black!80,fill=black!20" t t))
+  (draw-axis-ticks-y tikz (make-range 0.25 0.5 9) (mapcar (lambda (x) (format nil "Thing ~a" (floor x))) 
+							  (make-range 1 1 10)) nil 0 0 0 0 "right")
+  (draw-line tikz 7 -0.3 7 5.3 "thin,gray")
+  (draw-node tikz 7 5.3 "above" "" "Threshold")
+  (draw-path tikz (list 0 0) (list 0 5) "black" nil))
 
 #|
 Plotting some functions
@@ -99,18 +112,20 @@ Gaussian function, with some clipping, filling, text and more
     (flet ((clip-draw (x-min x-max x color text)
 	     (clip (tikz x-min x-max 0 5)
 	       (draw-path tikz x-vals y-vals color t t)
-	       (draw-text-node tikz
-			       (/ (+ x-max x-min) 2.0) 
-			       (* 5.0 (gauss x #(1.0 0.0 1.0)))
-			       text ""))))
+	       (draw-node tikz
+			  (/ (+ x-max x-min) 2.0) (* 5.0 (gauss x #(1.0 0.0 1.0)))
+			  "fill=white,opacity=0.3,draw=black, rounded corners" (make-node-string "rectangle" 2 2 2) text)
+	       (draw-node tikz
+			  (/ (+ x-max x-min) 2.0) (* 5.0 (gauss x #(1.0 0.0 1.0)))
+			  "text=black" (make-node-string "rectangle" 2 2 ) text))))
       (clip-draw 0 (elt sigma 0) -1.4 "fill=red!80" "2.2\\%")
-      (clip-draw (elt sigma 0) (elt sigma 1) -1.5 "fill=orange!60" "13.6\\%")
+      (clip-draw (elt sigma 0) (elt sigma 1) -1.7 "fill=orange!60" "13.6\\%")
       (clip-draw (elt sigma 1) (elt sigma 2) -0.5 "fill=blue!40" "34.1\\%")
       (clip-draw (elt sigma 2) (elt sigma 3) 0.5 "fill=blue!40" "34.1\\%")
-      (clip-draw (elt sigma 3) (elt sigma 4) 1.5 "fill=orange!60" "13.6\\%")
+      (clip-draw (elt sigma 3) (elt sigma 4) 1.7 "fill=orange!60" "13.6\\%")
       (clip-draw (elt sigma 4) 10.5 1.4 "fill=red!80" "2.2\\%")
       (let ((y (* 5.0 (gauss 1.4 #(1.0 0.0 1.0))))
-	    (x1 (* 0.5 (+ (elt sigma 4) 10.0)))
+	    (x1 (* 0.5 (+ (elt sigma 4) 10.5)))
 	    (x2 (* 0.5 (+ (elt sigma 0) 0.0))))
 	(draw-line tikz x1 (* 0.1 y) x1 (* 0.8 y) "black")
 	(draw-line tikz x2 (* 0.1 y) x2 (* 0.8 y) "black"))))
@@ -131,13 +146,13 @@ Som Gauss smeared datapoints, with a fitted function
 	 (fit-params (levmar-optimize #'gauss #(10.0d0 0.0d0 1.0d0) x-poses y-poses)))
     (clip (tikz)
       (draw-function tikz (get-spline-fun (coerce x-poses 'vector) (coerce smeared-y 'vector)) 100 "green,thick" 0 10)
-      (draw-function tikz (lambda (x) (gauss x fit-params)) 200 "dotted, thick")
+      (draw-function tikz (lambda (x) (gauss x fit-params)) 200 "thick,gray")
       (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"))
     (draw-axis-ticks-x tikz (tikz-transform-x tikz (make-range 0.5 1 9)) (make-range 0 1 9) t 2)
     (draw-axis-ticks-y-transformed tikz (make-range 0 2 10) 1)
     (draw-legend-line tikz 0.5 4.5 1 "Noisy data" "" "draw=blue,fill=blue")
     (draw-legend-line tikz 0.5 4.1 1 "Spline fit" "draw=green,thick")
-    (draw-legend-line tikz 0.5 3.7 1 "Gauss fit" "thick,dotted")
+    (draw-legend-line tikz 0.5 3.7 1 "Gauss fit" "thick,gray")
     ;;Print the fit parameters to the plot.
     (draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref fit-params 1)) "left")
     (draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)) "left")
@@ -186,10 +201,10 @@ Make some noisy datapoints from polynomial, fit and plot.
 					(aref params 0) (aref params 1)
 					(aref params 2)	(aref params 3)) "right")
 	;;Draw the true polynomial
-	(draw-function tikz (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) 200 "dotted"))))
+	(draw-function tikz (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) 200 "green!80!black"))))
   (draw-axis-ticks-x-transformed tikz (remove 0 (make-range -7 1 14)) 1 2.5)
   (draw-axis-ticks-y-transformed tikz (remove 0 (make-range -100 20 10)) 1 5.0)
-  (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "dotted")
+  (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "green!80!black")
   (draw-legend-line tikz 0.0 4.2 1 "noisy measurements" "red" "draw=red,fill=red")
   (draw-legend-line tikz 0.0 3.8 1 "Fitted polynomial" "blue")
   (draw-line tikz 0 2.5 10.2 2.5 "thick,->")
@@ -226,9 +241,9 @@ A plot trying to show the connection between half-lifes and remaining nuclei
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (mapcar (lambda (x)
 	      (let ((y-pos (* 5 (/ 1.0 (expt 2 x)))))
-		(draw-line tikz -0.1 y-pos (* 2 x) y-pos "thin,gray,dashed")
+		(draw-line tikz -0.1 y-pos (* 2 x) y-pos "thin,gray")
 		(if (> x 0)
-		    (progn (draw-line tikz (* x 2) 0 (* x 2) y-pos "thin,gray,dashed")
+		    (progn (draw-line tikz (* x 2) 0 (* x 2) y-pos "thin,gray")
 			   (draw-text-node tikz -0.1 y-pos (format nil "\\scriptsize{$A_0/~a$}" (expt 2 x)) "left"))
 		    (draw-text-node tikz -0.1 y-pos (format nil "\\scriptsize{$A_0$}") "left"))))
 	    (list 0 1 2 3 4))))
@@ -320,3 +335,4 @@ Simulating and estimating the number of decays as function of time.
     (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80")
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (draw-line tikz 0 0 0 5.2 "thick,->")))
+ 

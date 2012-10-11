@@ -4,6 +4,7 @@
   (:documentation "A package for making tikz drawings")
   (:export plottingarea
 	   with-tikz-plot
+	   with-tikz-plot-standalone
 	   scope
 	   clip
 	   make-range
@@ -11,7 +12,7 @@
 	   make-histogram
 	   make-node-string
 	   draw-histogram
-	   draw-histogram-bins
+	   draw-histogram-horizontal
 	   draw-path
 	   draw-graph
 	   draw-graph-error
