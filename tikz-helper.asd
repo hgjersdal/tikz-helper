@@ -7,6 +7,8 @@
 	   with-tikz-plot-standalone
 	   scope
 	   clip
+	   transform
+	   clip-and-transform
 	   make-range
 	   make-transformation
 	   make-histogram
@@ -31,8 +33,8 @@
 	   draw-node
 	   draw-datapoints
 	   draw-graph-spline
-	   tikz-transform-x
-	   tikz-transform-y
+	   transform-x
+	   transform-y
 	   gaussian-random
 	   levmar-optimize
 	   levmar-optimize-errors
