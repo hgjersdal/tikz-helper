@@ -108,18 +108,14 @@ Histogram with horizontal bins.
 Plotting some functions
 |#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "functions.tex") 10 5 -7 7 -1.2 1.2)
-  (transform (tikz)
-    (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
-    		       :names (list "" "" "" "")
-    		       :numberp nil :start "0cm" :stop "5cm" :style "thin,gray")
-    (draw-axis-ticks-y tikz  (remove 0.0 (make-range -1.0 0.5 4))
-    		       :names (list "" "" "" "" "")
-    		       :numberp nil :start "0cm" :stop "10cm" :style "thin,gray")
+  (clip-and-transform (tikz)
     (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
 		       :names (list "$-2\\pi$" "$-\\pi$" "$\\pi$" "$2\\pi$")
-		       :numberp nil :y-shift "2.5cm" :start 0 :stop 0)
+		       :numberp nil :y-shift "2.5cm" :start "-2.5cm" :stop "2.5cm"
+		       :style "ultra thin,gray" :text-style "black,midway,below")
     (draw-axis-ticks-y tikz (remove 0.0 (make-range -1.0 0.5 4))
-		       :precision 1 :x-shift "5cm" :start 0 :stop 0)
+		       :precision 1 :x-shift "5cm" :start "-5cm" :stop "5cm" 
+		       :style "ultra thin,gray":text-style "black,midway,left")
     (draw-function tikz #'sin 100 "red")
     (draw-function tikz #'cos 100 "blue"))
   (draw-line tikz 5 0 5 5 "thick,->")

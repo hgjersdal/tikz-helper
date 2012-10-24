@@ -1,31 +1,21 @@
 \begin{tikzpicture}[]
+\begin{scope}[]
+\clip (0.0,0.0) rectangle (10.0,5.0);
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
 \begin{scope}[shift={(7.0,1.2)}]
-\begin{scope}[yshift=0cm]
-\draw[thin,gray] [shift={(-6.283185307179586,-1.2)}] (0,5cm) -- (0,0cm) node[below]{ \scriptsize{}};
-\draw[thin,gray] [shift={(-3.141592653589793,-1.2)}] (0,5cm) -- (0,0cm) node[below]{ \scriptsize{}};
-\draw[thin,gray] [shift={(3.141592653589793,-1.2)}] (0,5cm) -- (0,0cm) node[below]{ \scriptsize{}};
-\draw[thin,gray] [shift={(6.283185307179586,-1.2)}] (0,5cm) -- (0,0cm) node[below]{ \scriptsize{}};
-\end{scope}
-\begin{scope}[xshift=0cm]
-\draw[thin,gray] [shift={(-7.0,-1.0)}] (10cm,0) -- (0cm,0) node[left]{ \scriptsize{}};
-\draw[thin,gray] [shift={(-7.0,-0.5)}] (10cm,0) -- (0cm,0) node[left]{ \scriptsize{}};
-\draw[thin,gray] [shift={(-7.0,0.5)}] (10cm,0) -- (0cm,0) node[left]{ \scriptsize{}};
-\draw[thin,gray] [shift={(-7.0,1.0)}] (10cm,0) -- (0cm,0) node[left]{ \scriptsize{}};
-\end{scope}
 \begin{scope}[yshift=2.5cm]
-\draw[black] [shift={(-6.283185307179586,-1.2)}] (0,0) -- (0,0) node[below]{ \scriptsize{$-2\pi$}};
-\draw[black] [shift={(-3.141592653589793,-1.2)}] (0,0) -- (0,0) node[below]{ \scriptsize{$-\pi$}};
-\draw[black] [shift={(3.141592653589793,-1.2)}] (0,0) -- (0,0) node[below]{ \scriptsize{$\pi$}};
-\draw[black] [shift={(6.283185307179586,-1.2)}] (0,0) -- (0,0) node[below]{ \scriptsize{$2\pi$}};
+\draw[ultra thin,gray] [shift={(-6.283185307179586,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$-2\pi$}};
+\draw[ultra thin,gray] [shift={(-3.141592653589793,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$-\pi$}};
+\draw[ultra thin,gray] [shift={(3.141592653589793,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$\pi$}};
+\draw[ultra thin,gray] [shift={(6.283185307179586,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$2\pi$}};
 \end{scope}
 \begin{scope}[xshift=5cm]
-\draw[black] [shift={(-7.0,-1.0)}] (0,0) -- (0,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[black] [shift={(-7.0,-0.5)}] (0,0) -- (0,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
-\draw[black] [shift={(-7.0,0.5)}] (0,0) -- (0,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
-\draw[black] [shift={(-7.0,1.0)}] (0,0) -- (0,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\draw[ultra thin,gray] [shift={(-7.0,-1.0)}] (5cm,0) -- (-5cm,0) node[black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
+\draw[ultra thin,gray] [shift={(-7.0,-0.5)}] (5cm,0) -- (-5cm,0) node[black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
+\draw[ultra thin,gray] [shift={(-7.0,0.5)}] (5cm,0) -- (-5cm,0) node[black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
+\draw[ultra thin,gray] [shift={(-7.0,1.0)}] (5cm,0) -- (-5cm,0) node[black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfqpointxy {-7.0} {-0.6569866}}
@@ -238,6 +228,7 @@
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
 \end{scope}
 \draw[thick,->] (5.0,0.0) -- (5.0,5.0);
 \draw[thick,->] (0.0,2.5) -- (10.0,2.5);
