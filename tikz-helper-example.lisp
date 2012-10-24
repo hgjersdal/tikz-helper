@@ -51,8 +51,6 @@ Different styles of graphs
   ;;Draw a thick frame around the plot
   (draw-plottingarea-rectangle tikz))
 
-
-(sb-ext:run-program
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
   "Generate a Gaussian histogram with ndraws Gaussian random numbers."
   (let ((data (make-array nbins)))
@@ -92,6 +90,7 @@ Histogram with horizontal bins.
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-histo1.tex") 10 5 0 350 0 10)
   (let ((histo (make-gaussian-histogram 0.0 1.0 10 5.0 2.0 1000)))
     (clip-and-transform (tikz)
+      ;;Filled horizontal histogram. Data is from a Gaussian histo, but the bins are sorted and incremented by 100.
       (draw-histogram-horizontal tikz (make-histogram (getf histo :min) (getf histo :bin-size)
 						      (mapcar (lambda (x) (+ x 100))
 							      (sort (getf histo :data) #'<)))
@@ -100,7 +99,7 @@ Histogram with horizontal bins.
   (draw-axis-ticks-y tikz (make-range 0.25 0.5 9)
 		     :names (mapcar (lambda (x) (format nil "Thing ~a" (floor x)))
 				    (make-range 1 1 10)) :numberp nil :start 0 :stop 0 :text-style "right")
-  (draw-line tikz 7 -0.3 7 5.3 "thin,gray")
+  (draw-line tikz 7 -0.3 7 5.3 "gray")
   (draw-node tikz 7 5.3 "above" "" "Threshold")
   (draw-path tikz (list 0 0) (list 0 5) "black" nil))
 
@@ -109,19 +108,21 @@ Plotting some functions
 |#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "functions.tex") 10 5 -7 7 -1.2 1.2)
   (clip-and-transform (tikz)
+    ;;Vertical grid lines, text just below horizontal axis
     (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
 		       :names (list "$-2\\pi$" "$-\\pi$" "$\\pi$" "$2\\pi$")
 		       :numberp nil :y-shift "2.5cm" :start "-2.5cm" :stop "2.5cm"
 		       :style "ultra thin,gray" :text-style "black,midway,below")
+    ;;Horizontal grid lines, text just left of vertical axis. Text is rised a little to prevent - sign from dissappearing
     (draw-axis-ticks-y tikz (remove 0.0 (make-range -1.0 0.5 4))
 		       :precision 1 :x-shift "5cm" :start "-5cm" :stop "5cm" 
-		       :style "ultra thin,gray":text-style "black,midway,left")
+		       :style "ultra thin,gray":text-style "above=3pt,black,midway,left")
     (draw-function tikz #'sin 100 "red")
     (draw-function tikz #'cos 100 "blue"))
   (draw-line tikz 5 0 5 5 "thick,->")
   (draw-line tikz 0 2.5 10 2.5 "thick,->")
-  (draw-legend-line tikz 0.5 4.75 0.6 "sin(x)" "red")
-  (draw-legend-line tikz 2.5 4.75 0.6 "cos(x)" "blue"))
+  (draw-legend-line tikz 5.5 4.8 0.6 "sin(x)" "red")
+  (draw-legend-line tikz 7.5 4.8 0.6 "cos(x)" "blue"))
 
 #|
 Gaussian function, with some clipping, filling, text and more
@@ -282,11 +283,11 @@ Make some noisy datapoints from polynomial, fit and plot.
 	    (transform (tikz2)
 	      (let ((y-vals (list 100000 50000 25000 12500 6250 3125)))
 		(mapcar (lambda (x y) 
-			  (draw-path tikz2 (list x x 5) (list 0 y y) "thin,gray"))
+			  (draw-path tikz2 (list x x 5) (list 0 y y) "gray"))
 			(list 0 1 2 3 4) y-vals)
 		(draw-axis-ticks-y tikz2 y-vals
 				   :names (list "A0=100000" "A0/2" "A0/4" "A0/8" "A0/16") :numberp nil :x-shift "10cm" 
-				   :style "thin,gray" :text-style "right"))))
+				   :style "gray" :text-style "right"))))
 	  (draw-text-node tikz 0 5.5 "Decays:$-\\Delta N = \\lambda N \\Delta t$" "right,blue")
 	  (draw-text-node tikz 10 5.5 "Remaining:$N(t) = A_0 2^{t/T_{1/2}}$" "left,red")
 	  (draw-line tikz 0 0 0 5.2 "blue,thick,->")
@@ -329,7 +330,7 @@ Make some noisy datapoints from polynomial, fit and plot.
       (draw-axis-ticks-y tikz (remove 0.0 (make-range -1 0.5 4)) :precision 1 :x-shift "5.0cm")
       (draw-function tikz #'erf-gauss 400 "red"))
     (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
-      (connect-plots tikz tikz2 "thin,gray" nil t t nil)
+      (connect-plots tikz tikz2 "gray" nil t t nil)
       (draw-plottingarea-rectangle tikz2 t)
       (clip-and-transform (tikz2)
 	(draw-function tikz2 #'erf-gauss 100 "red"))
@@ -341,7 +342,7 @@ Make some noisy datapoints from polynomial, fit and plot.
   (flet ((my-draw-histo (offset mean sigma)
 	   (with-sugfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
 	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
-	       (draw-plottingarea-rectangle tikz2 nil "thin,black")
+	       (draw-plottingarea-rectangle tikz2 nil "black")
 	       (clip-and-transform (tikz2)
 		 (draw-histogram-horizontal tikz2 histo "fill=blue!20,draw=blue!20" t)
 		 (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
@@ -354,7 +355,7 @@ Make some noisy datapoints from polynomial, fit and plot.
     (with-sugfigure (tikz tikz2 0.0 0.0 2.0 5 0.0 200 -6.0 6.0)
       (transform (tikz2)
 	(draw-axis-ticks-y tikz2 (make-range -6.0 2.0 6)
-			   :precision 1 :stop "10cm" :style "thin,gray")))
+			   :precision 1 :stop "10cm" :style "gray")))
     (draw-axis-ticks-x tikz (make-range 1.0 2.0 4) 
 		       :names (mapcar (lambda (x) (format nil "Step ~a" x))
 				     (make-range 1 2 4))
