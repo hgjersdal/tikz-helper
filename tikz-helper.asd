@@ -5,6 +5,7 @@
   (:export plottingarea
 	   with-tikz-plot
 	   with-tikz-plot-standalone
+	   with-sugfigure
 	   scope
 	   clip
 	   transform
@@ -41,7 +42,12 @@
 	   gamma
 	   gauss
 	   erf
-	   get-spline-fun))
+	   get-spline-fun
+	   path-move-to
+	   path-stroke-to
+	   path-stroke
+	   connect-plots
+	   ))
 
 (defsystem tikz-helper
   :name "tikz-helper"

@@ -17,7 +17,11 @@ Different styles of graphs
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-styles.tex") 10 5 0 10 0 12)
   (let ((x-vals (make-range 0 1 10))
 	(y-vals (make-range 0 0.5 10)))
-    ;;Clip the figure area
+    (transform (tikz)
+      ;;Draw tick marks on axis
+      (draw-axis-ticks-x tikz (make-range 0 2 5) :y-shift "-0.15cm" :start "-3pt" :stop 0)
+      (draw-axis-ticks-y tikz (make-range 0 2 6) :x-shift "-0.15cm" :start "-3pt" :stop 0))
+    ;;Clip the figure area, and draw lines with different styles
     (clip-and-transform (tikz)
       (draw-graph tikz x-vals y-vals
 		  "blue" "fill=blue,draw=blue")
@@ -41,15 +45,16 @@ Different styles of graphs
       (let ((y-vals (mapcar (lambda (x) (+ x 7.0)) y-vals)))
 	(draw-path tikz x-vals y-vals "red" nil)
 	(draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 10) "draw=red,fill=red"))))
-  (transform (tikz)
-    (draw-axis-ticks-x tikz (make-range 0 1 10) nil t 2 "-0.15cm" 3 0)
-    (draw-axis-ticks-y tikz (make-range 0 1 12) nil t 2 "-0.15cm" 3 0))
+  ;;Draw lines for the axis tick marks
   (draw-line tikz 0 -0.15 10 -0.15 "black,thick")
   (draw-line tikz -0.15 0 -0.15 5 "black,thick")
+  ;;Draw a thick frame around the plot
   (draw-plottingarea-rectangle tikz))
 
+
+(sb-ext:run-program
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
-  "Generate a Gaussian histogram with from ndraws random numbers."
+  "Generate a Gaussian histogram with ndraws Gaussian random numbers."
   (let ((data (make-array nbins)))
     (dotimes (i (floor ndraws 2))
       (multiple-value-bind (g1 g2) (gaussian-random)
@@ -63,46 +68,24 @@ Different styles of graphs
 Some Gaussian histograms
 |#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-histo2.tex") 10 5 0 10 0 150)
-  (let ((histo1 (make-gaussian-histogram 0.0 0.5 20 5.0 2.0 1000))
-	(histo2 (make-gaussian-histogram 0.0 0.5 20 6.0 1.0 650))
-	(histo3 (make-gaussian-histogram 0.0 0.5 20 7.0 1.0 450)))
+  (let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2000))
+	(histo2 (make-gaussian-histogram 0.0 0.25 40 6.0 1.0 1300))
+	(histo3 (make-gaussian-histogram 0.0 0.25 40 7.0 1.0 900)))
     (clip-and-transform (tikz)
       ;;Draw a histogram, outlined dark blue filled light blue
       (draw-histogram tikz histo1 "draw=blue!80!black,fill=blue!20" t)
-      ;;Draw a histogram where each bin is surronded by a dark green line, filled with light green.
-      ;;Transparent to show the histo below
-      (draw-histogram tikz histo3 "opacity=0.7,draw=green!80!black,fill=green!20" t t)
-      ;;Draw a histogram as a red line. Simple and in most cases probably best.
-      (draw-histogram tikz histo2 "red!80!black")))
+      ;;Transparent, red
+      (draw-histogram tikz histo2 "opacity=0.5,red!80!black,fill=red!20" t)
+      ;;Transparent, green
+      (draw-histogram tikz histo3 "opacity=0.5,draw=green!80!black,fill=green!20" t)))
   (transform (tikz)
-    (draw-axis-ticks-x tikz (make-range 0.25 1 9) (make-range 0 1 9))
-    (draw-axis-ticks-y tikz (make-range 0 15 10)))
+    (draw-axis-ticks-y tikz (make-range 0 15 10))
+    (draw-axis-ticks-x tikz (make-range 0.25 1 9) :names (make-range 0 1 9)))
   (draw-plottingarea-rectangle tikz)
-  (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Filled histogram"
-			 "blue!80!black" "draw=blue!20,fill=blue!20" "")
-  (draw-legend-line tikz 0.5 4.1 1 "Outlined histogram" "red!80!black")
-  (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Transparent histo" ""
-			 "opacity=0.7,draw=green!80!black,fill=green!20" ""))
+  (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Histogram 1" "blue!80!black,fill=blue!20" "")
+  (draw-legend-rectangle tikz 0.5 4.1 1 0.2 "Histogram 2" "opacity=0.5,red!80!black,fill=red!20" "")
+  (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Histogram 3" "opacity=0.5,draw=green!80!black,fill=green!20" ""))
 
-(defun histograms (fname style axis sigma fill separated)
-  (with-tikz-plot (tikz (concatenate 'string *plotting-dir* fname) 10 1.5 -6 6 0 1500)
-    (let ((histo1 (make-gaussian-histogram -6.0 0.5 24 0.0 sigma 10000)))
-      (clip-and-transform (tikz)
-	(draw-histogram tikz histo1 style fill separated))
-      (draw-node tikz 0.0 0.75 "right" "" (format nil "$\\sigma = ~a$" sigma))
-      (draw-line tikz 0 0 10 0 "black")
-      (draw-line tikz 0 0 0 1.5 "black")
-      (if axis
-	  (transform (tikz)
-	    (draw-axis-ticks-x tikz (make-range -5 1 10))
-	    (draw-axis-ticks-x tikz
-			       (make-range -5 1 10)
-			       (list "" "" "" "" "" "" "" "" "" "")
-			       nil 2 0 2 2 "above"))))))
-
-(histograms "histo1" "draw=blue!80!black" nil 1.5 nil nil)
-(histograms "histo2" "draw=red!80!black" nil 2.0 nil nil)
-(histograms "histo3" "draw=green!80!black" t 2.5 nil nil)
 #|
 Histogram with horizontal bins.
 |#
@@ -113,9 +96,10 @@ Histogram with horizontal bins.
 						      (mapcar (lambda (x) (+ x 100))
 							      (sort (getf histo :data) #'<)))
 				 "draw=blue!20,fill=blue!10" t t)))
+  ;;Use the axis ticks function to name bins
   (draw-axis-ticks-y tikz (make-range 0.25 0.5 9)
-		     (mapcar (lambda (x) (format nil "Thing ~a" (floor x)))
-			     (make-range 1 1 10)) nil 0 0 0 0 "right")
+		     :names (mapcar (lambda (x) (format nil "Thing ~a" (floor x)))
+				    (make-range 1 1 10)) :numberp nil :start 0 :stop 0 :text-style "right")
   (draw-line tikz 7 -0.3 7 5.3 "thin,gray")
   (draw-node tikz 7 5.3 "above" "" "Threshold")
   (draw-path tikz (list 0 0) (list 0 5) "black" nil))
@@ -125,12 +109,21 @@ Plotting some functions
 |#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "functions.tex") 10 5 -7 7 -1.2 1.2)
   (transform (tikz)
+    (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
+    		       :names (list "" "" "" "")
+    		       :numberp nil :start "0cm" :stop "5cm" :style "thin,gray")
+    (draw-axis-ticks-y tikz  (remove 0.0 (make-range -1.0 0.5 4))
+    		       :names (list "" "" "" "" "")
+    		       :numberp nil :start "0cm" :stop "10cm" :style "thin,gray")
+    (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
+		       :names (list "$-2\\pi$" "$-\\pi$" "$\\pi$" "$2\\pi$")
+		       :numberp nil :y-shift "2.5cm" :start 0 :stop 0)
+    (draw-axis-ticks-y tikz (remove 0.0 (make-range -1.0 0.5 4))
+		       :precision 1 :x-shift "5cm" :start 0 :stop 0)
     (draw-function tikz #'sin 100 "red")
-    (draw-function tikz #'cos 100 "blue")
-    (draw-axis-ticks-x tikz (make-range (* -2 pi) pi 5)
-		       (list "$-2\\pi$" "$-\\pi$" "0" "$\\pi$" "$2\\pi$") nil)
-    (draw-axis-ticks-y tikz (make-range -1.0 0.5 4)))
-  (draw-plottingarea-rectangle tikz)
+    (draw-function tikz #'cos 100 "blue"))
+  (draw-line tikz 5 0 5 5 "thick,->")
+  (draw-line tikz 0 2.5 10 2.5 "thick,->")
   (draw-legend-line tikz 0.5 4.75 0.6 "sin(x)" "red")
   (draw-legend-line tikz 2.5 4.75 0.6 "cos(x)" "blue"))
 
@@ -162,9 +155,9 @@ Gaussian function, with some clipping, filling, text and more
       (clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%")))
   (transform (tikz)
     (draw-axis-ticks-x tikz (make-range -3 1 6)
-		       (mapcar (lambda (x) (if (= x 0) "$\\mu$"
-					       (format nil "$~a\\sigma$" x)))
-			       (make-range -3 1 6)) nil))
+		       :names (mapcar (lambda (x) (if (= x 0) "$\\mu$"
+						      (format nil "$~a\\sigma$" x)))
+				      (make-range -3 1 6)) :numberp nil))
   (draw-line tikz 0.0 0 10.0 0 "thick,<->")
   (draw-line tikz 5 0 5 5 "thick,->"))
 
@@ -183,8 +176,7 @@ Som Gauss smeared datapoints, with a fitted function
       (draw-function tikz (lambda (x) (gauss x fit-params)) 200 "thick,gray")
       (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"))
     (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range 0.5 1 9)
-			 (make-range 0 1 9) t 2)
+      (draw-axis-ticks-x tikz (make-range 0 1 9))
       (draw-axis-ticks-y tikz (make-range 0 2 10)))
     (draw-legend-line tikz 0.5 4.5 1 "Noisy data" "" "draw=blue,fill=blue")
     (draw-legend-line tikz 0.5 4.1 1 "Spline fit" "draw=green,thick")
@@ -213,7 +205,7 @@ Gaussian histogram, with a fitted function
       (clip-and-transform (tikz)
 	(draw-function tikz (lambda (x) (gauss x parameters)) 200 "thick,red")))
     (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range 0.5 1 9) (make-range 0 1 9) t 2)
+      (draw-axis-ticks-x tikz (make-range 0 1 9))
       (draw-axis-ticks-y tikz (make-range 0 30 10)))
     (draw-legend-line tikz 0.5 4.5 1 "2000 Gauss-rand" "draw=blue,fill=blue")
     (draw-legend-line tikz 0.5 4.1 1 "Gauss fit" "thick,red")
@@ -245,8 +237,8 @@ Make some noisy datapoints from polynomial, fit and plot.
 					   (aref params 0) (aref params 1)
 					   (aref params 2)	(aref params 3)) "right")))
   (transform (tikz)
-    (draw-axis-ticks-x tikz (remove 0 (make-range -7 1 14)) nil t 1 "2.5cm")
-    (draw-axis-ticks-y tikz (remove 0 (make-range -100 20 10)) nil t 1 "5.0cm"))
+    (draw-axis-ticks-x tikz (remove 0 (make-range -7 1 14)) :precision 1 :y-shift "2.5cm")
+    (draw-axis-ticks-y tikz (remove 0 (make-range -100 20 10)) :precision 1 :x-shift "5.0cm"))
   (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "green!80!black")
   (draw-legend-line tikz 0.0 4.2 1 "noisy measurements" "" "draw=red,fill=red"
 		    (make-node-string "circle" 3 3) "" "red" 0.2)
@@ -270,132 +262,55 @@ Make some noisy datapoints from polynomial, fit and plot.
 	(setf N0 (- N0 decayed))))
     (values events remaining)))
 
-#|
-A plot trying to show the connection between half-lifes and remaining nuclei
-|#
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "half-life.tex") 10 5 0 5 0.0d0 1.0)
-  (flet ((intensity (x params)
-	   (* (aref params 0) (expt 2 (/ (- x) (aref params 1))))))
-    (clip-and-transform (tikz)
-      (draw-function tikz (lambda (x) (intensity x #(1.0d0 1.0d0))) 100 "red"))
-    (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range 0 1 5)
-			 (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$")
-			 nil))
-    (draw-text-node tikz 5.0 5.0 (format nil "$N(t) = A_0 2^{t/T_{1/2}}$") "below")
-    (draw-line tikz 0 0 0 5.2 "thick,->")
-    (draw-line tikz 0 0 10.2 0 "thick,->")
-    (mapcar (lambda (x)
-	      (let ((y-pos (* 5 (/ 1.0 (expt 2 x)))))
-		(draw-line tikz -0.1 y-pos (* 2 x) y-pos "thin,gray")
-		(if (> x 0)
-		    (progn (draw-line tikz (* x 2) 0 (* x 2) y-pos "thin,gray")
-			   (draw-text-node tikz -0.1 y-pos (format nil "\\scriptsize{$A_0/~a$}"
-								   (expt 2 x)) "left"))
-		    (draw-text-node tikz -0.1 y-pos (format nil "\\scriptsize{$A_0$}") "left"))))
-	    (list 0 1 2 3 4))))
-
-#|
-Simulating and estimating the number of decays as function of time.
-|#
-(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "decay-rate2.tex") 10 5 0 5 0.0d0 0.2)
-  (labels ((intensity2 (x params)
-	     (* (aref params 0) 0.20 (/ (log 2) (aref params 1))
-		(expt 2 (/ (- x) (aref params 1)))))
-	   (draw-decay-rate (a0 half-life color y-pos)
-	     (let* ((x-poses (make-range 0.10 0.20 25))
-		    (y-smeared (map 'vector (lambda (x) (/ x a0))
-				    (decay-rate2 a0 0.2 25 half-life)))
-		    (params (levmar-optimize (lambda (x params) (intensity2 x params))
-					     (vector 1.0d0 1.0d0) x-poses y-smeared)))
-	       (draw-legend-line tikz 3.0 y-pos 1.0
-				 (format nil "Estimated half-life for ~a is ~5,2f" a0 (aref params 1))
-				 color)
-	       (clip-and-transform (tikz)
-		 (draw-histogram tikz (make-histogram 0.0 0.20 y-smeared) color)
-		 (draw-function tikz (lambda (x) (intensity2 x params)) 100 color)))))
-    (draw-text-node tikz 5.0 5.2 (format nil "$-\\Delta N = \\lambda N \\Delta t$") "")
-    (clip (tikz)
-      (draw-decay-rate 100 1.0 "blue!80" 4.4)
-      (draw-decay-rate 1000 1.0 "purple!80" 4.0)
-      (draw-decay-rate 1000000 1.0 "green!80!black" 3.6))
-    (draw-line tikz 0 0 0 5.2 "thick,->")
-    (draw-line tikz 0 0 10.2 0 "thick,->")
-    (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range 0 1 5)
-			 (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$")
-			 nil)
-      (draw-axis-ticks-y tikz (make-range 0 0.05 5)
-			 (list "$0.0$" "$0.05 A_0$" "$0.10 A_0$" "$0.15 A_0$" "$0.20 A_0$")
-			 nil))))
-
-#|
-Simulating and estimating the number of decays as function of time.
-|#
-(defun make-half-life-plot (a0 half-life initial-guess fname)
-  (with-tikz-plot (tikz (concatenate 'string *plotting-dir* fname) 10 5 0 5 0.0d0 (* 0.2 a0))
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "half-life.tex") 10 5 0 5 0 10000)
     (flet ((intensity (x params)
-	     (* 0.2 (aref params 0) (expt 2 (/ (- x) (aref params 1)))))
+	     (* (aref params 0) (expt 2 (/ (- x) (aref params 1)))))
 	   (intensity2 (x params)
-	     (* (aref params 0) 0.25 (/ (log 2) (aref params 1))
+	     (* (aref params 0) 0.1 (/ (log 2) (aref params 1))
 		(expt 2 (/ (- x) (aref params 1))))))
-      (multiple-value-bind (decayed remaining) (decay-rate2 a0 0.25 25 half-life)
-	  (let* ((x-poses (make-range 0.125 0.25 20))
-		 (params (levmar-optimize #'intensity2 initial-guess x-poses decayed)))
-	    (clip (tikz)
-	      (transform (tikz)
-		(draw-histogram tikz (make-histogram 0.0 0.25 decayed) "draw=blue")
-		(draw-histogram tikz (make-histogram -0.125 0.25
-						     (map 'vector (lambda (x) (* 0.2 x)) remaining))
-				"draw=red")
-		(draw-function tikz (lambda (x) (intensity2 x params)) 100 "black")
-		(draw-function tikz (lambda (x) (intensity x params)) 100 "black"))
-	      (draw-legend-line tikz 3.0 3.4 1.0
-				(format nil "Decays\\ \\ \\ \\ \\ \\ $T_{1/2}$: ~5,2f, $A_0$: ~a"
-					half-life a0) "blue")
-	      (draw-legend-line tikz 3.0 3.0 1.0
-				(format nil "Estimated \\ $T_{1/2}$: ~5,2f, $A_0$: ~a"
-					(aref params 1) (floor (aref params 0))) "black")
-	      (draw-legend-line tikz 3.0 3.8 1.0
-				(format nil "Remaining $T_{1/2}$: ~5,2f, $A_0$: ~a"
-					half-life a0) "red"))))
-      (transform (tikz)
-	(draw-axis-ticks-x tikz (make-range 0 1 5)
-			   (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$")
-			   nil)
-	(draw-axis-ticks-y tikz (make-range 0 (/ a0 50) 10)))
-      (mapcar (lambda (x)
-		(let ((y-pos (* 5 (/ 1.0 (expt 2 x)))))
-		  (draw-line tikz (* 2 x) y-pos 10.1 y-pos "thin,gray")
-		  (if (> x 0)
-		      (progn (draw-line tikz (* x 2) 0 (* x 2) y-pos "thin,gray")
-			     (draw-text-node tikz 10 y-pos
-					     (format nil "\\scriptsize{$A_0/~a$}" (expt 2 x))
-					     "right"))
-		      (draw-text-node tikz 10 y-pos
-				      (format nil "\\scriptsize{$A_0 = ~a$}" a0)
-				      "right"))))
-	      (list 0 1 2 3 4))
-      (draw-text-node tikz 0.0 5.2
-		      (format nil "Decays, $-\\Delta N = \\lambda N \\Delta t$")
-		      "right,blue")
-      (draw-text-node tikz 10.0 5.2
-		      (format nil "Remaining, $N(t) = A_0 2^{t/T_{1/2}}$") "left,red")
-      (draw-text-node tikz 5.0 -0.5
-		      (format nil "Time") "below")
-      (draw-line tikz 0 0 0 5.2 "blue,thick,->")
-      (draw-line tikz 10 0 10 5.2 "red,thick,->")
-      (draw-line tikz 0 0 10.2 0 "thick,->"))))
-
-(make-half-life-plot 100000 1.0 #(0.0d0 1.0d0) "half-life1000000.tex")
+      (multiple-value-bind (decayed remaining) (decay-rate2 100000 0.1 50 1.0)
+	(let* ((x-poses (make-range 0.05 0.1 50))
+	       (params (levmar-optimize #'intensity2 #(0.0d0 1.0d0) x-poses decayed)))
+	  (clip-and-transform (tikz)
+	    (draw-histogram tikz (make-histogram 0.0 0.1 decayed) "draw=blue")
+	    (draw-function tikz (lambda (x) (intensity2 x params)) 100 "black"))
+	  (transform (tikz)
+	    (draw-axis-ticks-x tikz (list 0 1 2 3 4 5) 
+			       :names (list "$0$" "$T_{1/2}$" "$2T_{1/2}$" "$3T_{1/2}$" "$4T_{1/2}$" "$5T_{1/2}$") 
+			       :numberp nil)
+	    (draw-axis-ticks-y tikz (make-range 0 1000 10)))
+	  (with-sugfigure (tikz tikz2 0 0 10 5 0 5 0 100000)
+	    (clip-and-transform (tikz2)
+	      (draw-histogram tikz2 (make-histogram -0.05 0.1 remaining) "draw=red")
+	      (draw-function tikz2 (lambda (x) (intensity x params)) 100 "black"))
+	    (transform (tikz2)
+	      (let ((y-vals (list 100000 50000 25000 12500 6250 3125)))
+		(mapcar (lambda (x y) 
+			  (draw-path tikz2 (list x x 5) (list 0 y y) "thin,gray"))
+			(list 0 1 2 3 4) y-vals)
+		(draw-axis-ticks-y tikz2 y-vals
+				   :names (list "A0=100000" "A0/2" "A0/4" "A0/8" "A0/16") :numberp nil :x-shift "10cm" 
+				   :style "thin,gray" :text-style "right"))))
+	  (draw-text-node tikz 0 5.5 "Decays:$-\\Delta N = \\lambda N \\Delta t$" "right,blue")
+	  (draw-text-node tikz 10 5.5 "Remaining:$N(t) = A_0 2^{t/T_{1/2}}$" "left,red")
+	  (draw-line tikz 0 0 0 5.2 "blue,thick,->")
+	  (draw-line tikz 10 0 10 5.2 "red,thick,->")
+	  (draw-line tikz 0 0 10.2 0 "black,thick,->")
+	  (draw-legend-line tikz 3.0 3.4 1.0 "Decays" "blue")
+	  (draw-text-node tikz 5.8 3.35 "$T_{1/2}$: 1.00, $A_0$: 100000" "right")
+	  (draw-legend-line tikz 3.0 3.0 1.0 "Remaining" "red")
+	  (draw-text-node tikz 5.8 2.95 "$T_{1/2}$: 1.00, $A_0$: 100000" "right")
+	  (draw-legend-line tikz 3.0 2.6 1.0 "Estimated" "black")
+	  (draw-text-node tikz 5.8 2.55 (format nil "$T_{1/2}$: ~5,2f, $A_0$: ~5,0f" 
+						(aref params 1) (aref params 0)) "right")))))
 
 ;;(with-tikz-plot-standalone (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0 t)
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0)
   (let ((x #(4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y #(4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
     (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range 4 0.2 10) nil t 1)
-      (draw-axis-ticks-y tikz (make-range 4 0.5 6) nil t 1))
+      (draw-axis-ticks-x tikz (make-range 4 0.2 10) :precision 1)
+      (draw-axis-ticks-y tikz (make-range 4 0.5 6) :precision 1))
     (draw-text-node tikz 5 5.0 "Cubic splines" "")
     (clip-and-transform (tikz)
       ;;Using diamonds instead of circles for datapoints
@@ -408,3 +323,43 @@ Simulating and estimating the number of decays as function of time.
     (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80")
     (draw-line tikz 0 0 10.2 0 "thick,->")
     (draw-line tikz 0 0 0 5.2 "thick,->")))
+
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "sub-fig.tex") 10 5 -3.0 3.0 -1.0 1.0)
+  (flet ((erf-gauss (x) (+ (erf x) (gauss x (vector 0.001 -0.15 0.01)))))
+    (draw-line tikz 0 2.5 10.3 2.5 "thick,black,->")
+    (draw-line tikz 5 0 5 5.3  "thick,black,->")
+    (transform (tikz)
+      (draw-axis-ticks-x tikz (remove 0.0 (make-range -3.0 1 6)) :precision 1 :y-shift "2.5cm")
+      (draw-axis-ticks-y tikz (remove 0.0 (make-range -1 0.5 4)) :precision 1 :x-shift "5.0cm")
+      (draw-function tikz #'erf-gauss 400 "red"))
+    (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
+      (connect-plots tikz tikz2 "thin,gray" nil t t nil)
+      (draw-plottingarea-rectangle tikz2 t)
+      (clip-and-transform (tikz2)
+	(draw-function tikz2 #'erf-gauss 100 "red"))
+      (transform (tikz2)
+	(draw-axis-ticks-y tikz2 (make-range -0.2 0.05 2))
+	(draw-axis-ticks-x tikz2 (make-range -0.2 0.05 3))))))
+
+(with-tikz-plot (tikz (concatenate 'string *plotting-dir* "sub-histo.tex") 10 5 0.0 10.0 0.0 5.0)
+  (flet ((my-draw-histo (offset mean sigma)
+	   (with-sugfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
+	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
+	       (draw-plottingarea-rectangle tikz2 nil "thin,black")
+	       (clip-and-transform (tikz2)
+		 (draw-histogram-horizontal tikz2 histo "fill=blue!20,draw=blue!20" t)
+		 (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
+				    mean sigma "red,fill=red,thick" (make-node-string "circle" 4 4)))))))
+    (my-draw-histo 0.0 -2.0 2.2)
+    (my-draw-histo 2.0 -1.0 1.8)
+    (my-draw-histo 4.0  0.5 1.6)
+    (my-draw-histo 6.0  0.0 1.4)
+    (my-draw-histo 8.0  0.0 1.2)
+    (with-sugfigure (tikz tikz2 0.0 0.0 2.0 5 0.0 200 -6.0 6.0)
+      (transform (tikz2)
+	(draw-axis-ticks-y tikz2 (make-range -6.0 2.0 6)
+			   :precision 1 :stop "10cm" :style "thin,gray")))
+    (draw-axis-ticks-x tikz (make-range 1.0 2.0 4) 
+		       :names (mapcar (lambda (x) (format nil "Step ~a" x))
+				     (make-range 1 2 4))
+		       :numberp nil)))

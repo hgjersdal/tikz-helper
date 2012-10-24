@@ -11,7 +11,7 @@
     (values (* x1 w) (* x2 w))))
 
 (defun gauss (x params)
-  "Gaussian function, the params are #(scale mean sigma"
+  "Gaussian function, the params are #(scale mean sigma)"
   (let* ((scale (aref params 0))
 	 (mean (aref params 1))
 	 (sigma (aref params 2))

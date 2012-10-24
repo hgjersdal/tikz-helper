@@ -1,9 +1,35 @@
 \begin{tikzpicture}[]
-\begin{scope}[]
-\clip (0,0) rectangle (10,5);
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.41666666cm}}
+\begin{scope}[shift={(0.0,0.0)}]
+\begin{scope}[yshift=-0.15cm]
+\draw[black] [shift={(0.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{0}}};
+\draw[black] [shift={(2.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{2}}};
+\draw[black] [shift={(4.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{4}}};
+\draw[black] [shift={(6.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{6}}};
+\draw[black] [shift={(8.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{8}}};
+\draw[black] [shift={(10.0,0.0)}] (0,0) -- (0,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{10}}};
+\end{scope}
+\begin{scope}[xshift=-0.15cm]
+\draw[black] [shift={(0.0,0.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{0}}};
+\draw[black] [shift={(0.0,2.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{2}}};
+\draw[black] [shift={(0.0,4.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{4}}};
+\draw[black] [shift={(0.0,6.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{6}}};
+\draw[black] [shift={(0.0,8.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{8}}};
+\draw[black] [shift={(0.0,10.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{10}}};
+\draw[black] [shift={(0.0,12.0)}] (0,0) -- (-3pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{12}}};
+\end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[]
+\clip (0.0,0.0) rectangle (10.0,5.0);
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{0.41666666cm}}
+\begin{scope}[shift={(0.0,0.0)}]
 \begin{scope}[blue]
 \pgfpathmoveto{ \pgfqpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfqpointxy {1.0} {0.5}}
@@ -198,7 +224,7 @@
 \pgfpathlineto{ \pgfqpointxy {0.0} {7.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (0.0,7.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (0.0,7.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {0.0} {7.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {0.0} {7.5}} {\pgfpoint{-2pt}{0}}}
@@ -213,7 +239,7 @@
 \pgfpathlineto{ \pgfqpointxy {1.0} {8.0}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (1.0,7.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (1.0,7.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {1.0} {8.0}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {1.0} {8.0}} {\pgfpoint{-2pt}{0}}}
@@ -228,7 +254,7 @@
 \pgfpathlineto{ \pgfqpointxy {2.0} {8.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (2.0,8.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (2.0,8.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {2.0} {8.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {2.0} {8.5}} {\pgfpoint{-2pt}{0}}}
@@ -243,7 +269,7 @@
 \pgfpathlineto{ \pgfqpointxy {3.0} {9.0}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (3.0,8.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (3.0,8.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {3.0} {9.0}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {3.0} {9.0}} {\pgfpoint{-2pt}{0}}}
@@ -258,7 +284,7 @@
 \pgfpathlineto{ \pgfqpointxy {4.0} {9.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (4.0,9.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (4.0,9.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {4.0} {9.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {4.0} {9.5}} {\pgfpoint{-2pt}{0}}}
@@ -273,7 +299,7 @@
 \pgfpathlineto{ \pgfqpointxy {5.0} {10.0}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (5.0,9.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (5.0,9.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {5.0} {10.0}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {5.0} {10.0}} {\pgfpoint{-2pt}{0}}}
@@ -288,7 +314,7 @@
 \pgfpathlineto{ \pgfqpointxy {6.0} {10.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (6.0,10.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (6.0,10.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {6.0} {10.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {6.0} {10.5}} {\pgfpoint{-2pt}{0}}}
@@ -303,7 +329,7 @@
 \pgfpathlineto{ \pgfqpointxy {7.0} {11.0}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (7.0,10.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (7.0,10.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {7.0} {11.0}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {7.0} {11.0}} {\pgfpoint{-2pt}{0}}}
@@ -318,7 +344,7 @@
 \pgfpathlineto{ \pgfqpointxy {8.0} {11.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (8.0,11.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (8.0,11.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {8.0} {11.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {8.0} {11.5}} {\pgfpoint{-2pt}{0}}}
@@ -333,7 +359,7 @@
 \pgfpathlineto{ \pgfqpointxy {9.0} {12.0}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (9.0,11.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (9.0,11.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {9.0} {12.0}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {9.0} {12.0}} {\pgfpoint{-2pt}{0}}}
@@ -348,7 +374,7 @@
 \pgfpathlineto{ \pgfqpointxy {10.0} {12.5}}
 \pgfusepath{ stroke }
 \end{scope}
-\node at (10.0,12.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=red,fill=red] {}; 
+\node at (10.0,12.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
 \begin{scope}[draw=red,fill=red]
 \pgfpathmoveto{ \pgfpointadd{\pgfqpointxy {10.0} {12.5}} {\pgfpoint{2pt}{0}}}
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {10.0} {12.5}} {\pgfpoint{-2pt}{0}}}
@@ -358,47 +384,14 @@
 \pgfpathlineto{ \pgfpointadd{\pgfqpointxy {10.0} {11.5}} {\pgfpoint {-2pt} {0} }}
 \pgfusepath{ stroke }
 \end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{0.41666666cm}}
-\begin{scope}[yshift=-0.15cm]
-\draw[] [shift={(0.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{0}}};
-\draw[] [shift={(1.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{1}}};
-\draw[] [shift={(2.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{2}}};
-\draw[] [shift={(3.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{3}}};
-\draw[] [shift={(4.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{4}}};
-\draw[] [shift={(5.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{5}}};
-\draw[] [shift={(6.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{6}}};
-\draw[] [shift={(7.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{7}}};
-\draw[] [shift={(8.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{8}}};
-\draw[] [shift={(9.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{9}}};
-\draw[] [shift={(10.0,0.0)}] (0pt,0pt) -- (-0pt,-3pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{10}}};
-\end{scope}
-\begin{scope}[xshift=-0.15cm]
-\draw[] [shift={(0.0,0.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{0}}};
-\draw[] [shift={(0.0,1.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{1}}};
-\draw[] [shift={(0.0,2.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{2}}};
-\draw[] [shift={(0.0,3.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{3}}};
-\draw[] [shift={(0.0,4.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{4}}};
-\draw[] [shift={(0.0,5.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{5}}};
-\draw[] [shift={(0.0,6.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{6}}};
-\draw[] [shift={(0.0,7.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{7}}};
-\draw[] [shift={(0.0,8.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{8}}};
-\draw[] [shift={(0.0,9.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{9}}};
-\draw[] [shift={(0.0,10.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{10}}};
-\draw[] [shift={(0.0,11.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{11}}};
-\draw[] [shift={(0.0,12.0)}] (0pt,0pt) -- (-3pt,-0pt) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{12}}};
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
 \end{scope}
 \draw[black,thick] (0.0,-0.15) -- (10.0,-0.15);
 \draw[black,thick] (-0.15,0.0) -- (-0.15,5.0);
-\draw[thick] (0,0) rectangle (10,5);
+\draw[thick,black] (0.0,0.0) rectangle (10.0,5.0);
 \end{tikzpicture}
 %%% Local Variables: 
 %%% mode: latex 

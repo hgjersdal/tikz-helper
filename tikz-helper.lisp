@@ -3,6 +3,8 @@
 (defclass plottingarea ()
   ((width  :initform 05 :initarg :width  :reader width)
    (height :initform 10 :initarg :height :reader height)
+   (x-offset  :initform 00 :initarg :x-offset  :reader x-offset)
+   (y-offset  :initform 00 :initarg :y-offset  :reader y-offset)
    (plot-x-min :initform 0 :initarg :plot-x-min :reader plot-x-min)
    (plot-x-max :initform 1 :initarg :plot-x-max :reader plot-x-max)
    (plot-y-min :initform 0 :initarg :plot-y-min :reader plot-y-min)
@@ -26,34 +28,56 @@
   (let ((scale (/ (- pmax pmin) cmax)))
     (lambda (x) (/ x scale))))
 
-(defun draw-plottingarea-rectangle (plottingarea)
-  "Draw a thick square around the ploting area"
-  (format (ostream plottingarea) "\\draw[thick] (0,0) rectangle (~a,~a);~%"
-	  (width plottingarea) (height plottingarea)))
+;; (x - min / scale = val
+;; val * scale = x - min
+;; val * scale + min
 
-(defun draw-tick-mark (plottingarea numberp precision name style x y xpt+ xpt- ypt+ ypt-)
+(defun apply-transform-x (tikz x)
+  (let ((scale (/ (- (plot-x-max tikz) (plot-x-min tikz)) (width tikz))))
+    (/ (- x (plot-x-min tikz)) scale)))
+	
+(defun apply-transform-y (tikz y)
+  (let ((scale (/ (- (plot-y-max tikz) (plot-y-min tikz)) (height tikz))))
+    (/ (- y (plot-y-min tikz)) scale)))
+;;    (+ (plot-y-min tikz) (* y scale))))
+
+(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black"))
+  "Draw a thick square around the ploting area"
+  (format (ostream plottingarea) (if fill 
+				     "\\draw[~a,fill=white] (~f,~f) rectangle (~f,~f);~%"
+				     "\\draw[~a] (~f,~f) rectangle (~f,~f);~%")
+	  style
+	  (x-offset plottingarea) (y-offset plottingarea)
+	  (+ (width plottingarea) (x-offset plottingarea))
+	  (+ (height plottingarea) (y-offset plottingarea))))
+
+(defun draw-tick-mark (plottingarea numberp precision name style text-style x y xpt+ xpt- ypt+ ypt-)
   (format (ostream plottingarea)
-	  "\\draw[] [shift={(~f,~f)}] (~apt,~apt) -- (-~apt,-~apt) node[~a]{ \\scriptsize{"
-	  x y xpt+ ypt+ xpt- ypt- style)
+	  "\\draw[~a] [shift={(~f,~f)}] (~a,~a) -- (~a,~a) node[~a]{ \\scriptsize{"
+	  style x y xpt+ ypt+ xpt- ypt- text-style)
   (if numberp
       (format (ostream plottingarea)
 	      "\\num[round-mode=places,round-precision=~a]{~a}}};~%"
 	      precision name)
       (format (ostream plottingarea) "~a}};~%" name)))
 
-(defun draw-axis-ticks-x (plottingarea x-list &optional (names nil) (numberp t) (precision 2) (y-shift "0cm") (pt- 2) (pt+ 2) (style "below"))
+(defun draw-axis-ticks-x (plottingarea x-list &key (names nil) (numberp t) (precision 2) 
+						(y-shift "0cm") (start "-2pt") (stop "2pt") 
+						(style "black") (text-style "below"))
   "Draw axis tick marks"
   (scope (plottingarea (format nil "yshift=~a" y-shift))
     (map nil (lambda (x name)
-	       (draw-tick-mark plottingarea numberp precision name style x (plot-y-min plottingarea) 0 0 pt+ pt-))
-    x-list (if (null names) x-list names))))
+	       (draw-tick-mark plottingarea numberp precision name style text-style x (plot-y-min plottingarea) 0 0 stop start))
+	 x-list (if (null names) x-list names))))
 
-(defun draw-axis-ticks-y (plottingarea y-list &optional (names nil) (numberp t) (precision 2) (x-shift "0cm") (pt- 2) (pt+ 2) (style "left"))
+(defun draw-axis-ticks-y (plottingarea y-list &key (names nil) (numberp t) (precision 2) 
+						(x-shift "0cm") (start "-2pt") (stop "2pt") 
+						(style "black") (text-style "left"))
   "Draw axis tick marks"
   (scope (plottingarea (format nil "xshift=~a" x-shift))
     (map nil (lambda (y name)
-	       (draw-tick-mark plottingarea numberp precision name style (plot-x-min plottingarea) y pt+ pt- 0 0))
-       y-list (if (null names) y-list names))))
+	       (draw-tick-mark plottingarea numberp precision name style text-style (plot-x-min plottingarea) y stop start 0 0))
+	 y-list (if (null names) y-list names))))
 
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
@@ -82,10 +106,10 @@ Compilation happens in output directory of plot."
        (when ,compile-and-show
 	 (sb-ext:run-program ,tex-command
 			     (list
-				   "-output-directory"
-				   (sb-ext:native-namestring
-				    (make-pathname :directory (pathname-directory ,filename)))
-				   ,filename)
+			      "-output-directory"
+			      (sb-ext:native-namestring
+			       (make-pathname :directory (pathname-directory ,filename)))
+			      ,filename)
 			     :wait t :search t :output *standard-output*)
 	 (sb-ext:run-program ,show-command
 			     (list (sb-ext:native-namestring
@@ -106,6 +130,17 @@ Compilation happens in output directory of plot."
 	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%"
 		 ,master-file)))))
 
+(defmacro with-sugfigure ((plottingarea name 
+					x-offset y-offset width height
+					plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
+  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
+  `(let ((,name (make-instance 'plottingarea :stream (ostream ,plottingarea)
+			       :x-offset ,x-offset :y-offset ,y-offset
+			       :width ,width :height ,height
+			       :plot-x-min ,plot-x-min :plot-x-max ,plot-x-max
+			       :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
+     ,@body))
+
 (defmacro scope ((plottingarea &optional (style "")) &body body)
   "Make a tikz scope."
   `(latex-environ (,plottingarea "scope" ,style)
@@ -115,14 +150,35 @@ Compilation happens in output directory of plot."
   "Clip a rectangle from origin."
   (if (or (null x) (null y))
       `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (0,0) rectangle (~a,~a);~%"
-		 (width ,plottingarea) (height ,plottingarea))
+	 (format (ostream ,plottingarea) "\\clip (~f,~f) rectangle (~f,~f);~%"
+		 (x-offset ,plottingarea) (y-offset ,plottingarea)
+		 (+ (width ,plottingarea) (x-offset ,plottingarea))
+		 (+ (height ,plottingarea) (y-offset ,plottingarea)))
 	 ,@body)
       `(scope (,plottingarea)
 	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%"
 		 ,x-from ,y-from ,x ,y)
 	 ,@body)))
 
+(defmacro transform-scale ((plottingarea) &body body)
+  "Perform transformationf from data coord system to plottingarea system"
+  (let ((x-scale (gensym))
+	(y-scale (gensym)))
+    `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
+	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
+       (scope (,plottingarea
+	       (format nil "shift={(~f,~f)}"
+		       (x-offset ,plottingarea)
+		       (y-offset ,plottingarea)))
+	 (scope (,plottingarea
+		 (format nil "shift={(~f,~f)},xscale=~f,yscale=~f"
+			 (- (plot-x-min ,plottingarea))
+			 (- (plot-y-min ,plottingarea))
+			 ,x-scale ,y-scale))
+	   ,@body)
+	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
+	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
+  
 (defmacro transform ((plottingarea) &body body)
   "Perform transformationf from data coord system to plottingarea system"
   (let ((x-scale (gensym))
@@ -131,14 +187,28 @@ Compilation happens in output directory of plot."
 	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
        (scope (,plottingarea
 	       (format nil "shift={(~f,~f)}"
-		       (- (* ,x-scale (plot-x-min ,plottingarea)))
-		       (- (* ,y-scale (plot-y-min ,plottingarea)))))
+		       (x-offset ,plottingarea)
+		       (y-offset ,plottingarea)))
 	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{~fcm}{0cm}}~&" ,x-scale)
 	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{~fcm}}~%" ,y-scale)
-	 ,@body
+	 (scope (,plottingarea
+		 (format nil "shift={(~f,~f)}"
+			 (- (plot-x-min ,plottingarea))
+			 (- (plot-y-min ,plottingarea))))
+	   ,@body)
 	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
 	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
-	   
+
+;; (defmacro transform ((plottingarea) &body body)
+;;   "Perform transformationf from data coord system to plottingarea system"
+;;   (let ((x-scale (gensym))
+;; 	(y-scale (gensym)))
+;;     `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
+;; 	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
+;;        (if (> (max ,x-scale ,y-scale) 400)
+;; 	   (transform-vec (,plottingarea) ,@body)
+;; 	   (transform-scale (,plottingarea) ,@body)))))
+
 (defmacro clip-and-transform ((plottingarea) &body body)
   "First clip the plotting area, then perform transformations from data to plottingarea"
   `(clip (,plottingarea)
@@ -183,10 +253,10 @@ Compilation happens in output directory of plot."
   (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style))
 	  x y y-error))
 
-(defun draw-profilepoint (plottingarea x y y-error style)
+(defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
   "Draw a data-point with error bars in y direction"
   (draw-path plottingarea (list x x) (list (- y y-error) (+ y y-error)) style)
-  (draw-circle plottingarea x y style)
+  (draw-node plottingarea x y style node-string)
   (scope (plottingarea style)
     (format (ostream plottingarea) "\\pgfpathmoveto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint{2pt}{0}}}~%" x (+ y y-error))
     (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint{-2pt}{0}}}~%" x (+ y y-error))
@@ -230,6 +300,68 @@ Compilation happens in output directory of plot."
     (when separate-bins
       (mapcar (lambda (x y) (draw-path tikz (list x x) (list y 0) style nil)) x y))))
 
+(defun path-move-to (tikz x y)
+  (format (ostream tikz) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
+
+(defun path-line-to (tikz x y)
+  (format (ostream tikz) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
+
+(defun path-stroke (tikz &optional (stroke t) (fill nil) (clip nil))
+  (let ((action (concatenate 'string 
+			     (if stroke "stroke," "") 
+			     (if fill " fill," "")
+			     (if clip " clip," ""))))
+    (format (ostream tikz) "\\pgfusepath{ ~a }~%" action)))
+
+(defun path-close (tikz)
+  (format (ostream tikz) "\\pgfpathclose~%"))
+
+(defun connect-plots (top sub style &optional (top-left t) (top-right t) (bottom-left t) (bottom-right t))
+  (scope (top style)
+    (transform (top)
+      (path-move-to top (plot-x-min sub) (plot-y-min sub))
+      (path-line-to top (plot-x-max sub) (plot-y-min sub))
+      (path-line-to top (plot-x-max sub) (plot-y-max sub))
+      (path-line-to top (plot-x-min sub) (plot-y-max sub))
+      (path-close top))
+    (path-stroke top)
+    (format (ostream top) "\\pgfseteorule~%")
+    ;;Clipping area
+    (transform (sub)
+      (path-move-to sub (plot-x-min sub) (plot-y-min sub))
+      (path-line-to sub (plot-x-max sub) (plot-y-min sub))
+      (path-line-to sub (plot-x-max sub) (plot-y-max sub))
+      (path-line-to sub (plot-x-min sub) (plot-y-max sub))
+      (path-close top))
+    (transform (top)
+      (path-move-to top (plot-x-min sub) (plot-y-min sub))
+      (path-line-to top (plot-x-max sub) (plot-y-min sub))
+      (path-line-to top (plot-x-max sub) (plot-y-max sub))
+      (path-line-to top (plot-x-min sub) (plot-y-max sub))
+      (path-close top))
+    (path-move-to top (min 0 (+ (x-offset sub))) (min 0 (+ (y-offset sub))))
+    (path-line-to top (max (width top) (+ (x-offset sub) (width sub))) (min 0 (+ (y-offset sub))))
+    (path-line-to top (max (width top) (+ (x-offset sub) (width sub))) (max (height top) (+ (y-offset sub) (height sub))))
+    (path-line-to top (min 0 (+ (x-offset sub))) (max (height top) (+ (y-offset sub) (height sub))))
+    (path-close top)
+    (path-stroke top nil nil t)
+    ;;Draw lines
+    ;;(draw-line top 0 0 10 6 "black,thick")
+    (when bottom-left
+      (path-move-to top (apply-transform-x top (plot-x-min sub)) (apply-transform-y top (plot-y-min sub)))
+      (path-line-to top (+ (x-offset sub)) (y-offset sub)))
+    (when top-left
+      (path-move-to top (apply-transform-x top (plot-x-min sub)) (apply-transform-y top (plot-y-max sub)))
+      (path-line-to top (+ (x-offset sub)) (+ (y-offset sub) (height sub))))
+    (when top-right
+      (path-move-to top (apply-transform-x top (plot-x-max sub)) (apply-transform-y top (plot-y-max sub)))
+      (path-line-to top (+ (x-offset sub) (width sub)) (+ (y-offset sub) (height sub))))
+    (when bottom-right
+      (path-move-to top (apply-transform-x top (plot-x-max sub)) (apply-transform-y top (plot-y-min sub)))
+      (path-line-to top (+ (x-offset sub) (width sub)) (+ (y-offset sub))))
+    (when (or bottom-right bottom-left top-right top-left)
+      (path-stroke top))))
+ 
 (defun draw-histogram-bins (tikz histo style)
   "Draw a histogram, each bin is drawn individually"
   (let* ((data (getf histo :data))
@@ -247,6 +379,8 @@ Compilation happens in output directory of plot."
   (unless (or (null x) (null y))
     (format (ostream tikz) "\\pgfpathlineto{ \\pgfqpointxy {~f} {~f}}~%" (car x) (car y))
     (add-path-point tikz (cdr x) (cdr y))))
+
+    
 
 (defun draw-path (tikz x y style &optional (fill nil))
   "Connect data points with straight lines."
@@ -298,10 +432,8 @@ For graphs, functions, datapoints, most histograms"
   (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style node-string))
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
-(defun draw-legend-rectangle (tikz x y width height name line-style fill-style name-style)
+(defun draw-legend-rectangle (tikz x y width height name style name-style)
   "Draw a (filled) rectangle with a legend entry. This is for histograms drawn with draw-histogram-bins"
-  (if (> (length fill-style) 0) (draw-rectangle tikz x (- y (* 0.5 height))
-						(+ x width) (+ y (* 0.5 height)) fill-style))
-  (if (> (length line-style) 0) (draw-rectangle tikz x (- y (* 0.5 height))
-						(+ x width) (+ y (* 0.5 height)) line-style))
+  (draw-rectangle tikz x (- y (* 0.5 height))
+		  (+ x width) (+ y (* 0.5 height)) style)
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))

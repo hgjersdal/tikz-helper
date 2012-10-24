@@ -27,14 +27,6 @@
 
 \begin{figure}[H]
   \centering
-  \input{example/histo1}
-  \input{example/histo2}
-  \input{example/histo3}
-  \caption{More histograms}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
   \input{example/test-histo1}
   \caption{Another histogram}
 \end{figure}
@@ -78,25 +70,30 @@
   \caption{A polynomial fit to noisy data}
 \end{figure}
 
+\section{Subfigures}
+\label{sec:subfig}
+
+\begin{figure}[H]
+  \centering
+  \input{example/sub-fig}
+  \caption{ Zooming in on region. }
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{example/sub-histo}
+  \caption{ Histograms with mean and sigmas.}
+\end{figure}
+
 \section{Radioactive decay}
 \label{sec:decay}
 
 \begin{figure}[H]
   \centering
   \input{example/half-life}
-  \caption{Graph of radioactive decay.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \input{example/decay-rate2}
-  \caption{Simulated number of decays per time.  Estimated half-widths from LMA.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \input{example/half-life1000000}
-  \caption{ Attempt to show two different axes in plot. }
+  \caption{ Two different axes in plot. The red histogram is the simulated number of
+    remaining nuclei, the blue is the number of decays per time interval. The hals0life and
+    the number of nuclei at time=0 is estimated by a levmar fit to the number if decays.}
 \end{figure}
 
 \end{document}
