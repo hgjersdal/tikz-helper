@@ -28,6 +28,118 @@
   (let ((scale (/ (- pmax pmin) cmax)))
     (lambda (x) (/ x scale))))
 
+(defmacro scope ((plottingarea &optional (style "")) &body body)
+  "Make a tikz scope."
+  `(latex-environ (,plottingarea "scope" ,style)
+     ,@body))
+
+(defmacro clip ((plottingarea &optional x-from x y-from y) &body body)
+  "Clip a rectangle from origin."
+  (if (or (null x) (null y))
+      `(scope (,plottingarea)
+	 (format (ostream ,plottingarea) "\\clip (~f,~f) rectangle (~f,~f);~%"
+		 (x-offset ,plottingarea) (y-offset ,plottingarea)
+		 (+ (width ,plottingarea) (x-offset ,plottingarea))
+		 (+ (height ,plottingarea) (y-offset ,plottingarea)))
+	 ,@body)
+      `(scope (,plottingarea)
+	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%"
+		 ,x-from ,y-from ,x ,y)
+	 ,@body)))
+
+(defmacro transform-scale ((plottingarea) &body body)
+  "Perform transformationf from data coord system to plottingarea system by using scales. Also scales cm, pt, mm etc."
+  (let ((x-scale (gensym))
+	(y-scale (gensym)))
+    `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
+	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
+       (scope (,plottingarea
+	       (format nil "shift={(~f,~f)}"
+		       (x-offset ,plottingarea)
+		       (y-offset ,plottingarea)))
+	 (scope (,plottingarea
+		 (format nil "shift={(~f,~f)},xscale=~f,yscale=~f"
+			 (- (plot-x-min ,plottingarea))
+			 (- (plot-y-min ,plottingarea))
+			 ,x-scale ,y-scale))
+	   ,@body)))))
+  
+(defmacro transform ((plottingarea) &body body)
+  "Perform transformationf from data coord system to plottingarea system. If this fails, try using transform-scale."
+  (let ((x-scale (gensym))
+	(y-scale (gensym)))
+    `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
+	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
+       (scope (,plottingarea
+	       (format nil "shift={(~f,~f)}"
+		       (x-offset ,plottingarea)
+		       (y-offset ,plottingarea)))
+	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{~fcm}{0cm}}~&" ,x-scale)
+	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{~fcm}}~%" ,y-scale)
+	 (scope (,plottingarea
+		 (format nil "shift={(~f,~f)}"
+			 (- (plot-x-min ,plottingarea))
+			 (- (plot-y-min ,plottingarea))))
+	   ,@body)
+	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
+	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
+
+(defmacro clip-and-transform ((plottingarea) &body body)
+  "First clip the plotting area, then perform transformations from data to plottingarea"
+  `(clip (,plottingarea)
+     (transform (,plottingarea)
+       ,@body)))
+
+(defun path-move-to (tikz x y)
+  (format (ostream tikz) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
+
+(defun path-line-to (tikz x y)
+  (format (ostream tikz) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
+
+(defun path-stroke (tikz &optional (stroke t) (fill nil) (clip nil))
+  (let ((action (concatenate 'string 
+			     (if stroke "stroke," "") 
+			     (if fill " fill," "")
+			     (if clip " clip," ""))))
+    (format (ostream tikz) "\\pgfusepath{ ~a }~%" action)))
+
+(defun path-close (tikz)
+  (format (ostream tikz) "\\pgfpathclose~%"))
+
+(defun make-path (tikz x y)
+  "Connect data points with straight lines."
+  (path-move-to tikz (car x) (car y))
+  (mapc (lambda (x y) (path-line-to tikz x y)) (cdr x) (cdr y)))
+
+(defun make-mixed-point (tikz x-data x-unit y-data y-unit)
+  (format (ostream tikz) "\\pgfpointadd{\\pgfpointxy {~f} {~f}} {\\pgfpoint{~a}{~a}}"
+	  x-data y-data x-unit y-unit))
+
+(defun path-move-to-mixed (tikz x-data x-unit y-data y-unit)
+  (format (ostream tikz) "\\pgfpathmoveto{ ~a }~%" 
+	  (make-mixed-point tikz x-data x-unit y-data y-unit)))
+  
+(defun path-line-to-mixed (tikz x-data x-unit y-data y-unit)
+  (format (ostream tikz) "\\pgfpathlineto{ ~a }~%" 
+	  (make-mixed-point tikz x-data x-unit y-data y-unit)))
+
+(defun make-path-mixed-units (tikz x-data x-units y-data y-units)
+  "Connect data points with straight lines. Data points are at x-data + x-units, y-data + y-units. Units can be cm,pt,mm, etc"
+  (path-move-to-mixed tikz (car x-data) (car x-units) (car y-data) (car y-units))
+  (mapc (lambda (x xx y yy) (path-line-to-mixed tikz x xx y yy)) (cdr x-data) (cdr x-units) (cdr y-data) (cdr y-units)))
+
+(defun draw-path (tikz x y style &optional fill)
+  (scope (tikz style)
+    (make-path tikz x y)
+    (path-stroke tikz t fill)))
+
+(defun make-rectangle-path (plottingarea x-min y-min x-max y-max)
+  (path-move-to plottingarea x-min y-min)
+  (path-line-to plottingarea x-max y-min)
+  (path-line-to plottingarea x-max y-max)
+  (path-line-to plottingarea x-min y-max)
+  (path-close plottingarea))
+
 ;; (x - min / scale = val
 ;; val * scale = x - min
 ;; val * scale + min
@@ -41,15 +153,14 @@
     (/ (- y (plot-y-min tikz)) scale)))
 ;;    (+ (plot-y-min tikz) (* y scale))))
 
-(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black"))
+(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black,fill=white"))
   "Draw a thick square around the ploting area"
-  (format (ostream plottingarea) (if fill 
-				     "\\draw[~a,fill=white] (~f,~f) rectangle (~f,~f);~%"
-				     "\\draw[~a] (~f,~f) rectangle (~f,~f);~%")
-	  style
-	  (x-offset plottingarea) (y-offset plottingarea)
-	  (+ (width plottingarea) (x-offset plottingarea))
-	  (+ (height plottingarea) (y-offset plottingarea))))
+  (scope (plottingarea style)
+    (make-rectangle-path plottingarea 
+			 (x-offset plottingarea) (y-offset plottingarea)
+			 (+ (width plottingarea) (x-offset plottingarea))
+			 (+ (height plottingarea) (y-offset plottingarea)))
+    (path-stroke plottingarea t fill)))
 
 (defun draw-tick-mark (plottingarea numberp precision name style text-style x y xpt+ xpt- ypt+ ypt-)
   (format (ostream plottingarea)
@@ -141,80 +252,6 @@ Compilation happens in output directory of plot."
 			       :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
      ,@body))
 
-(defmacro scope ((plottingarea &optional (style "")) &body body)
-  "Make a tikz scope."
-  `(latex-environ (,plottingarea "scope" ,style)
-     ,@body))
-
-(defmacro clip ((plottingarea &optional x-from x y-from y) &body body)
-  "Clip a rectangle from origin."
-  (if (or (null x) (null y))
-      `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (~f,~f) rectangle (~f,~f);~%"
-		 (x-offset ,plottingarea) (y-offset ,plottingarea)
-		 (+ (width ,plottingarea) (x-offset ,plottingarea))
-		 (+ (height ,plottingarea) (y-offset ,plottingarea)))
-	 ,@body)
-      `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%"
-		 ,x-from ,y-from ,x ,y)
-	 ,@body)))
-
-(defmacro transform-scale ((plottingarea) &body body)
-  "Perform transformationf from data coord system to plottingarea system"
-  (let ((x-scale (gensym))
-	(y-scale (gensym)))
-    `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
-	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
-       (scope (,plottingarea
-	       (format nil "shift={(~f,~f)}"
-		       (x-offset ,plottingarea)
-		       (y-offset ,plottingarea)))
-	 (scope (,plottingarea
-		 (format nil "shift={(~f,~f)},xscale=~f,yscale=~f"
-			 (- (plot-x-min ,plottingarea))
-			 (- (plot-y-min ,plottingarea))
-			 ,x-scale ,y-scale))
-	   ,@body)
-	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
-	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
-  
-(defmacro transform ((plottingarea) &body body)
-  "Perform transformationf from data coord system to plottingarea system"
-  (let ((x-scale (gensym))
-	(y-scale (gensym)))
-    `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
-	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
-       (scope (,plottingarea
-	       (format nil "shift={(~f,~f)}"
-		       (x-offset ,plottingarea)
-		       (y-offset ,plottingarea)))
-	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{~fcm}{0cm}}~&" ,x-scale)
-	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{~fcm}}~%" ,y-scale)
-	 (scope (,plottingarea
-		 (format nil "shift={(~f,~f)}"
-			 (- (plot-x-min ,plottingarea))
-			 (- (plot-y-min ,plottingarea))))
-	   ,@body)
-	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
-	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
-
-;; (defmacro transform ((plottingarea) &body body)
-;;   "Perform transformationf from data coord system to plottingarea system"
-;;   (let ((x-scale (gensym))
-;; 	(y-scale (gensym)))
-;;     `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
-;; 	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
-;;        (if (> (max ,x-scale ,y-scale) 400)
-;; 	   (transform-vec (,plottingarea) ,@body)
-;; 	   (transform-scale (,plottingarea) ,@body)))))
-
-(defmacro clip-and-transform ((plottingarea) &body body)
-  "First clip the plotting area, then perform transformations from data to plottingarea"
-  `(clip (,plottingarea)
-     (transform (,plottingarea)
-       ,@body)))
-
 (defun make-range (min stepsize steps)
   "Returns a list with steps elements, where the first is min the next is min+stepsize etc"
   (let ((my-list nil))
@@ -249,22 +286,21 @@ Compilation happens in output directory of plot."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%"
 	  style x-from y-from x-to y-to))
 
+(defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
+  "Draw a data-point with error bars in y direction"
+  ;;(draw-path plottingarea (list x x) (list (- y y-error) (+ y y-error)) style)
+  (scope (plottingarea style)
+    (make-path-mixed-units plottingarea
+			   (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
+			   (list (+ y y-error) (+ y y-error) (+ y y-error)
+				 (- y y-error) (- y y-error) (- y y-error))
+			   (list 0 0 0 0 0 0))
+    (path-stroke plottingarea t)
+    (draw-node plottingarea x y style node-string)))
+
 (defun draw-profilepoints (plottingarea x y y-error style)
   (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style))
 	  x y y-error))
-
-(defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
-  "Draw a data-point with error bars in y direction"
-  (draw-path plottingarea (list x x) (list (- y y-error) (+ y y-error)) style)
-  (draw-node plottingarea x y style node-string)
-  (scope (plottingarea style)
-    (format (ostream plottingarea) "\\pgfpathmoveto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint{2pt}{0}}}~%" x (+ y y-error))
-    (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint{-2pt}{0}}}~%" x (+ y y-error))
-    (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfqpointxy {~f} {~f}}~%" x (+ y y-error))
-    (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfqpointxy {~f} {~f}}~%" x (- y y-error))
-    (format (ostream plottingarea) "\\pgfpathmoveto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint {2pt} {0} }}~%" x (- y y-error))
-    (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfpointadd{\\pgfqpointxy {~f} {~f}} {\\pgfpoint {-2pt} {0} }}~%" x (- y y-error))
-    (format (ostream plottingarea) "\\pgfusepath{ stroke }~%")))
 
 (defun make-histogram (min bin-size data)
   "A histogram as a simple plist"
@@ -300,53 +336,23 @@ Compilation happens in output directory of plot."
     (when separate-bins
       (mapcar (lambda (x y) (draw-path tikz (list x x) (list y 0) style nil)) x y))))
 
-(defun path-move-to (tikz x y)
-  (format (ostream tikz) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
-
-(defun path-line-to (tikz x y)
-  (format (ostream tikz) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
-
-(defun path-stroke (tikz &optional (stroke t) (fill nil) (clip nil))
-  (let ((action (concatenate 'string 
-			     (if stroke "stroke," "") 
-			     (if fill " fill," "")
-			     (if clip " clip," ""))))
-    (format (ostream tikz) "\\pgfusepath{ ~a }~%" action)))
-
-(defun path-close (tikz)
-  (format (ostream tikz) "\\pgfpathclose~%"))
-
 (defun connect-plots (top sub style &optional (top-left t) (top-right t) (bottom-left t) (bottom-right t))
   (scope (top style)
+    ;;Region of interest
     (transform (top)
-      (path-move-to top (plot-x-min sub) (plot-y-min sub))
-      (path-line-to top (plot-x-max sub) (plot-y-min sub))
-      (path-line-to top (plot-x-max sub) (plot-y-max sub))
-      (path-line-to top (plot-x-min sub) (plot-y-max sub))
-      (path-close top))
+      (make-rectangle-path top (plot-x-min sub) (plot-y-min sub) (plot-x-max sub) (plot-y-max sub)))
     (path-stroke top)
     (format (ostream top) "\\pgfseteorule~%")
-    ;;Clipping area
+    ;;Clipping area, inverted clip of the region of interest and the sub plottingarea
     (transform (sub)
-      (path-move-to sub (plot-x-min sub) (plot-y-min sub))
-      (path-line-to sub (plot-x-max sub) (plot-y-min sub))
-      (path-line-to sub (plot-x-max sub) (plot-y-max sub))
-      (path-line-to sub (plot-x-min sub) (plot-y-max sub))
-      (path-close top))
+      (make-rectangle-path sub (plot-x-min sub) (plot-y-min sub) (plot-x-max sub) (plot-y-max sub)))
     (transform (top)
-      (path-move-to top (plot-x-min sub) (plot-y-min sub))
-      (path-line-to top (plot-x-max sub) (plot-y-min sub))
-      (path-line-to top (plot-x-max sub) (plot-y-max sub))
-      (path-line-to top (plot-x-min sub) (plot-y-max sub))
-      (path-close top))
-    (path-move-to top (min 0 (+ (x-offset sub))) (min 0 (+ (y-offset sub))))
-    (path-line-to top (max (width top) (+ (x-offset sub) (width sub))) (min 0 (+ (y-offset sub))))
-    (path-line-to top (max (width top) (+ (x-offset sub) (width sub))) (max (height top) (+ (y-offset sub) (height sub))))
-    (path-line-to top (min 0 (+ (x-offset sub))) (max (height top) (+ (y-offset sub) (height sub))))
-    (path-close top)
+      (make-rectangle-path top (plot-x-min sub) (plot-y-min sub) (plot-x-max sub) (plot-y-max sub)))
+    (make-rectangle-path top 
+		  (min 0 (+ (x-offset sub))) (min 0 (+ (y-offset sub)))
+		  (max (width top) (+ (x-offset sub) (width sub))) (max (height top) (+ (y-offset sub) (height sub))))
     (path-stroke top nil nil t)
-    ;;Draw lines
-    ;;(draw-line top 0 0 10 6 "black,thick")
+    ;;Draw lines to connect the region of interest and the sub plotting area
     (when bottom-left
       (path-move-to top (apply-transform-x top (plot-x-min sub)) (apply-transform-y top (plot-y-min sub)))
       (path-line-to top (+ (x-offset sub)) (y-offset sub)))
@@ -374,24 +380,6 @@ Compilation happens in output directory of plot."
 		(elt x-pos (+ n 0)) (elt data n)
 		(elt x-pos (+ n 1)) (elt data n)
 		(elt x-pos (+ n 1)) 0)))))
-
-(defun add-path-point (tikz x y)
-  (unless (or (null x) (null y))
-    (format (ostream tikz) "\\pgfpathlineto{ \\pgfqpointxy {~f} {~f}}~%" (car x) (car y))
-    (add-path-point tikz (cdr x) (cdr y))))
-
-    
-
-(defun draw-path (tikz x y style &optional (fill nil))
-  "Connect data points with straight lines."
-  ;;Tex cannot work with numbers larger than 19ft, even before final transformation.
-  ;;Here we scale down then up
-  (scope (tikz style)
-    (format (ostream tikz) "\\pgfpathmoveto{ \\pgfqpointxy {~f} {~f}}~%" (car x) (car y))
-    (add-path-point tikz (cdr x) (cdr y))
-    (if fill
-	(format (ostream tikz) "\\pgfusepath{ fill,stroke }~%")
-	(format (ostream tikz) "\\pgfusepath{ stroke }~%"))))
 
 (defun draw-graph-error (tikz x y y-error line-style mark-style error-style)
   "Draw error bars"

@@ -16,6 +16,10 @@
 	   make-node-string
 	   draw-histogram
 	   draw-histogram-horizontal
+	   make-path
+	   make-path-mixed-units
+	   path-close
+	   path-stroke
 	   draw-path
 	   draw-graph
 	   draw-graph-error

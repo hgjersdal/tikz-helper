@@ -113,9 +113,14 @@ Function must be a function (lambda x parameters) that returns a double-float."
   (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos) (- y-pos (funcall function x-pos params))) meas-x meas-y))
 		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
 
-(defun levmar-optimize-errors (function parameters meas-x meas-y error-y)
+(defun levmar-optimize-errors (function parameters meas-x meas-y error-y &optional discard-empty-bins)
   "Find the parameters that makes function closest to measurement.
 Function must be a function (lambda x parameters) that returns a double-float.
+If discard-empty-bins, any measureement with y = 0 or error-y = 0 is discarded.
 I am not sure this is legal."
-  (levmar-update (lambda (params) (map 'vector (lambda (x-pos y-pos err) (/ (- y-pos (funcall function x-pos params)) (+ err double-float-epsilon))) meas-x meas-y error-y))
-		       0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y))))
+  (flet ((normalized-residual (x y err params)
+	   (if (and discard-empty-bins (= 0 y err))
+	       0.0d0
+	       (/ (- y (funcall function x params)) err))))
+    (levmar-update (lambda (params) (map 'vector (lambda (x y err) (normalized-residual x y err params))  meas-x meas-y error-y))
+		   0 nil 2.0d0 parameters (length parameters) (min (length meas-x) (length meas-y)))))
