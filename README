@@ -1,9 +1,11 @@
 tikz-helper
 
-Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations. Graphs, histograms, functions.
+Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations. Data points. histograms, functions.
 
 The package also contains an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points.
 
 The file tikz-helper-example.lisp contains code that generates a few simple plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex.
 
-Only tested on SBCL on linux, and relies on the package lla(available through quicklisp) by github user tpapp.
+The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. The files can also be compiled to HTML/SVG through tex4ht like 'htlatex spline.tex', however the text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for the text, but some lines are not as smooth.
+
+Only tested on SBCL on linux, and relies on the package lla (available through quicklisp) by github user tpapp.

@@ -78,7 +78,7 @@ Some Gaussian histograms
       (draw-histogram tikz histo3 "opacity=0.5,draw=green!80!black,fill=green!20" t)))
   (transform (tikz)
     (draw-axis-ticks-y tikz (make-range 0 15 10))
-    (draw-axis-ticks-x tikz (make-range 0.25 1 10) :names (make-range 0 1 9)))
+    (draw-axis-ticks-x tikz (make-range 0 1 10) :names (make-range 0 1 10)))
   (draw-plottingarea-rectangle tikz)
   (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Histogram 1" "blue!80!black,fill=blue!20" "")
   (draw-legend-rectangle tikz 0.5 4.1 1 0.2 "Histogram 2" "opacity=0.5,red!80!black,fill=red!20" "")
@@ -301,7 +301,6 @@ Make some noisy datapoints from polynomial, fit and plot.
 	  (draw-text-node tikz 5.8 2.55 (format nil "$T_{1/2}$: ~5,2f, $A_0$: ~5,0f" 
 						(aref params 1) (aref params 0)) "right")))))
 
-;;(with-tikz-plot-standalone (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0 t)
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "spline.tex") 10 5 4.0 6.0 4.0 7.0)
   (let ((x #(4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y #(4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))

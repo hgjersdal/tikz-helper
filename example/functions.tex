@@ -1,4 +1,11 @@
-\begin{tikzpicture}[]
+\documentclass{standalone}
+\ifx\HCode\UnDef\else\def\pgfsysdriver{pgfsys-tex4ht.def}\fi
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{siunitx}
+\usetikzlibrary{arrows,shapes}
+\begin{document}
+\begin{tikzpicture}
 \begin{scope}[]
 \clip (0.0,0.0) rectangle (10.0,5.0);
 \begin{scope}[shift={(0.0,0.0)}]
@@ -237,8 +244,4 @@
 \draw[blue] (7.5,4.8) -- (8.1,4.8);
 \node[right,] at (8.1,4.8) {cos(x)};
 \end{tikzpicture}
-%%% Local Variables: 
-%%% mode: latex 
-%%% TeX-master: "master" 
-%%% End:
-
+\end{document}

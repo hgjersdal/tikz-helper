@@ -1,4 +1,11 @@
-\begin{tikzpicture}[]
+\documentclass{standalone}
+\ifx\HCode\UnDef\else\def\pgfsysdriver{pgfsys-tex4ht.def}\fi
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{siunitx}
+\usetikzlibrary{arrows,shapes}
+\begin{document}
+\begin{tikzpicture}
 \begin{scope}[black]
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
@@ -15,114 +22,114 @@
 \begin{scope}[shift={(-0.0,6.0)}]
 \begin{scope}[fill=blue!20,draw=blue!20]
 \pgfpathmoveto{ \pgfpointxy {0.0} {6.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {6.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.75}}
-\pgfpathlineto{ \pgfpointxy {3.0} {5.75}}
+\pgfpathlineto{ \pgfpointxy {1.0} {6.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {5.75}}
+\pgfpathlineto{ \pgfpointxy {2.0} {5.75}}
+\pgfpathlineto{ \pgfpointxy {2.0} {5.5}}
 \pgfpathlineto{ \pgfpointxy {3.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {1.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {1.0} {5.25}}
+\pgfpathlineto{ \pgfpointxy {3.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {2.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {2.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {2.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {2.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {7.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {7.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {10.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {10.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {13.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {13.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {16.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {16.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {15.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {15.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {15.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {15.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {32.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {32.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {36.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {36.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {58.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {58.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {52.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {52.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {75.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {75.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {107.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {107.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {126.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {126.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {139.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {139.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {149.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {149.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {169.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {169.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {224.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {224.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {261.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {261.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {302.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {302.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {304.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {304.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {334.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {334.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {406.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {406.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {352.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {352.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {392.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {392.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {421.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {421.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {435.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {435.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {438.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {438.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {472.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {472.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {434.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {434.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {433.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {433.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {446.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {446.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {397.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {397.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {376.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {376.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {366.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {366.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {303.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {303.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {284.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {284.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {275.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {275.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {207.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {207.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {191.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {191.0} {-5.0}}
-\pgfpathlineto{ \pgfpointxy {193.0} {-5.0}}
-\pgfpathlineto{ \pgfpointxy {193.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {127.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {127.0} {-5.5}}
-\pgfpathlineto{ \pgfpointxy {119.0} {-5.5}}
-\pgfpathlineto{ \pgfpointxy {119.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {122.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {122.0} {-6.0}}
+\pgfpathlineto{ \pgfpointxy {6.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {6.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {8.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {8.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {11.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {11.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {12.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {12.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {20.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {20.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {23.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {23.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {31.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {31.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {44.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {44.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {40.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {40.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {67.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {67.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {74.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {74.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {97.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {97.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {125.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {125.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {157.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {157.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {162.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {162.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {203.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {203.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {238.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {238.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {263.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {263.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {292.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {292.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {279.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {279.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {362.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {362.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {376.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {376.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {391.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {391.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {400.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {400.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {431.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {431.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {476.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {476.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {466.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {466.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {451.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {451.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {440.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {440.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {470.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {470.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {423.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {423.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {406.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {406.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {361.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {361.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {333.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {333.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {299.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {299.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {259.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {259.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {257.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {257.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {210.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {210.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {189.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {189.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {135.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {135.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {130.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {130.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {118.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {118.0} {-5.75}}
+\pgfpathlineto{ \pgfpointxy {95.0} {-5.75}}
+\pgfpathlineto{ \pgfpointxy {95.0} {-6.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-6.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[red,fill=red,thick]
-\pgfpointadd{\pgfpointxy {236.0} {0.20000005}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
-\pgfpointadd{\pgfpointxy {236.0} {0.20000005}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {236.0} {0.20000005}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {236.0} {-4.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {236.0} {-4.2}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {236.0} {-4.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {0.20000005}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {0.20000005}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {0.20000005}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {-4.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {-4.2}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {238.0} {-4.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (236.0,-2.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
+\node at (238.0,-2.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -149,110 +156,110 @@
 \pgfpathlineto{ \pgfpointxy {1.0} {5.75}}
 \pgfpathlineto{ \pgfpointxy {1.0} {5.75}}
 \pgfpathlineto{ \pgfpointxy {1.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {5.25}}
-\pgfpathlineto{ \pgfpointxy {3.0} {5.25}}
-\pgfpathlineto{ \pgfpointxy {3.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {5.5}}
+\pgfpathlineto{ \pgfpointxy {0.0} {5.25}}
+\pgfpathlineto{ \pgfpointxy {1.0} {5.25}}
+\pgfpathlineto{ \pgfpointxy {1.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {3.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {3.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {0.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {0.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {5.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {5.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {11.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {11.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {15.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {15.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {29.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {29.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {22.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {22.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {45.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {45.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {70.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {70.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {66.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {66.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {88.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {88.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {113.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {113.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {163.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {163.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {188.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {188.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {242.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {242.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {290.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {290.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {315.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {315.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {383.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {383.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {427.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {427.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {433.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {433.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {459.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {459.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {477.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {477.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {545.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {545.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {560.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {560.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {580.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {580.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {531.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {531.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {527.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {527.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {488.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {488.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {438.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {438.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {454.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {454.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {348.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {348.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {332.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {332.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {268.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {268.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {234.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {234.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {205.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {205.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {157.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {157.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {113.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {7.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {4.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {4.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {9.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {9.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {19.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {19.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {23.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {23.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {33.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {33.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {36.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {36.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {53.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {53.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {64.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {64.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {100.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {100.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {126.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {126.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {151.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {151.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {211.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {211.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {209.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {209.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {259.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {259.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {343.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {343.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {360.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {360.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {465.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {465.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {473.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {473.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {526.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {526.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {544.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {544.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {534.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {534.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {501.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {501.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {508.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {508.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {546.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {546.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {517.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {517.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {510.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {510.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {429.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {429.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {428.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {428.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {381.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {381.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {290.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {290.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {291.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {291.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {226.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {226.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {186.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {186.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {150.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {150.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {126.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {126.0} {-4.25}}
 \pgfpathlineto{ \pgfpointxy {113.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {94.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {94.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {85.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {85.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {52.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {52.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {113.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {64.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {64.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {53.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {53.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {40.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {40.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {34.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {34.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {29.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {29.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {20.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {20.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {16.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {16.0} {-6.0}}
+\pgfpathlineto{ \pgfpointxy {12.0} {-5.75}}
+\pgfpathlineto{ \pgfpointxy {12.0} {-6.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-6.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[red,fill=red,thick]
-\pgfpointadd{\pgfpointxy {290.0} {0.79999995}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
-\pgfpointadd{\pgfpointxy {290.0} {0.79999995}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {290.0} {0.79999995}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {290.0} {-2.8}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {290.0} {-2.8}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {290.0} {-2.8}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {0.79999995}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {0.79999995}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {0.79999995}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {-2.8}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {-2.8}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {273.0} {-2.8}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (290.0,-1.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
+\node at (273.0,-1.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -277,112 +284,112 @@
 \pgfpathmoveto{ \pgfpointxy {0.0} {6.0}}
 \pgfpathlineto{ \pgfpointxy {3.0} {6.0}}
 \pgfpathlineto{ \pgfpointxy {3.0} {5.75}}
-\pgfpathlineto{ \pgfpointxy {2.0} {5.75}}
-\pgfpathlineto{ \pgfpointxy {2.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {4.0} {5.5}}
-\pgfpathlineto{ \pgfpointxy {4.0} {5.25}}
-\pgfpathlineto{ \pgfpointxy {18.0} {5.25}}
-\pgfpathlineto{ \pgfpointxy {18.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {5.75}}
+\pgfpathlineto{ \pgfpointxy {3.0} {5.5}}
+\pgfpathlineto{ \pgfpointxy {9.0} {5.5}}
+\pgfpathlineto{ \pgfpointxy {9.0} {5.25}}
+\pgfpathlineto{ \pgfpointxy {8.0} {5.25}}
+\pgfpathlineto{ \pgfpointxy {8.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {13.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {13.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {20.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {20.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {37.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {37.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {59.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {59.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {80.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {80.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {103.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {103.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {110.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {110.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {172.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {172.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {227.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {227.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {235.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {235.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {351.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {351.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {393.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {393.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {471.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {471.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {459.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {459.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {537.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {537.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {590.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {590.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {587.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {587.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {590.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {590.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {579.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {579.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {600.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {600.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {578.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {578.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {544.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {544.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {475.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {475.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {476.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {476.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {360.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {360.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {312.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {312.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {247.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {247.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {201.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {201.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {142.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {142.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {122.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {122.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {107.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {107.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {58.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {58.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {44.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {44.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {30.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {30.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {18.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {18.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {13.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {13.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {26.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {26.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {23.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {23.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {42.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {42.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {70.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {70.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {98.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {98.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {121.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {121.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {160.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {160.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {217.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {217.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {262.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {262.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {306.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {306.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {366.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {366.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {440.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {440.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {455.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {455.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {518.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {518.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {580.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {580.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {588.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {588.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {631.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {631.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {613.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {613.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {587.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {587.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {566.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {566.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {534.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {534.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {473.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {473.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {474.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {474.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {385.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {385.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {297.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {297.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {265.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {265.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {203.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {203.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {168.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {168.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {153.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {153.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {106.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {106.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {82.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {82.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {45.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {45.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {37.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {37.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {25.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {25.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {12.0} {-3.75}}
 \pgfpathlineto{ \pgfpointxy {12.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {12.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {8.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {8.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {13.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {13.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {4.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {4.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {5.0} {-4.5}}
 \pgfpathlineto{ \pgfpointxy {5.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {5.0} {-5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {1.0} {-5.25}}
 \pgfpathlineto{ \pgfpointxy {1.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-5.75}}
 \pgfpathlineto{ \pgfpointxy {1.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.75}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-6.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {-6.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-6.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[red,fill=red,thick]
-\pgfpointadd{\pgfpointxy {300.0} {2.1}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
-\pgfpointadd{\pgfpointxy {300.0} {2.1}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {300.0} {2.1}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {300.0} {-1.1}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {300.0} {-1.1}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {300.0} {-1.1}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {2.1}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {2.1}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {2.1}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {-1.1}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {-1.1}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {315.5} {-1.1}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (300.0,0.5) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
+\node at (315.5,0.5) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -405,98 +412,98 @@
 \begin{scope}[shift={(-0.0,6.0)}]
 \begin{scope}[fill=blue!20,draw=blue!20]
 \pgfpathmoveto{ \pgfpointxy {0.0} {6.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {6.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.75}}
+\pgfpathlineto{ \pgfpointxy {1.0} {6.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {5.75}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.75}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {1.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {4.75}}
 \pgfpathlineto{ \pgfpointxy {1.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {11.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {11.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {6.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {6.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {2.0} {4.5}}
+\pgfpathlineto{ \pgfpointxy {2.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {14.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {14.0} {4.0}}
 \pgfpathlineto{ \pgfpointxy {18.0} {4.0}}
 \pgfpathlineto{ \pgfpointxy {18.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {17.0} {3.75}}
-\pgfpathlineto{ \pgfpointxy {17.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {19.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {19.0} {3.5}}
 \pgfpathlineto{ \pgfpointxy {39.0} {3.5}}
 \pgfpathlineto{ \pgfpointxy {39.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {62.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {62.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {82.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {82.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {131.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {131.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {166.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {166.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {234.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {234.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {274.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {274.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {362.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {362.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {446.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {446.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {513.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {513.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {556.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {556.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {618.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {618.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {669.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {669.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {719.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {719.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {738.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {738.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {688.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {688.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {697.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {697.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {611.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {611.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {508.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {508.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {388.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {388.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {53.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {53.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {78.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {78.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {119.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {119.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {171.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {171.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {235.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {235.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {278.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {278.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {374.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {374.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {440.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {440.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {536.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {536.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {562.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {562.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {681.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {681.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {681.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {681.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {758.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {758.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {664.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {664.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {678.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {678.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {665.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {665.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {602.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {602.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {552.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {552.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {423.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {423.0} {-1.5}}
 \pgfpathlineto{ \pgfpointxy {344.0} {-1.5}}
 \pgfpathlineto{ \pgfpointxy {344.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {328.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {328.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {240.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {240.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {166.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {166.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {113.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {113.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {93.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {93.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {60.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {60.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {32.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {32.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {35.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {35.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {9.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {9.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {6.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {6.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {6.0} {-4.25}}
-\pgfpathlineto{ \pgfpointxy {6.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-4.5}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-4.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-5.0}}
+\pgfpathlineto{ \pgfpointxy {282.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {282.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {210.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {210.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {145.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {145.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {115.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {115.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {86.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {86.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {57.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {57.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {38.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {38.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {33.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {33.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {22.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {22.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {5.0} {-4.5}}
+\pgfpathlineto{ \pgfpointxy {5.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-4.75}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {1.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {1.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {0.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.75}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.75}}
@@ -505,14 +512,14 @@
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[red,fill=red,thick]
-\pgfpointadd{\pgfpointxy {369.0} {1.4}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
-\pgfpointadd{\pgfpointxy {369.0} {1.4}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {369.0} {1.4}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {369.0} {-1.4}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {369.0} {-1.4}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {369.0} {-1.4}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {1.4}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {1.4}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {1.4}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {-1.4}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {-1.4}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {379.0} {-1.4}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (369.0,0.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
+\node at (379.0,0.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -543,80 +550,80 @@
 \pgfpathlineto{ \pgfpointxy {0.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {4.75}}
-\pgfpathlineto{ \pgfpointxy {0.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {1.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {1.0} {4.75}}
+\pgfpathlineto{ \pgfpointxy {1.0} {4.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {4.5}}
-\pgfpathlineto{ \pgfpointxy {2.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {1.0} {4.25}}
-\pgfpathlineto{ \pgfpointxy {1.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {4.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {4.0} {3.75}}
+\pgfpathlineto{ \pgfpointxy {0.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {3.0} {4.25}}
+\pgfpathlineto{ \pgfpointxy {3.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {4.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {3.75}}
 \pgfpathlineto{ \pgfpointxy {8.0} {3.75}}
 \pgfpathlineto{ \pgfpointxy {8.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {8.0} {3.5}}
-\pgfpathlineto{ \pgfpointxy {8.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {33.0} {3.25}}
-\pgfpathlineto{ \pgfpointxy {33.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {57.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {57.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {81.0} {2.75}}
-\pgfpathlineto{ \pgfpointxy {81.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {124.0} {2.5}}
-\pgfpathlineto{ \pgfpointxy {124.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {169.0} {2.25}}
-\pgfpathlineto{ \pgfpointxy {169.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {224.0} {2.0}}
-\pgfpathlineto{ \pgfpointxy {224.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {321.0} {1.75}}
-\pgfpathlineto{ \pgfpointxy {321.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {431.0} {1.5}}
-\pgfpathlineto{ \pgfpointxy {431.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {596.0} {1.25}}
-\pgfpathlineto{ \pgfpointxy {596.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {618.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {618.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {733.0} {0.75}}
-\pgfpathlineto{ \pgfpointxy {733.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {803.0} {0.5}}
-\pgfpathlineto{ \pgfpointxy {803.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {856.0} {0.25}}
-\pgfpathlineto{ \pgfpointxy {856.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {798.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {798.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {805.0} {-0.25}}
-\pgfpathlineto{ \pgfpointxy {805.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {710.0} {-0.5}}
-\pgfpathlineto{ \pgfpointxy {710.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {644.0} {-0.75}}
-\pgfpathlineto{ \pgfpointxy {644.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {506.0} {-1.0}}
-\pgfpathlineto{ \pgfpointxy {506.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {399.0} {-1.25}}
-\pgfpathlineto{ \pgfpointxy {399.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {317.0} {-1.5}}
-\pgfpathlineto{ \pgfpointxy {317.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {270.0} {-1.75}}
-\pgfpathlineto{ \pgfpointxy {270.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {156.0} {-2.0}}
-\pgfpathlineto{ \pgfpointxy {156.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {112.0} {-2.25}}
-\pgfpathlineto{ \pgfpointxy {112.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {87.0} {-2.5}}
-\pgfpathlineto{ \pgfpointxy {87.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {55.0} {-2.75}}
-\pgfpathlineto{ \pgfpointxy {55.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {40.0} {-3.0}}
-\pgfpathlineto{ \pgfpointxy {40.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {14.0} {-3.25}}
-\pgfpathlineto{ \pgfpointxy {14.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {11.0} {-3.5}}
-\pgfpathlineto{ \pgfpointxy {11.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-3.75}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-4.0}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-4.25}}
+\pgfpathlineto{ \pgfpointxy {13.0} {3.5}}
+\pgfpathlineto{ \pgfpointxy {13.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {40.0} {3.25}}
+\pgfpathlineto{ \pgfpointxy {40.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {42.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {42.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {87.0} {2.75}}
+\pgfpathlineto{ \pgfpointxy {87.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {112.0} {2.5}}
+\pgfpathlineto{ \pgfpointxy {112.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {174.0} {2.25}}
+\pgfpathlineto{ \pgfpointxy {174.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {266.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {266.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {301.0} {1.75}}
+\pgfpathlineto{ \pgfpointxy {301.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {454.0} {1.5}}
+\pgfpathlineto{ \pgfpointxy {454.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {538.0} {1.25}}
+\pgfpathlineto{ \pgfpointxy {538.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {671.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {671.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {704.0} {0.75}}
+\pgfpathlineto{ \pgfpointxy {704.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {799.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {799.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {829.0} {0.25}}
+\pgfpathlineto{ \pgfpointxy {829.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {816.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {816.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {810.0} {-0.25}}
+\pgfpathlineto{ \pgfpointxy {810.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {686.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {686.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {639.0} {-0.75}}
+\pgfpathlineto{ \pgfpointxy {639.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {520.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {520.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {432.0} {-1.25}}
+\pgfpathlineto{ \pgfpointxy {432.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {335.0} {-1.5}}
+\pgfpathlineto{ \pgfpointxy {335.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {259.0} {-1.75}}
+\pgfpathlineto{ \pgfpointxy {259.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {175.0} {-2.0}}
+\pgfpathlineto{ \pgfpointxy {175.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {104.0} {-2.25}}
+\pgfpathlineto{ \pgfpointxy {104.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {79.0} {-2.5}}
+\pgfpathlineto{ \pgfpointxy {79.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {41.0} {-2.75}}
+\pgfpathlineto{ \pgfpointxy {41.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {27.0} {-3.0}}
+\pgfpathlineto{ \pgfpointxy {27.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {13.0} {-3.25}}
+\pgfpathlineto{ \pgfpointxy {13.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {6.0} {-3.5}}
+\pgfpathlineto{ \pgfpointxy {6.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-3.75}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-4.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-4.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-4.25}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-4.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-4.5}}
@@ -625,8 +632,8 @@
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.25}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-5.5}}
+\pgfpathlineto{ \pgfpointxy {1.0} {-5.25}}
+\pgfpathlineto{ \pgfpointxy {1.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.5}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.75}}
 \pgfpathlineto{ \pgfpointxy {0.0} {-5.75}}
@@ -635,14 +642,14 @@
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[red,fill=red,thick]
-\pgfpointadd{\pgfpointxy {428.0} {1.2}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
-\pgfpointadd{\pgfpointxy {428.0} {1.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {428.0} {1.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {428.0} {-1.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {428.0} {-1.2}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
-\pgfpointadd{\pgfpointxy {428.0} {-1.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {1.2}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {1.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {1.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {-1.2}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {-1.2}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {414.5} {-1.2}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (428.0,0.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
+\node at (414.5,0.0) [circle,inner sep=0pt,minimum width =4pt,minimum height=4pt,red,fill=red,thick] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -674,8 +681,4 @@
 \draw[black] [shift={(9.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{Step 9}};
 \end{scope}
 \end{tikzpicture}
-%%% Local Variables: 
-%%% mode: latex 
-%%% TeX-master: "master" 
-%%% End:
-
+\end{document}

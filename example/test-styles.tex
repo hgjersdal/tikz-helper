@@ -1,4 +1,11 @@
-\begin{tikzpicture}[]
+\documentclass{standalone}
+\ifx\HCode\UnDef\else\def\pgfsysdriver{pgfsys-tex4ht.def}\fi
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{siunitx}
+\usetikzlibrary{arrows,shapes}
+\begin{document}
+\begin{tikzpicture}
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.41666666cm}}
@@ -345,8 +352,4 @@
 \pgfusepath{ stroke, }
 \end{scope}
 \end{tikzpicture}
-%%% Local Variables: 
-%%% mode: latex 
-%%% TeX-master: "master" 
-%%% End:
-
+\end{document}

@@ -12,9 +12,11 @@
    (ostream :initform t :initarg :stream :accessor ostream))
   (:documentation "Contains output-stream for latex file as well as ingo needed for transformations"))
 
-(defmacro latex-environ ((plottingarea environ &optional (args "")) &body body)
+(defmacro latex-environ ((plottingarea environ &optional (args nil)) &body body)
   `(progn
-     (format (ostream ,plottingarea) "\\begin{~a}[~a]~%" ,environ ,args)
+     (if ,args
+	 (format (ostream ,plottingarea) "\\begin{~a}[~a]~%" ,environ ,args)
+	 (format (ostream ,plottingarea) "\\begin{~a}~%" ,environ))
      ,@body
      (format (ostream ,plottingarea) "\\end{~a}~%" ,environ)))
 
@@ -192,11 +194,22 @@
 
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
+\\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi
 \\usepackage{tikz}
 \\usepackage{color}
 \\usepackage{siunitx}
 \\usetikzlibrary{arrows,shapes}
 ")
+
+(defun pdflatex-compile (tex-file)
+  (sb-ext:run-program "pdflatex"
+		      (list
+		       "-output-directory"
+		       (sb-ext:native-namestring
+			(make-pathname :directory (pathname-directory tex-file)))
+		       tex-file)
+		      :wait t :search t :output *standard-output*))
+
 (defmacro with-tikz-plot-standalone ((name filename width height
 					   plot-x-min plot-x-max plot-y-min plot-y-max
 					   &optional (compile-and-show nil) (tex-command "pdflatex")
@@ -229,17 +242,17 @@ Compilation happens in output directory of plot."
 
 (defmacro with-tikz-plot ((name filename width height
 				plot-x-min plot-x-max
-				plot-y-min plot-y-max &optional (master-file "master")) &body body)
+				plot-y-min plot-y-max) &body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
   (let ((stream-name (gensym)))
     `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
        (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
 				   :plot-x-min ,plot-x-min :plot-x-max ,plot-x-max
 				   :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
-	 (latex-environ (,name "tikzpicture")
-	   ,@body)
-	 (format ,stream-name "%%% Local Variables: ~%%%% mode: latex ~%%%% TeX-master: ~s ~%%%% End:~%~%"
-		 ,master-file)))))
+	 (format ,stream-name *tikz-preamble*)
+	 (latex-environ (,name "document")
+	   (latex-environ (,name "tikzpicture")
+	     ,@body))))))
 
 (defmacro with-sugfigure ((plottingarea name 
 					x-offset y-offset width height

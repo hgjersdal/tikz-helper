@@ -1,4 +1,11 @@
-\begin{tikzpicture}[]
+\documentclass{standalone}
+\ifx\HCode\UnDef\else\def\pgfsysdriver{pgfsys-tex4ht.def}\fi
+\usepackage{tikz}
+\usepackage{color}
+\usepackage{siunitx}
+\usetikzlibrary{arrows,shapes}
+\begin{document}
+\begin{tikzpicture}
 \draw[thick,black,->] (0.0,2.5) -- (10.3,2.5);
 \draw[thick,black,->] (5.0,0.0) -- (5.0,5.3);
 \begin{scope}[shift={(0.0,0.0)}]
@@ -624,8 +631,4 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{tikzpicture}
-%%% Local Variables: 
-%%% mode: latex 
-%%% TeX-master: "master" 
-%%% End:
-
+\end{document}
