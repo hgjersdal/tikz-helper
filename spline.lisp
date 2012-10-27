@@ -5,7 +5,7 @@ http://people.math.sfu.ca/~stockie/teaching/macm316/notes/splines.pdf
 by John Stockie
 |#
 
-(in-package :tikz-helper)
+(in-package :tikz-spline)
 
 (defun get-h (x)
   "Get the n-1 long vector h"

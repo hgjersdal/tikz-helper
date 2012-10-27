@@ -5,7 +5,7 @@ Methods for Non-Linear Least Squares Problems by K. Madsen, H.B. Nielsen, O. Tin
 http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 |#
 
-(in-package :tikz-helper)
+(in-package :tikz-levmar)
 ;(defparameter *epsillon-1* 0.0000000001d0 "Convergance parameter")
 (defparameter *epsillon-2* 0.00000000001d0 "Convergance parameter")
 (defparameter *tau* 1.0d-8)

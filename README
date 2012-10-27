@@ -6,6 +6,8 @@ The package also contains an implementation of the Levenberg-Martquart algorithm
 
 The file tikz-helper-example.lisp contains code that generates a few simple plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex.
 
-The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. The files can also be compiled to HTML/SVG through tex4ht like 'htlatex spline.tex', however the text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for the text, but some lines are not as smooth.
+The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. If the files are included in another tex file, the master file must contain \usepackage{standalone} aswell as a copy of the preamble in the generated tikz tex files.
+
+The files can also be compiled to HTML/SVG through tex4ht, like 'htlatex spline.tex'. The text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for text, but some lines are not as smooth. 
 
 Only tested on SBCL on linux, and relies on the package lla (available through quicklisp) by github user tpapp.
