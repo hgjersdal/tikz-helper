@@ -32,7 +32,12 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
-\clip (0.0,0.0) rectangle (10.0,5.0);
+\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpathclose
+\pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.41666666cm}}
@@ -51,17 +56,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,0.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (1.0,0.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (2.0,1.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (3.0,1.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (4.0,2.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (5.0,2.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (6.0,3.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (7.0,3.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (8.0,4.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (9.0,4.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
-\node at (10.0,5.0) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,fill=blue,draw=blue] {}; 
+\node at (0.0,0.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (1.0,0.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (2.0,1.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (3.0,1.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (4.0,2.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (5.0,2.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (6.0,3.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (7.0,3.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (8.0,4.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (9.0,4.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
+\node at (10.0,5.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=blue,draw=blue] {}; 
 \begin{scope}[red,thick]
 \pgfpathmoveto{ \pgfpointxy {0.0} {1.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {1.5}}
@@ -76,17 +81,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {6.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,1.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (1.0,1.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (2.0,2.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (3.0,2.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (4.0,3.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (5.0,3.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (6.0,4.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (7.0,4.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (8.0,5.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (9.0,5.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
-\node at (10.0,6.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,fill=red] {}; 
+\node at (0.0,1.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (1.0,1.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (2.0,2.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (3.0,2.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (4.0,3.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (5.0,3.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (6.0,4.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (7.0,4.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (8.0,5.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (9.0,5.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
+\node at (10.0,6.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,fill=red] {}; 
 \begin{scope}[black,dashed]
 \pgfpathmoveto{ \pgfpointxy {0.0} {2.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {2.5}}
@@ -101,17 +106,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {7.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,2.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (1.0,2.5) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (2.0,3.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (3.0,3.5) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (4.0,4.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (5.0,4.5) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (6.0,5.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (7.0,5.5) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (8.0,6.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (9.0,6.5) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
-\node at (10.0,7.0) [star,star points=5,inner sep=0pt,minimum width =7pt,minimum height=7pt,draw=black,fill=yellow] {}; 
+\node at (0.0,2.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (1.0,2.5) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (2.0,3.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (3.0,3.5) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (4.0,4.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (5.0,4.5) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (6.0,5.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (7.0,5.5) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (8.0,6.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (9.0,6.5) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
+\node at (10.0,7.0) [star,star points=5,inner sep=0.0pt,minimum width =7.0pt,minimum height=7.0pt,draw=black,fill=yellow] {}; 
 \begin{scope}[green!80!black]
 \pgfpathmoveto{ \pgfpointxy {0.0} {3.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {3.5}}
@@ -126,17 +131,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {8.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,3.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (1.0,3.5) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (2.0,4.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (3.0,4.5) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (4.0,5.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (5.0,5.5) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (6.0,6.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (7.0,6.5) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (8.0,7.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (9.0,7.5) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
-\node at (10.0,8.0) [rectangle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=green!80!black,fill=green] {}; 
+\node at (0.0,3.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (1.0,3.5) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (2.0,4.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (3.0,4.5) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (4.0,5.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (5.0,5.5) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (6.0,6.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (7.0,6.5) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (8.0,7.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (9.0,7.5) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
+\node at (10.0,8.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=green!80!black,fill=green] {}; 
 \begin{scope}[orange!80!black]
 \pgfpathmoveto{ \pgfpointxy {0.0} {4.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {4.5}}
@@ -151,17 +156,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {9.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,4.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (1.0,4.5) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (2.0,5.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (3.0,5.5) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (4.0,6.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (5.0,6.5) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (6.0,7.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (7.0,7.5) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (8.0,8.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (9.0,8.5) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
-\node at (10.0,9.0) [diamond,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=orange!80!black,fill=orange] {}; 
+\node at (0.0,4.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (1.0,4.5) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (2.0,5.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (3.0,5.5) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (4.0,6.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (5.0,6.5) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (6.0,7.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (7.0,7.5) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (8.0,8.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (9.0,8.5) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
+\node at (10.0,9.0) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=orange!80!black,fill=orange] {}; 
 \begin{scope}[black,thick]
 \pgfpathmoveto{ \pgfpointxy {0.0} {5.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {5.5}}
@@ -176,17 +181,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {10.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,5.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (1.0,5.5) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (2.0,6.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (3.0,6.5) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (4.0,7.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (5.0,7.5) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (6.0,8.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (7.0,8.5) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (8.0,9.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (9.0,9.5) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
-\node at (10.0,10.0) [ellipse,inner sep=0pt,minimum width =2pt,minimum height=4pt,draw=black,fill=black!20] {}; 
+\node at (0.0,5.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (1.0,5.5) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (2.0,6.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (3.0,6.5) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (4.0,7.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (5.0,7.5) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (6.0,8.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (7.0,8.5) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (8.0,9.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (9.0,9.5) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
+\node at (10.0,10.0) [ellipse,inner sep=0.0pt,minimum width =2.0pt,minimum height=4.0pt,draw=black,fill=black!20] {}; 
 \begin{scope}[purple!80!black,thick]
 \pgfpathmoveto{ \pgfpointxy {0.0} {6.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {6.5}}
@@ -201,17 +206,17 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {11.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,6.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (1.0,6.5) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (2.0,7.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (3.0,7.5) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (4.0,8.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (5.0,8.5) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (6.0,9.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (7.0,9.5) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (8.0,10.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (9.0,10.5) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
-\node at (10.0,11.0) [regular polygon,regular polygon sides=5,inner sep=0pt,minimum width =4pt,minimum height=4pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (0.0,6.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (1.0,6.5) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (2.0,7.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (3.0,7.5) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (4.0,8.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (5.0,8.5) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (6.0,9.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (7.0,9.5) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (8.0,10.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (9.0,10.5) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
+\node at (10.0,11.0) [regular polygon,regular polygon sides=5,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt,draw=purple!80!black,fill=purple!20] {}; 
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {0.0} {7.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {7.5}}
@@ -234,7 +239,7 @@
 \pgfpointadd{\pgfpointxy {0.0} {6.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {0.0} {6.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (0.0,7.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (0.0,7.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {1.0} {8.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -244,7 +249,7 @@
 \pgfpointadd{\pgfpointxy {1.0} {7.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {1.0} {7.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (1.0,7.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (1.0,7.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {2.0} {8.5}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -254,7 +259,7 @@
 \pgfpointadd{\pgfpointxy {2.0} {7.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {2.0} {7.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (2.0,8.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (2.0,8.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {3.0} {9.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -264,7 +269,7 @@
 \pgfpointadd{\pgfpointxy {3.0} {8.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {3.0} {8.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (3.0,8.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (3.0,8.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {4.0} {9.5}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -274,7 +279,7 @@
 \pgfpointadd{\pgfpointxy {4.0} {8.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {4.0} {8.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (4.0,9.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (4.0,9.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {5.0} {10.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -284,7 +289,7 @@
 \pgfpointadd{\pgfpointxy {5.0} {9.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {5.0} {9.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (5.0,9.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (5.0,9.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {6.0} {10.5}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -294,7 +299,7 @@
 \pgfpointadd{\pgfpointxy {6.0} {9.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {6.0} {9.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (6.0,10.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (6.0,10.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {7.0} {11.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -304,7 +309,7 @@
 \pgfpointadd{\pgfpointxy {7.0} {10.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {7.0} {10.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (7.0,10.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (7.0,10.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {8.0} {11.5}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -314,7 +319,7 @@
 \pgfpointadd{\pgfpointxy {8.0} {10.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {8.0} {10.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (8.0,11.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (8.0,11.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {9.0} {12.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -324,7 +329,7 @@
 \pgfpointadd{\pgfpointxy {9.0} {11.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {9.0} {11.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (9.0,11.5) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (9.0,11.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \begin{scope}[draw=red,fill=red]
 \pgfpointadd{\pgfpointxy {10.0} {12.5}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
@@ -334,7 +339,7 @@
 \pgfpointadd{\pgfpointxy {10.0} {11.5}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
 \pgfpointadd{\pgfpointxy {10.0} {11.5}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
-\node at (10.0,12.0) [circle,inner sep=0pt,minimum width =3pt,minimum height=3pt,draw=red,fill=red] {}; 
+\node at (10.0,12.0) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=red,fill=red] {}; 
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}

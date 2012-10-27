@@ -95,6 +95,24 @@ Some Gaussian histograms
   (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Histogram 3" "opacity=0.5,draw=green!80!black,fill=green!20" ""))
 
 #|
+Datapoints of varying sizes
+|#
+(let ((fname (concatenate 'string *plotting-dir* "bubbles.tex")))
+  (with-tikz-plot (tikz fname 10 5 0 10 0 10)
+    (clip-and-transform (tikz)
+      (dotimes (i 40)
+	(let ((size (+ 5.0 (* (tikz-utils:gaussian-random) 2.0))))
+	  (draw-node tikz (* i 0.25) (+ (* i 0.25) (* 1.0 (tikz-utils:gaussian-random))) "draw=blue,fill=blue!40,opacity=0.2" 
+		     (make-node-string "circle" size size 0 "mm")))))
+    (transform (tikz)
+      ;;Print one digit after .
+      (draw-axis-ticks-y tikz (make-range 0 2.0 5) :precision 1)
+      ;;integers are printed as such, precision means nothing
+      (draw-axis-ticks-x tikz (make-range 0 2 5) :precision 100))
+    (draw-path tikz (list 0 0 10) (list 5 0 0) "thick,black"))
+  ;(pdflatex-compile-view fname)
+  )
+#|
 Histogram with horizontal bins.
 |#
 (with-tikz-plot (tikz (concatenate 'string *plotting-dir* "test-histo1.tex") 10 5 0 350 0 10)
@@ -145,7 +163,9 @@ Gaussian function, with some clipping, filling, text and more
 	 (y-vals (append (list 0)  y (list 0))))
     (flet ((clip-draw (x-min x-max x-pos x-pos-height color text)
 	     (clip-and-transform (tikz)
-	       (clip (tikz x-min x-max 0 5)
+	       (scope (tikz)
+		 (make-rectangle-path tikz x-min 0 x-max 5)
+		 (path-stroke tikz nil nil t)
 		 (draw-path tikz x-vals y-vals color t))
 	       (draw-node tikz
 			  x-pos (* 0.5 (tikz-utils:gauss x-pos-height #(1.0 0.0 1.0)))

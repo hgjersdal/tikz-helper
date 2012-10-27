@@ -497,7 +497,12 @@
 \pgfusepath{ stroke, fill, }
 \end{scope}
 \begin{scope}[]
-\clip (7.5,0.1) rectangle (10.5,1.6);
+\pgfpathmoveto{ \pgfpointxy {7.5} {0.1}}
+\pgfpathlineto{ \pgfpointxy {10.5} {0.1}}
+\pgfpathlineto{ \pgfpointxy {10.5} {1.6}}
+\pgfpathlineto{ \pgfpointxy {7.5} {1.6}}
+\pgfpathclose
+\pgfusepath{  clip, }
 \begin{scope}[shift={(7.5,0.1)}]
 \pgfsetxvec{\pgfpoint{20.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{15.0cm}}

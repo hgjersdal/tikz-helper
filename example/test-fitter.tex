@@ -7,113 +7,118 @@
 \begin{document}
 \begin{tikzpicture}
 \begin{scope}[]
-\clip (0.0,0.0) rectangle (10.0,5.0);
+\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpathclose
+\pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.25cm}}
 \begin{scope}[shift={(0.0,0.0)}]
 \begin{scope}[green,thick]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.8318384644354764}}
-\pgfpathlineto{ \pgfpointxy {0.1} {0.6253111766811651}}
-\pgfpathlineto{ \pgfpointxy {0.2} {0.6001650280597006}}
-\pgfpathlineto{ \pgfpointxy {0.3} {0.7211363064946784}}
-\pgfpathlineto{ \pgfpointxy {0.4} {0.9529612999096928}}
-\pgfpathlineto{ \pgfpointxy {0.5} {1.26037629622834}}
-\pgfpathlineto{ \pgfpointxy {0.6} {1.6081175833742143}}
-\pgfpathlineto{ \pgfpointxy {0.7} {1.9609214492709115}}
-\pgfpathlineto{ \pgfpointxy {0.8} {2.2835241818420267}}
-\pgfpathlineto{ \pgfpointxy {0.9} {2.5406620690111543}}
-\pgfpathlineto{ \pgfpointxy {1.0} {2.69707139870189}}
-\pgfpathlineto{ \pgfpointxy {1.1} {2.733998659746142}}
-\pgfpathlineto{ \pgfpointxy {1.2} {2.698731144609067}}
-\pgfpathlineto{ \pgfpointxy {1.3} {2.6550663466641335}}
-\pgfpathlineto{ \pgfpointxy {1.4} {2.6668017592848123}}
-\pgfpathlineto{ \pgfpointxy {1.5} {2.797734875844573}}
-\pgfpathlineto{ \pgfpointxy {1.6} {3.095299830004544}}
-\pgfpathlineto{ \pgfpointxy {1.7} {3.5414773165764952}}
-\pgfpathlineto{ \pgfpointxy {1.8} {4.101884670659857}}
-\pgfpathlineto{ \pgfpointxy {1.9} {4.742139227354055}}
-\pgfpathlineto{ \pgfpointxy {2.0} {5.427858321758523}}
-\pgfpathlineto{ \pgfpointxy {2.1} {6.126143330728147}}
-\pgfpathlineto{ \pgfpointxy {2.2} {6.8100317981396525}}
-\pgfpathlineto{ \pgfpointxy {2.3} {7.454045309625225}}
-\pgfpathlineto{ \pgfpointxy {2.4} {8.032705450817051}}
-\pgfpathlineto{ \pgfpointxy {2.5} {8.520533807347316}}
-\pgfpathlineto{ \pgfpointxy {2.6} {8.904338507458469}}
-\pgfpathlineto{ \pgfpointxy {2.7} {9.220073849834012}}
-\pgfpathlineto{ \pgfpointxy {2.8} {9.515980675767715}}
-\pgfpathlineto{ \pgfpointxy {2.9} {9.840299826553347}}
-\pgfpathlineto{ \pgfpointxy {3.0} {10.241272143484673}}
-\pgfpathlineto{ \pgfpointxy {3.1} {10.751996505054839}}
-\pgfpathlineto{ \pgfpointxy {3.2} {11.34500393855445}}
-\pgfpathlineto{ \pgfpointxy {3.3} {11.977683508473497}}
-\pgfpathlineto{ \pgfpointxy {3.4} {12.607424279301972}}
-\pgfpathlineto{ \pgfpointxy {3.5} {13.191615315529853}}
-\pgfpathlineto{ \pgfpointxy {3.6} {13.699081590200684}}
-\pgfpathlineto{ \pgfpointxy {3.7} {14.144391710572199}}
-\pgfpathlineto{ \pgfpointxy {3.8} {14.553550192455683}}
-\pgfpathlineto{ \pgfpointxy {3.9} {14.952561551662425}}
-\pgfpathlineto{ \pgfpointxy {4.0} {15.367430304003715}}
-\pgfpathlineto{ \pgfpointxy {4.1} {15.816720472518309}}
-\pgfpathlineto{ \pgfpointxy {4.2} {16.28923410915484}}
-\pgfpathlineto{ \pgfpointxy {4.3} {16.76633277308939}}
-\pgfpathlineto{ \pgfpointxy {4.4} {17.22937802349807}}
-\pgfpathlineto{ \pgfpointxy {4.5} {17.659731419556977}}
-\pgfpathlineto{ \pgfpointxy {4.6} {18.039159478493033}}
-\pgfpathlineto{ \pgfpointxy {4.7} {18.351048549736518}}
-\pgfpathlineto{ \pgfpointxy {4.8} {18.57918994076855}}
-\pgfpathlineto{ \pgfpointxy {4.9} {18.70737495907024}}
-\pgfpathlineto{ \pgfpointxy {5.0} {18.719394912122695}}
-\pgfpathlineto{ \pgfpointxy {5.1} {18.608116538284264}}
-\pgfpathlineto{ \pgfpointxy {5.2} {18.40270829942227}}
-\pgfpathlineto{ \pgfpointxy {5.3} {18.14141408828127}}
-\pgfpathlineto{ \pgfpointxy {5.4} {17.862477797605806}}
-\pgfpathlineto{ \pgfpointxy {5.5} {17.60414332014044}}
-\pgfpathlineto{ \pgfpointxy {5.6} {17.390490464212213}}
-\pgfpathlineto{ \pgfpointxy {5.7} {17.1889427004781}}
-\pgfpathlineto{ \pgfpointxy {5.8} {16.952759415177578}}
-\pgfpathlineto{ \pgfpointxy {5.9} {16.635199994550106}}
-\pgfpathlineto{ \pgfpointxy {6.0} {16.18952382483516}}
-\pgfpathlineto{ \pgfpointxy {6.1} {15.588822384147534}}
-\pgfpathlineto{ \pgfpointxy {6.2} {14.885515518103334}}
-\pgfpathlineto{ \pgfpointxy {6.3} {14.15185516419402}}
-\pgfpathlineto{ \pgfpointxy {6.4} {13.460093259911021}}
-\pgfpathlineto{ \pgfpointxy {6.5} {12.882481742745801}}
-\pgfpathlineto{ \pgfpointxy {6.6} {12.466079843365119}}
-\pgfpathlineto{ \pgfpointxy {6.7} {12.157175965137066}}
-\pgfpathlineto{ \pgfpointxy {6.8} {11.876865804605064}}
-\pgfpathlineto{ \pgfpointxy {6.9} {11.546245058312532}}
-\pgfpathlineto{ \pgfpointxy {7.0} {11.086409422802886}}
-\pgfpathlineto{ \pgfpointxy {7.1} {10.445397985778376}}
-\pgfpathlineto{ \pgfpointxy {7.2} {9.67902339957656}}
-\pgfpathlineto{ \pgfpointxy {7.3} {8.870041707693838}}
-\pgfpathlineto{ \pgfpointxy {7.4} {8.101208953626587}}
-\pgfpathlineto{ \pgfpointxy {7.5} {7.45528118087122}}
-\pgfpathlineto{ \pgfpointxy {7.6} {6.9899127171452555}}
-\pgfpathlineto{ \pgfpointxy {7.7} {6.662351027050807}}
-\pgfpathlineto{ \pgfpointxy {7.8} {6.404741859411133}}
-\pgfpathlineto{ \pgfpointxy {7.9} {6.149230963049482}}
-\pgfpathlineto{ \pgfpointxy {8.0} {5.827964086789111}}
-\pgfpathlineto{ \pgfpointxy {8.1} {5.392836398069883}}
-\pgfpathlineto{ \pgfpointxy {8.2} {4.874740738798091}}
-\pgfpathlineto{ \pgfpointxy {8.3} {4.324319369496633}}
-\pgfpathlineto{ \pgfpointxy {8.4} {3.792214550688432}}
-\pgfpathlineto{ \pgfpointxy {8.5} {3.3290685428963833}}
-\pgfpathlineto{ \pgfpointxy {8.6} {2.9718664819815532}}
-\pgfpathlineto{ \pgfpointxy {8.7} {2.702965005157658}}
-\pgfpathlineto{ \pgfpointxy {8.8} {2.491063624976572}}
-\pgfpathlineto{ \pgfpointxy {8.9} {2.3048618539901793}}
-\pgfpathlineto{ \pgfpointxy {9.0} {2.113059204750354}}
-\pgfpathlineto{ \pgfpointxy {9.1} {1.8918191762168963}}
-\pgfpathlineto{ \pgfpointxy {9.2} {1.6471612129812967}}
-\pgfpathlineto{ \pgfpointxy {9.3} {1.392568746042964}}
-\pgfpathlineto{ \pgfpointxy {9.4} {1.1415252064013202}}
-\pgfpathlineto{ \pgfpointxy {9.5} {0.9075140250557739}}
-\pgfpathlineto{ \pgfpointxy {9.6} {0.7040186330057383}}
-\pgfpathlineto{ \pgfpointxy {9.7} {0.544522461250626}}
-\pgfpathlineto{ \pgfpointxy {9.8} {0.44250894078984887}}
-\pgfpathlineto{ \pgfpointxy {9.9} {0.4114615026228241}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.464863577748962}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {-0.17212520836805667}}
+\pgfpathlineto{ \pgfpointxy {0.1} {0.08007736807936014}}
+\pgfpathlineto{ \pgfpointxy {0.2} {0.35891132694279454}}
+\pgfpathlineto{ \pgfpointxy {0.3} {0.6556157811553318}}
+\pgfpathlineto{ \pgfpointxy {0.4} {0.9614298436500575}}
+\pgfpathlineto{ \pgfpointxy {0.5} {1.2675926273600564}}
+\pgfpathlineto{ \pgfpointxy {0.6} {1.5653432452184142}}
+\pgfpathlineto{ \pgfpointxy {0.7} {1.8459208101582159}}
+\pgfpathlineto{ \pgfpointxy {0.8} {2.100564435112547}}
+\pgfpathlineto{ \pgfpointxy {0.9} {2.3205132330144926}}
+\pgfpathlineto{ \pgfpointxy {1.0} {2.4970063167971386}}
+\pgfpathlineto{ \pgfpointxy {1.1} {2.6277020545688994}}
+\pgfpathlineto{ \pgfpointxy {1.2} {2.735935835139511}}
+\pgfpathlineto{ \pgfpointxy {1.3} {2.851462302494039}}
+\pgfpathlineto{ \pgfpointxy {1.4} {3.004036100617548}}
+\pgfpathlineto{ \pgfpointxy {1.5} {3.2234118734951056}}
+\pgfpathlineto{ \pgfpointxy {1.6} {3.5314559720660785}}
+\pgfpathlineto{ \pgfpointxy {1.7} {3.9184815750870508}}
+\pgfpathlineto{ \pgfpointxy {1.8} {4.36691356826891}}
+\pgfpathlineto{ \pgfpointxy {1.9} {4.8591768373225435}}
+\pgfpathlineto{ \pgfpointxy {2.0} {5.377696267958838}}
+\pgfpathlineto{ \pgfpointxy {2.1} {5.907184399830449}}
+\pgfpathlineto{ \pgfpointxy {2.2} {6.4415043883571075}}
+\pgfpathlineto{ \pgfpointxy {2.3} {6.976807042900313}}
+\pgfpathlineto{ \pgfpointxy {2.4} {7.509243172821569}}
+\pgfpathlineto{ \pgfpointxy {2.5} {8.034963587482375}}
+\pgfpathlineto{ \pgfpointxy {2.6} {8.551848937490043}}
+\pgfpathlineto{ \pgfpointxy {2.7} {9.06469923843512}}
+\pgfpathlineto{ \pgfpointxy {2.8} {9.580044347153976}}
+\pgfpathlineto{ \pgfpointxy {2.9} {10.104414120482971}}
+\pgfpathlineto{ \pgfpointxy {3.0} {10.64433841525847}}
+\pgfpathlineto{ \pgfpointxy {3.1} {11.20338681177369}}
+\pgfpathlineto{ \pgfpointxy {3.2} {11.773287784149236}}
+\pgfpathlineto{ \pgfpointxy {3.3} {12.342809529962565}}
+\pgfpathlineto{ \pgfpointxy {3.4} {12.900720246791147}}
+\pgfpathlineto{ \pgfpointxy {3.5} {13.435788132212435}}
+\pgfpathlineto{ \pgfpointxy {3.6} {13.939906215207246}}
+\pgfpathlineto{ \pgfpointxy {3.7} {14.417466850369808}}
+\pgfpathlineto{ \pgfpointxy {3.8} {14.8759872236977}}
+\pgfpathlineto{ \pgfpointxy {3.9} {15.322984521188513}}
+\pgfpathlineto{ \pgfpointxy {4.0} {15.765975928839822}}
+\pgfpathlineto{ \pgfpointxy {4.1} {16.208582862311957}}
+\pgfpathlineto{ \pgfpointxy {4.2} {16.638843655916258}}
+\pgfpathlineto{ \pgfpointxy {4.3} {17.04090087362678}}
+\pgfpathlineto{ \pgfpointxy {4.4} {17.398897079417612}}
+\pgfpathlineto{ \pgfpointxy {4.5} {17.69697483726282}}
+\pgfpathlineto{ \pgfpointxy {4.6} {17.922492943281686}}
+\pgfpathlineto{ \pgfpointxy {4.7} {18.075675122174264}}
+\pgfpathlineto{ \pgfpointxy {4.8} {18.159961330785816}}
+\pgfpathlineto{ \pgfpointxy {4.9} {18.178791525961604}}
+\pgfpathlineto{ \pgfpointxy {5.0} {18.13560566454688}}
+\pgfpathlineto{ \pgfpointxy {5.1} {18.034292872748594}}
+\pgfpathlineto{ \pgfpointxy {5.2} {17.880538954220413}}
+\pgfpathlineto{ \pgfpointxy {5.3} {17.68047888197768}}
+\pgfpathlineto{ \pgfpointxy {5.4} {17.440247629035753}}
+\pgfpathlineto{ \pgfpointxy {5.5} {17.16598016840998}}
+\pgfpathlineto{ \pgfpointxy {5.6} {16.86576954402518}}
+\pgfpathlineto{ \pgfpointxy {5.7} {16.55554108344408}}
+\pgfpathlineto{ \pgfpointxy {5.8} {16.25317818513887}}
+\pgfpathlineto{ \pgfpointxy {5.9} {15.976564247581738}}
+\pgfpathlineto{ \pgfpointxy {6.0} {15.74358266924489}}
+\pgfpathlineto{ \pgfpointxy {6.1} {15.561618474066627}}
+\pgfpathlineto{ \pgfpointxy {6.2} {15.396063187849741}}
+\pgfpathlineto{ \pgfpointxy {6.3} {15.201809961863141}}
+\pgfpathlineto{ \pgfpointxy {6.4} {14.933751947375733}}
+\pgfpathlineto{ \pgfpointxy {6.5} {14.546782295656422}}
+\pgfpathlineto{ \pgfpointxy {6.6} {14.010817647897449}}
+\pgfpathlineto{ \pgfpointxy {6.7} {13.355868604984344}}
+\pgfpathlineto{ \pgfpointxy {6.8} {12.626969257725989}}
+\pgfpathlineto{ \pgfpointxy {6.9} {11.869153696931244}}
+\pgfpathlineto{ \pgfpointxy {7.0} {11.127456013408988}}
+\pgfpathlineto{ \pgfpointxy {7.1} {10.439155338302445}}
+\pgfpathlineto{ \pgfpointxy {7.2} {9.810510964092288}}
+\pgfpathlineto{ \pgfpointxy {7.3} {9.240027223593561}}
+\pgfpathlineto{ \pgfpointxy {7.4} {8.72620844962129}}
+\pgfpathlineto{ \pgfpointxy {7.5} {8.267558974990523}}
+\pgfpathlineto{ \pgfpointxy {7.6} {7.858883971581172}}
+\pgfpathlineto{ \pgfpointxy {7.7} {7.480191967532652}}
+\pgfpathlineto{ \pgfpointxy {7.8} {7.107792330049273}}
+\pgfpathlineto{ \pgfpointxy {7.9} {6.717994426335331}}
+\pgfpathlineto{ \pgfpointxy {8.0} {6.287107623595132}}
+\pgfpathlineto{ \pgfpointxy {8.1} {5.800119542219359}}
+\pgfpathlineto{ \pgfpointxy {8.2} {5.276730815344241}}
+\pgfpathlineto{ \pgfpointxy {8.3} {4.74532032929238}}
+\pgfpathlineto{ \pgfpointxy {8.4} {4.2342669703864075}}
+\pgfpathlineto{ \pgfpointxy {8.5} {3.771949624948928}}
+\pgfpathlineto{ \pgfpointxy {8.6} {3.3801193063343864}}
+\pgfpathlineto{ \pgfpointxy {8.7} {3.0540155360245658}}
+\pgfpathlineto{ \pgfpointxy {8.8} {2.7822499625330765}}
+\pgfpathlineto{ \pgfpointxy {8.9} {2.5534342343735443}}
+\pgfpathlineto{ \pgfpointxy {9.0} {2.3561800000595787}}
+\pgfpathlineto{ \pgfpointxy {9.1} {2.180085436825529}}
+\pgfpathlineto{ \pgfpointxy {9.2} {2.018694836788672}}
+\pgfpathlineto{ \pgfpointxy {9.3} {1.8665390207870143}}
+\pgfpathlineto{ \pgfpointxy {9.4} {1.7181488096585704}}
+\pgfpathlineto{ \pgfpointxy {9.5} {1.5680550242413482}}
+\pgfpathlineto{ \pgfpointxy {9.6} {1.4107884853733568}}
+\pgfpathlineto{ \pgfpointxy {9.7} {1.2408800138926055}}
+\pgfpathlineto{ \pgfpointxy {9.8} {1.0528604306371012}}
+\pgfpathlineto{ \pgfpointxy {9.9} {0.8412605564448591}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.600611212153886}}
 \pgfusepath{ stroke, }
 \end{scope}
 \begin{scope}[thick,gray]
@@ -320,27 +325,27 @@
 \pgfpathlineto{ \pgfpointxy {10.0} {0.7887735222102034}}
 \pgfusepath{ stroke, }
 \end{scope}
-\node at (0.0,0.8318384644354764) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (0.5,1.26037629622834) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (1.0,2.6970713987018904) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (1.5,2.7977348758445726) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (2.0,5.427858321758523) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (2.5,8.520533807347316) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (3.0,10.241272143484675) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (3.5,13.191615315529855) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (4.0,15.367430304003717) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (4.5,17.659731419556973) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (5.0,18.71939491212269) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (5.5,17.60414332014044) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (6.0,16.18952382483516) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (6.5,12.882481742745801) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (7.0,11.086409422802886) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (7.5,7.455281180871219) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (8.0,5.827964086789112) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (8.5,3.3290685428963833) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (9.0,2.113059204750354) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (9.5,0.907514025055774) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
-\node at (10.0,0.4648635777489621) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
+\node at (0.0,-0.17212520836805667) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (0.5,1.2675926273600564) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (1.0,2.4970063167971386) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (1.5,3.223411873495105) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (2.0,5.377696267958838) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (2.5,8.034963587482375) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (3.0,10.644338415258472) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (3.5,13.435788132212435) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (4.0,15.765975928839822) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (4.5,17.69697483726282) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (5.0,18.13560566454688) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (5.5,17.16598016840998) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (6.0,15.743582669244889) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (6.5,14.546782295656422) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (7.0,11.127456013408988) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (7.5,8.267558974990525) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (8.0,6.287107623595132) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (8.5,3.771949624948928) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (9.0,2.356180000059579) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (9.5,1.5680550242413482) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
+\node at (10.0,0.600611212153886) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
@@ -380,7 +385,7 @@
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
-\node at (1.0,4.5) [circle,inner sep=0pt,minimum width =2pt,minimum height=2pt,draw=blue,fill=blue] {}; 
+\node at (1.0,4.5) [circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=blue,fill=blue] {}; 
 \node[right,] at (1.5,4.5) {Noisy data};
 \draw[draw=green,thick] (0.5,4.1) -- (1.5,4.1);
 \node[right,] at (1.5,4.1) {Spline fit};

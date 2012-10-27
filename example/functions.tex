@@ -7,7 +7,12 @@
 \begin{document}
 \begin{tikzpicture}
 \begin{scope}[]
-\clip (0.0,0.0) rectangle (10.0,5.0);
+\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpathclose
+\pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}

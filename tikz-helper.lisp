@@ -36,20 +36,16 @@
   `(latex-environ (,plottingarea "scope" ,style)
      ,@body))
 
-(defmacro clip ((plottingarea &optional x-from x y-from y) &body body)
+(defmacro clip ((plottingarea) &body body)
   "Clip a rectangle from origin."
-  (if (or (null x) (null y))
-      `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (~f,~f) rectangle (~f,~f);~%"
-		 (x-offset ,plottingarea) (y-offset ,plottingarea)
-		 (+ (width ,plottingarea) (x-offset ,plottingarea))
-		 (+ (height ,plottingarea) (y-offset ,plottingarea)))
-	 ,@body)
-      `(scope (,plottingarea)
-	 (format (ostream ,plottingarea) "\\clip (~a,~a) rectangle (~a,~a);~%"
-		 ,x-from ,y-from ,x ,y)
-	 ,@body)))
-
+  `(scope (,plottingarea)
+     (make-rectangle-path ,plottingarea
+			  (x-offset ,plottingarea) (y-offset ,plottingarea)
+			  (+ (width ,plottingarea) (x-offset ,plottingarea))
+			  (+ (height ,plottingarea) (y-offset ,plottingarea)))
+     (path-stroke ,plottingarea nil nil t)
+     ,@body))
+    
 (defmacro transform-scale ((plottingarea) &body body)
   "Perform transformationf from data coord system to plottingarea system by using scales. Also scales cm, pt, mm etc."
   (let ((x-scale (gensym))
@@ -266,10 +262,10 @@ text-style: style of text node."
       (setf my-list (append my-list (list (+ min (* n stepsize))))))
     my-list))
 
-(defun make-node-string (shape width height &optional (inner-sep 0))
+(defun make-node-string (shape width height &optional (inner-sep 0) (unit "pt"))
   "Make a node string"
-  (format nil "~a,inner sep=~apt,minimum width =~apt,minimum height=~apt"
-	  shape inner-sep width height))
+  (format nil "~a,inner sep=~f~a,minimum width =~f~a,minimum height=~f~a"
+	  shape inner-sep unit width unit height unit))
 
 (defun draw-line (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a line."
@@ -286,7 +282,7 @@ text-style: style of text node."
 
 (defun draw-circle (plottingarea x y style)
   "Generate tikz code to draw a circle."
-  (draw-node plottingarea x y style (make-node-string "circle" 2 2)))
+  (draw-node plottingarea x y style (make-node-string "circle" 3 3)))
 
 (defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
   "Generate tikz code to draw a rectangle."
@@ -377,16 +373,16 @@ text-style: style of text node."
     (when (or bottom-right bottom-left top-right top-left)
       (path-stroke top))))
  
-(defun draw-datapoints (tikz x y style &optional (node (make-node-string "circle" 2 2)))
+(defun draw-datapoints (tikz x y style &optional (node (make-node-string "circle" 3 3)))
   "Draw a set of datapoints"
   (map 'nil (lambda (x y) (draw-node tikz x y style node)) x y))
 
-(defun draw-graph (tikz x y line-style mark-style &optional (node (make-node-string "circle" 2 2)))
+(defun draw-graph (tikz x y line-style mark-style &optional (node (make-node-string "circle" 3 3)))
   "Draw a graph, with a line connecting datapoints"
   (draw-path tikz x y line-style)
   (draw-datapoints tikz x y mark-style node))
 
-(defun draw-graph-spline (tikz x y line-style mark-style  &optional (node (make-node-string "circle" 2 2)))
+(defun draw-graph-spline (tikz x y line-style mark-style  &optional (node (make-node-string "circle" 3 3)))
   "Draw a graph, with a spline connecting datapoints"
   (let ((n  (min (length x) (length y))))
     (draw-function tikz (tikz-spline:get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
@@ -401,7 +397,7 @@ text-style: style of text node."
     (draw-path tikz x-vals y-vals line-style)))
 
 (defun draw-legend-line (tikz x y width name line-style
-			 &optional (mark-style "") (node-string (make-node-string "circle" 2 2))
+			 &optional (mark-style "") (node-string (make-node-string "circle" 3 3))
 			   (name-style "") (error-style "") (error-height 0.1))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
 For graphs, functions, datapoints, most histograms"

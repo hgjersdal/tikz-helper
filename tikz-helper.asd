@@ -16,6 +16,7 @@
 	   draw-histogram
 	   draw-histogram-horizontal
 	   make-path
+	   make-rectangle-path
 	   make-path-mixed-units
 	   path-close
 	   path-stroke
