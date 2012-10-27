@@ -1,6 +1,5 @@
 #|
-Implementation of Levenberg Marquart algorithm, by someone with limited knowledge of both the algorithm and lla by t.papp.
-From:
+Implementation of Levenberg Marquart algorithm from:
 Methods for Non-Linear Least Squares Problems by K. Madsen, H.B. Nielsen, O. Tingleff
 http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 |#
@@ -106,7 +105,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	  ((> Q 0) (levmar-update function (+ 1 iteration)
 					(* mu (max (/ 1.0d0 3.0d0) (- 1 (expt (- (* 2 Q) 1) 3))))
 					2 params nparam nmeas)))))
-    
+
 (defun levmar-optimize (function parameters meas-x meas-y)
   "Find the parameters that makes function closest to measurement.
 Function must be a function (lambda x parameters) that returns a double-float."
