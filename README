@@ -2,16 +2,16 @@ tikz-helper
 
 Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations like sets of data points, histograms or functions.
 
-The package also contains an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points.
+Also included is an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points.
 
 To load the package with quicklisp:
 (pushnew "/path/to/tikz-helper/" asdf:*central-registry* :test #'equal)
 (ql:quickload 'tikz-helper)
 
-The file tikz-helper-example.lisp contains code that generates a few plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex, or the individual tex files. 
+The file tikz-helper-example.lisp contains code that generates a few plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex, or the individual tex files.
 
-The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. If the files are included in another tex file, the master file must contain \usepackage{standalone} aswell as a copy of the preamble in the generated tikz tex files.
+The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. If the files are included in another tex file, the master file must contain \usepackage{standalone} asw ell as all the packages listed in the preamble of the generated tikz tex files.
 
-The files can also be compiled to HTML/SVG through tex4ht, like 'htlatex spline.tex'. The text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for text, but some lines are not as smooth. 
+The files can also be compiled to HTML/SVG through tex4ht, like 'htlatex spline.tex'. The text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for text, but curved lines are not as smooth.
 
-Only tested on SBCL on linux, and relies on the package lla (available through quicklisp) by github user tpapp.
+Only tested on SBCL on linux, and relies on the package lla (available through quicklisp).
