@@ -324,7 +324,7 @@ A function with a zoomed view of a region of interest.
 	  (draw-function tikz2 #'erf-gauss 100 "red"))))))
 
 #|
-Horisontal histograms, side by side.
+Horizontal histograms, side by side.
 |#
 (with-fname ("sub-histo.tex")
   (with-tikz-plot (tikz fname 10 5 0.0 10.0 0.0 5.0)
