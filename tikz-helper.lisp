@@ -157,15 +157,6 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
   (let ((scale (/ (- (plot-y-max tikz) (plot-y-min tikz)) (height tikz))))
     (/ (- y (plot-y-min tikz)) scale)))
 
-(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black,fill=white"))
-  "Draw a thick square around the ploting area"
-  (scope (plottingarea style)
-    (make-rectangle-path plottingarea 
-			 (x-offset plottingarea) (y-offset plottingarea)
-			 (+ (width plottingarea) (x-offset plottingarea))
-			 (+ (height plottingarea) (y-offset plottingarea)))
-    (path-stroke plottingarea t fill)))
-
 (defun draw-tick-mark (plottingarea numberp precision name style text-style x y xpt+ xpt- ypt+ ypt-)
   "Draw a tick mark on an axis."
   (format (ostream plottingarea)
@@ -203,6 +194,35 @@ text-style: style of text node."
 	       (draw-tick-mark plottingarea numberp precision name style text-style (plot-x-min plottingarea) y stop start 0 0))
 	 y-list (if (null names) y-list names))))
 
+(defun draw-subtick-mark (plottingarea style x y xpt+ xpt- ypt+ ypt-)
+  "Draw a tick mark with no text"
+  (format (ostream plottingarea)
+	  "\\draw[~a] [shift={(~f,~f)}] (~a,~a) -- (~a,~a);~%"
+	  style x y xpt+ ypt+ xpt- ypt-))
+
+(defun draw-axis-subticks-x (plottingarea x-list &key (y-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
+  "Draw ticks with no text."
+  (scope (plottingarea (format nil "yshift=~a" y-shift))
+    (mapc (lambda (x) (draw-subtick-mark plottingarea style x (plot-y-min plottingarea) 0 0 stop start)) x-list)))
+
+(defun draw-axis-subticks-y (plottingarea y-list &key (x-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
+  "Draw ticks with no text"
+  (scope (plottingarea (format nil "xshift=~a" x-shift))
+    (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list)))
+
+(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black,fill=white"))
+  "Draw a thick square around the ploting area"
+  (scope (plottingarea style)
+    (make-rectangle-path plottingarea 
+			 (plot-x-min plottingarea) (plot-y-min plottingarea)
+			 (plot-x-max plottingarea) (plot-y-max plottingarea))
+    (path-stroke plottingarea t fill)))
+
+(defun draw-axis-cross (plottingarea &optional (style "thick"))
+  "Draw axis lines crossing at the origin"
+  (draw-line plottingarea (plot-x-min plottingarea) 0 (plot-x-max plottingarea) 0 style)
+  (draw-line plottingarea 0 (plot-y-min plottingarea) 0 (plot-y-max plottingarea) style))
+
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
 \\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi
@@ -222,7 +242,7 @@ text-style: style of text node."
 			     tex-file)
 			    :wait t :search t :output *standard-output*))
 
-(defun pdflatex-compile-view (tex-file &optional (viewer "evince"))
+(defun pdflatex-compile-view (tex-file &optional (viewer "emacsclient"))
   "Compile file, then view with viewer."
   (pdflatex-compile tex-file)
   #+sbcl(sb-ext:run-program viewer
@@ -412,3 +432,10 @@ For graphs, functions, datapoints, most histograms"
   (draw-rectangle tikz x (- y (* 0.5 height))
 		  (+ x width) (+ y (* 0.5 height)) style)
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
+
+(defun draw-legend-rectangles (tikz x y width height names styles &key (x-shift -0.4) (y-shift 0.0))
+  "Draw a (filled) rectangle with a legend entry. This is for filled histograms."
+  (let ((x (make-range x x-shift (length names)))
+	(y (make-range y y-shift (length names))))
+    (mapc (lambda (x y name style) (draw-legend-rectangle tikz x y width height name style "")) 
+	  x y names styles)))

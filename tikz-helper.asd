@@ -31,6 +31,8 @@
 	   draw-legend-rectangle
 	   draw-axis-ticks-x
 	   draw-axis-ticks-y
+	   draw-axis-subticks-x
+	   draw-axis-subticks-y
 	   draw-plottingarea-rectangle
 	   draw-line
 	   draw-text-node

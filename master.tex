@@ -91,15 +91,16 @@
   \caption{ Histograms with mean and sigmas.}
 \end{figure}
 
-\section{Radioactive decay}
-\label{sec:decay}
+\begin{figure}[H]
+  \centering
+  \input{example/bubbles2}
+  \caption{ Two datasets with different scales and transformations in the same plot.}
+\end{figure}
 
 \begin{figure}[H]
   \centering
-  \input{example/half-life}
-  \caption{ Two different axes in plot. The red histogram is the simulated number of
-    remaining nuclei, the blue is the number of decays per time interval. The half-life and
-    the number of nuclei at time=0 is estimated by a levmar fit to the number if decays.}
+  \input{example/log-scale}
+  \caption{ Log scale with sub ticks. The log scaling is done explicitly, not using tikz.}
 \end{figure}
 
 \end{document}

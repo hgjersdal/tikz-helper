@@ -6,8 +6,6 @@
 \usetikzlibrary{arrows,shapes}
 \begin{document}
 \begin{tikzpicture}
-\draw[thick,black,->] (0.0,2.5) -- (10.3,2.5);
-\draw[thick,black,->] (5.0,0.0) -- (5.0,5.3);
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.6666666cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.5cm}}
@@ -26,6 +24,8 @@
 \draw[black] [shift={(-3.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
 \draw[black] [shift={(-3.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
+\draw[thick] (-3.0,0.0) -- (3.0,0.0);
+\draw[thick] (0.0,-1.0) -- (0.0,1.0);
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {-3.0} {-0.9999778948512584}}
 \pgfpathlineto{ \pgfpointxy {-2.985} {-0.9999757083350379}}
@@ -488,13 +488,32 @@
 \pgfpathlineto{ \pgfpointxy {10.5} {1.6}}
 \pgfusepath{ stroke, }
 \end{scope}
-\begin{scope}[thick,black,fill=white]
-\pgfpathmoveto{ \pgfpointxy {7.5} {0.1}}
-\pgfpathlineto{ \pgfpointxy {10.5} {0.1}}
-\pgfpathlineto{ \pgfpointxy {10.5} {1.6}}
-\pgfpathlineto{ \pgfpointxy {7.5} {1.6}}
+\begin{scope}[shift={(7.5,0.1)}]
+\pgfsetxvec{\pgfpoint{20.0cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{15.0cm}}
+\begin{scope}[shift={(0.2,0.2)}]
+\begin{scope}[xshift=0cm]
+\draw[black] [shift={(-0.2,-0.2)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
+\draw[black] [shift={(-0.2,-0.15)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
+\draw[black] [shift={(-0.2,-0.1)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
+\end{scope}
+\begin{scope}[yshift=0cm]
+\draw[black] [shift={(-0.2,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
+\draw[black] [shift={(-0.15,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
+\draw[black] [shift={(-0.1,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
+\draw[black] [shift={(-0.049999997,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.049999997}}};
+\end{scope}
+\begin{scope}[black,fill=white]
+\pgfpathmoveto{ \pgfpointxy {-0.2} {-0.2}}
+\pgfpathlineto{ \pgfpointxy {-0.05} {-0.2}}
+\pgfpathlineto{ \pgfpointxy {-0.05} {-0.1}}
+\pgfpathlineto{ \pgfpointxy {-0.2} {-0.1}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
+\end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointxy {7.5} {0.1}}
@@ -615,25 +634,6 @@
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
-\end{scope}
-\begin{scope}[shift={(7.5,0.1)}]
-\pgfsetxvec{\pgfpoint{20.0cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{15.0cm}}
-\begin{scope}[shift={(0.2,0.2)}]
-\begin{scope}[xshift=0cm]
-\draw[black] [shift={(-0.2,-0.2)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
-\draw[black] [shift={(-0.2,-0.15)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
-\draw[black] [shift={(-0.2,-0.1)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
-\end{scope}
-\begin{scope}[yshift=0cm]
-\draw[black] [shift={(-0.2,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
-\draw[black] [shift={(-0.15,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
-\draw[black] [shift={(-0.1,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
-\draw[black] [shift={(-0.049999997,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.049999997}}};
-\end{scope}
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{tikzpicture}
 \end{document}
