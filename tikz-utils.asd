@@ -1,10 +1,8 @@
-(defpackage #:tikz-utils
+(defpackage :tikz-utils
   (:use :cl)
   (:documentation "Some functions used in examples")
-  (:export gamma
-	   gaussian-random
-	   gauss
-	   erf))
+  (:nicknames :tut)
+  (:export :gamma :gaussian-random :gauss :erf))
 
 (defsystem tikz-utils
   :name "tikz-utils"

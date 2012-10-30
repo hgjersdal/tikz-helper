@@ -245,6 +245,22 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
+\begin{scope}[shift={(7.0,1.2)}]
+\begin{scope}[thick,black,fill=white]
+\pgfpathmoveto{ \pgfpointxy {-7.0} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {7.0} {1.2}}
+\pgfpathlineto{ \pgfpointxy {-7.0} {1.2}}
+\pgfpathclose
+\pgfusepath{ stroke, }
+\end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
 \draw[red] (5.5,4.8) -- (6.1,4.8);
 \node[right,] at (6.1,4.8) {sin(x)};
 \draw[blue] (7.5,4.8) -- (8.1,4.8);

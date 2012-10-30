@@ -1,8 +1,8 @@
-(defpackage #:tikz-levmar
+(defpackage :tikz-levmar
   (:use :cl)
   (:nicknames :levmar)
   (:documentation "An implementtion of the Levenberg Marquart algorithm.")
-  (:export levmar-optimize levmar-optimize-errors))
+  (:export :levmar-optimize :levmar-optimize-errors))
 
 (defsystem tikz-levmar
   :name "tikz-levmar"

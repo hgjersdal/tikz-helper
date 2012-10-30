@@ -1,20 +1,21 @@
-#|
-Install and run using quicklisp:
-(pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
-Load the tikz-helper package:
-(ql:quickload 'tikz-helper)
-Load the package for function fitting:
-(ql:quickload 'tikz-levmar)
-Some functions used in the examples
-(ql:quickload 'tikz-utils)
-|#
+;; Install and run using asdf:
+;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
+;; (asdf:operate 'asdf:load-op 'tikz-helper)
+;; (asdf:operate 'asdf:load-op 'tikz-levmar)
+;; (asdf:operate 'asdf:load-op 'tikz-utils)
+;; Or, if quicklisp is installed:
+;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
+;; (ql:quickload 'tikz-helper)
+;; (ql:quickload 'tikz-levmar)
+;; (ql:quickload 'tikz-utils)
 
 (use-package :tikz-helper)
+(declaim (optimize (safety 3) (debug 3)))
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
 (defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
-(defparameter *viewer* "evince" "A program to view the resulting pdf file.")
+(defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-fname ((name) &body body)
   "Add plotting dir to filename"
@@ -28,7 +29,7 @@ Some functions used in the examples
   "returns a list of size gaussian random numbers"
   (let ((rands nil))
     (dotimes (i size)
-      (push (tikz-utils:gaussian-random) rands))
+      (push (tut:gaussian-random) rands))
     rands))
 
 #|
@@ -36,8 +37,8 @@ Different styles of graphs
 |#
 (with-fname ("test-styles.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 12)
-    (let ((x-vals (make-range 0 1 10))
-	  (y-vals (make-range 0 0.5 10)))
+    (let ((x-vals (make-range 0 1 11))
+	  (y-vals (make-range 0 0.5 11)))
       ;;Clip the figure area, and draw lines with different styles
       (flet ((draw-translate (shift line-style mark-style node-string)
 	       (draw-graph tikz x-vals (mapcar (lambda (x) (+ shift x)) y-vals) line-style mark-style node-string)))
@@ -58,11 +59,11 @@ Different styles of graphs
 			  (make-node-string "regular polygon,regular polygon sides=5" 4 4))
 	  (let ((y-vals (mapcar (lambda (x) (+ x 7.0)) y-vals)))
 	    (draw-path tikz x-vals y-vals "red" nil)
-	    (draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 10) "draw=red,fill=red")))))
+	    (draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 11) "draw=red,fill=red")))))
     (transform (tikz)
       ;;Draw tick marks on axis
-      (draw-axis-ticks-x tikz (make-range 0 2 5) :y-shift "-0.15cm" :start "-3pt" :stop 0)
-      (draw-axis-ticks-y tikz (make-range 0 2 6) :x-shift "-0.15cm" :start "-3pt" :stop 0)    
+      (draw-axis-ticks-x tikz (make-range 0 2 6) :y-shift "-0.15cm" :start "-3pt" :stop 0)
+      (draw-axis-ticks-y tikz (make-range 0 2 7) :x-shift "-0.15cm" :start "-3pt" :stop 0)    
       ;;Draw a thick frame around the plot
       (draw-plottingarea-rectangle tikz))
     ;;Draw lines for the axis tick marks
@@ -76,7 +77,7 @@ Different styles of graphs
 	     (let ((bin (floor (- (+ mean (* sigma g1)) min) bin-size)))
 	       (and (>= bin 0) (< bin nbins) (incf (aref data bin))))))
       (dotimes (i (floor ndraws 2))
-	(multiple-value-bind (g1 g2) (tikz-utils:gaussian-random)
+	(multiple-value-bind (g1 g2) (tut:gaussian-random)
 	  (add g1) (add g2))))
     (make-histogram min bin-size (coerce data 'list))))
 
@@ -85,41 +86,42 @@ Some Gaussian histograms
 |#
 (with-fname ("test-histo2.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 150)
-    (let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2000))
-	  (histo2 (make-gaussian-histogram 0.0 0.25 40 6.0 1.0 1300))
-	  (histo3 (make-gaussian-histogram 0.0 0.25 40 7.0 1.0 900)))
-      (clip-and-transform (tikz)
-	;;Draw a histogram, outlined dark blue filled light blue
-	(draw-histogram tikz histo1 "draw=blue!80!black,fill=blue!20" t)
-	;;Transparent, red
-	(draw-histogram tikz histo2 "opacity=0.5,red!80!black,fill=red!20" t)
-	;;Transparent, green
-	(draw-histogram tikz histo3 "opacity=0.5,draw=green!80!black,fill=green!20" t)))
+    (let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2500))
+	  (histo2 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 1700))
+	  (histo3 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 1000)))
+      (clip (tikz) 
+	(transform (tikz)
+	  ;;Draw a histogram, outlined dark blue filled light blue
+	  (draw-histogram tikz histo1 "draw=gray,fill=blue!50" t)
+	  ;;Transparent, red
+	  (draw-histogram tikz histo2 "red,ultra thick" nil)
+	  ;;Transparent, green
+	  (draw-histogram tikz histo3 "draw=blue!50,fill=green,ultra thick" t t))))
     (transform (tikz)
-      (draw-axis-ticks-y tikz (make-range 0 15 10))
-      (draw-axis-ticks-x tikz (make-range 0 1 10) :names (make-range 0 1 10))
+      (draw-axis-ticks-y tikz (make-range 0 15 11))
+      (draw-axis-ticks-x tikz (make-range 0 1 11))
       (draw-plottingarea-rectangle tikz))
-    (draw-legend-rectangle tikz 0.5 4.5 1 0.2 "Histogram 1" "blue!80!black,fill=blue!20" "")
-    (draw-legend-rectangle tikz 0.5 4.1 1 0.2 "Histogram 2" "opacity=0.5,red!80!black,fill=red!20" "")
-    (draw-legend-rectangle tikz 0.5 3.7 1 0.2 "Histogram 3" "opacity=0.5,draw=green!80!black,fill=green!20" "")))
+    (draw-legend-rectangle tikz 0.5 4.5 0.5 0.2 "Histogram 1" "gray,fill=blue!50" "")
+    (draw-legend-line tikz 0.5 4.1 0.5 "Histogram 2" "red,ultra thick" "")
+    (draw-legend-rectangle tikz 0.5 3.7 0.5 0.2 "Histogram 3" "white,fill=green" "")))
   
 #|
-Datapoints of varying sizes
+Datapoints of varying sizes,shapes and colors
 |#
 (with-fname ("bubbles.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 10)
     (clip-and-transform (tikz)
       (let* ((x (make-range 0 0.1 100))
-	     (y (mapcar (lambda (x)  (+ x (tikz-utils:gaussian-random))) x))
+	     (y (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
 	     (shapes (list "rectangle" "star" "circle"))
 	     (colors (list "red" "blue" "green"))
 	     (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (make-random-list 100))))
-	(mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a!40,opacity=0.2" (elt colors (random 3)))
+	(mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a!40,opacity=0.5" (elt colors (random 3)))
 					    (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size)))
     (transform (tikz)
       ;;Print one digit after .
-      (draw-axis-ticks-y tikz (make-range 0 2.0 5) :precision 1)
-      (draw-axis-ticks-x tikz (make-range 0 2 5)))
+      (draw-axis-ticks-y tikz (make-range 0 2.0 6) :precision 1)
+      (draw-axis-ticks-x tikz (make-range 0 2 6)))
     (draw-path tikz (list 0 0 10) (list 5 0 0) "thick,black")))
 
 #|
@@ -135,14 +137,14 @@ Histogram with horizontal bins.
 								(sort (getf histo :data) #'<)))
 				   "draw=white,fill=blue!20" t t)))
     ;;Use the axis ticks function to name bins
-    (draw-axis-ticks-y tikz (make-range 0.25 0.5 9)
+    (draw-axis-ticks-y tikz (make-range 0.25 0.5 10)
 		       :names (mapcar (lambda (x) (format nil "Thing ~a" (floor x)))
-				      (make-range 1 1 10)) :numberp nil :start 0 :stop 0 :text-style "right")
+				      (make-range 1 1 11)) :numberp nil :start 0 :stop 0 :text-style "right")
     (draw-line tikz 7 -0.3 7 5.3 "gray")
     (draw-node tikz 7 5.3 "above" "" "Threshold")))
 
 #|
-Plotting some functions
+Plotting sin(x) and cos(x)
 |#
 (with-fname ("functions.tex")
   (with-tikz-plot (tikz fname 10 5 -7 7 -1.2 1.2)
@@ -153,22 +155,24 @@ Plotting some functions
 			 :numberp nil :y-shift "2.5cm" :start "-2.5cm" :stop "2.5cm"
 			 :style "ultra thin,gray" :text-style "black,midway,below")
       ;;Horizontal grid lines, text just left of vertical axis. Text is rised a little to prevent - sign from dissappearing
-      (draw-axis-ticks-y tikz (make-range -1.0 0.5 4)
+      (draw-axis-ticks-y tikz (make-range -1.0 0.5 5)
 			 :precision 1 :x-shift "5cm" :start "-5cm" :stop "5cm" 
 			 :style "ultra thin,gray":text-style "above=3pt,black,midway,left")
       (tikz-helper::draw-axis-cross tikz)
       (draw-function tikz #'sin 100 "red")
       (draw-function tikz #'cos 100 "blue"))
+    (transform (tikz)
+      (draw-plottingarea-rectangle tikz))
     (draw-legend-line tikz 5.5 4.8 0.6 "sin(x)" "red")
     (draw-legend-line tikz 7.5 4.8 0.6 "cos(x)" "blue")))
 
 #|
-Gaussian function, with some clipping, filling, text and more
+Gaussian function, with some clipping, filling and text boxes
 |#
 (with-fname ("gaussian-distribution.tex")
   (with-tikz-plot (tikz fname 10 5 -3.2 3.2 0 0.45)
     (let* ((x (make-range -3.2 0.05 128))
-	   (y (mapcar (lambda (x) (tikz-utils:gauss x #( 1.0 0.0 1.0))) x))
+	   (y (mapcar (lambda (x) (tut:gauss x #( 1.0 0.0 1.0))) x))
 	   (x-vals (append (list -3.2) x (list 3.2)))
 	   (y-vals (append (list 0)  y (list 0))))
       (flet ((clip-draw (x-min x-max x-pos x-pos-height color text)
@@ -178,11 +182,11 @@ Gaussian function, with some clipping, filling, text and more
 		   (path-stroke tikz nil nil t)
 		   (draw-path tikz x-vals y-vals color t))
 		 (draw-node tikz
-			    x-pos (* 0.5 (tikz-utils:gauss x-pos-height #(1.0 0.0 1.0)))
+			    x-pos (* 0.5 (tut:gauss x-pos-height #(1.0 0.0 1.0)))
 			    "fill=white,opacity=0.3,draw=black, rounded corners"
 			    (make-node-string "rectangle" 2 2 2) text)
 		 (draw-node tikz
-			    x-pos (* 0.5 (tikz-utils:gauss x-pos-height #(1.0 0.0 1.0)))
+			    x-pos (* 0.5 (tut:gauss x-pos-height #(1.0 0.0 1.0)))
 			    "text=black" (make-node-string "rectangle" 2 2 ) text))))
 	(clip-draw -3.5 -2  -2.5 -1.6 "fill=red!80" "2.2\\%")
 	(clip-draw   -2 -1  -1.5 -1.7 "fill=orange!60" "13.6\\%")
@@ -191,10 +195,10 @@ Gaussian function, with some clipping, filling, text and more
 	(clip-draw    1  2   1.5  1.7 "fill=orange!60" "13.6\\%")
 	(clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%")))
     (transform (tikz)
-      (draw-axis-ticks-x tikz (make-range -3 1 6)
+      (draw-axis-ticks-x tikz (make-range -3 1 7)
 			 :names (mapcar (lambda (x) (if (= x 0) "$\\mu$"
 							(format nil "$~a\\sigma$" x)))
-					(make-range -3 1 6)) :numberp nil)
+					(make-range -3 1 7)) :numberp nil)
       (tikz-helper::draw-axis-cross tikz))))
 
 #|
@@ -202,23 +206,23 @@ Som Gauss smeared datapoints, with a fitted function
 |#
 (with-fname ("test-fitter.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 20)
-    (let* ((x-poses (make-range 0 0.5d0 20))
-	   (y-poses (mapcar (lambda (x) (tikz-utils:gauss x #(90.0d0 5.0d0 2.0d0))) x-poses))
-	   (smeared-y (mapcar (lambda (x) (+ x (* .5 (tikz-utils:gaussian-random)))) y-poses))
+    (let* ((x-poses (make-range 0 0.25d0 41))
+	   (y-poses (mapcar (lambda (x) (tut:gauss x #(90.0d0 5.0d0 2.0d0))) x-poses))
+	   (smeared-y (mapcar (lambda (x) (+ x (tut:gaussian-random))) y-poses))
 	   ;;Get the fit-parameters from the #'gauss function, with initial gueass #(10 0 1)
-	   (fit-params (levmar:levmar-optimize #'tikz-utils:gauss #(10.0d0 0.0d0 1.0d0) x-poses y-poses)))
+	   (fit-params (levmar:levmar-optimize #'tut:gauss #(10.0d0 0.0d0 1.0d0) x-poses y-poses)))
       (clip-and-transform (tikz)
 	(draw-function tikz (spline:get-spline-fun (coerce x-poses 'vector) (coerce smeared-y 'vector))
 		       100 "green,thick" 0 10)
-	(draw-function tikz (lambda (x) (tikz-utils:gauss x fit-params)) 200 "thick,gray")
+	(draw-function tikz (lambda (x) (tut:gauss x fit-params)) 200 "thick,gray")
 	(draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"))
       (transform (tikz)
-	(draw-axis-ticks-x tikz (make-range 0 1 10))
-	(draw-axis-ticks-y tikz (make-range 0 2 10))
+	(draw-axis-ticks-x tikz (make-range 0 1 11))
+	(draw-axis-ticks-y tikz (make-range 0 2 11))
 	(draw-plottingarea-rectangle tikz))
-      (draw-legend-line tikz 0.5 4.5 1 "Noisy data" "" "draw=blue,fill=blue")
-      (draw-legend-line tikz 0.5 4.1 1 "Spline fit" "draw=green,thick")
-      (draw-legend-line tikz 0.5 3.7 1 "Gauss fit" "thick,gray")
+      (draw-legend-line tikz 0.5 4.5 0.4 "Noisy data" "" "draw=blue,fill=blue")
+      (draw-legend-line tikz 0.5 4.1 0.4 "Spline fit" "draw=green,thick")
+      (draw-legend-line tikz 0.5 3.7 0.4"Gauss fit" "thick,gray")
       ;;Print the fit parameters to the plot.
       (draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref fit-params 1)) "left")
       (draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)) "left"))))
@@ -229,25 +233,25 @@ Gaussian histogram, with a fitted function
 (with-fname ("test-fitter2.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 300)
     ;;Make and draw histo
-    (let ((histo (make-gaussian-histogram 0 0.5 20 5.0 1.5 2000)))
+    (let* ((histo (make-gaussian-histogram 0 0.5 20 5.0 1.5 2000))
+	   (x-poses (make-range 0.25 0.5 21))
+	   (y-poses (getf histo :data))
+	   (y-errors (map 'vector #'sqrt y-poses))
+	   ;;Get the estimated parameters
+	   (parameters (levmar:levmar-optimize-errors #'tut:gauss #(300.0d0 3.0d0 1.0d0)
+						      x-poses y-poses y-errors t)))
+      (draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref parameters 1)) "left")
+      (draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref parameters 2)) "left")
       (clip-and-transform (tikz)
-	(draw-histogram tikz histo "draw=blue"))
-      (let* ((x-poses (make-range 0.25 0.5 20))
-	     (y-poses (getf histo :data))
-	     (y-errors (map 'vector #'sqrt y-poses))
-	     ;;Get the estimated parameters
-	     (parameters (levmar:levmar-optimize-errors #'tikz-utils:gauss #(300.0d0 3.0d0 1.0d0)
-							x-poses y-poses y-errors t)))
-	(draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref parameters 1)) "left")
-	(draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref parameters 2)) "left")
-	(clip-and-transform (tikz)
-	  (draw-function tikz (lambda (x) (tikz-utils:gauss x parameters)) 200 "thick,red")))
-      (transform (tikz)
-	(draw-axis-ticks-x tikz (make-range 0 1 10))
-	(draw-axis-ticks-y tikz (make-range 0 30 10))
-	(draw-plottingarea-rectangle tikz))
-      (draw-legend-line tikz 0.5 4.5 1 "2000 Gauss-rand" "draw=blue,fill=blue")
-      (draw-legend-line tikz 0.5 4.1 1 "Gauss fit" "thick,red"))))
+	(draw-histogram tikz histo "draw=blue!10,fill=blue!20" t t)
+	(draw-profilepoints tikz x-poses y-poses (coerce y-errors 'list) "draw=gray,fill=gray" (make-node-string "rectangle" 3 0))
+	(draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red")))
+    (transform (tikz)
+      (draw-axis-ticks-x tikz (make-range 0 1 11))
+      (draw-axis-ticks-y tikz (make-range 0 30 11))
+      (draw-plottingarea-rectangle tikz))
+    (draw-legend-rectangle tikz 0.5 4.5 0.4 0.2 "Data" "draw=blue!10,fill=blue!20" "")
+    (draw-legend-line tikz 0.5 4.1 0.4 "Gauss fit" "thick,red")))
 
 #|
 Make some noisy datapoints from polynomial, fit and plot.
@@ -259,7 +263,7 @@ Make some noisy datapoints from polynomial, fit and plot.
       (let* ((x-poses (make-range -10 0.5 40))
 	     (y-poses (mapcar (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
 	     (y-errors (mapcar (lambda (x) (+ 2.0  (sqrt (abs x)))) y-poses))
-	     (y-smeared (mapcar (lambda (x err) (+ x (* err (tikz-utils:gaussian-random))))
+	     (y-smeared (mapcar (lambda (x err) (+ x (* err (tut:gaussian-random))))
 				y-poses y-errors))
 	     (params (levmar:levmar-optimize-errors #'polynomial #(1.0 1.0d0 1.0d0 1.0d0)
 						    x-poses y-smeared y-errors)))
@@ -276,10 +280,10 @@ Make some noisy datapoints from polynomial, fit and plot.
       (draw-axis-ticks-x tikz (remove 0 (make-range -7 1 14)) :precision 1 :y-shift "2.5cm")
       (draw-axis-ticks-y tikz (remove 0 (make-range -100 20 10)) :precision 1 :x-shift "5.0cm")
       (tikz-helper::draw-axis-cross tikz))
-    (draw-legend-line tikz 0.0 4.6 1 "$0.5x^3 - x^2 - 2x + 3$" "green!80!black")
-    (draw-legend-line tikz 0.0 4.2 1 "noisy measurements" "" "draw=red,fill=red"
+    (draw-legend-line tikz 0.0 4.6 0.4 "$0.5x^3 - x^2 - 2x + 3$" "green!80!black")
+    (draw-legend-line tikz 0.0 4.2 0.4 "Noisy measurements" "" "draw=red,fill=red"
 		      (make-node-string "circle" 3 3) "" "red" 0.2)
-    (draw-legend-line tikz 0.0 3.8 1 "Fitted polynomial" "blue")))
+    (draw-legend-line tikz 0.0 3.8 0.4 "Fitted polynomial" "blue")))
   
 #|
 Qubic splines, with different end conditions.
@@ -297,8 +301,8 @@ Qubic splines, with different end conditions.
 	(let ((fun (spline:get-spline-fun x y t)))
 	  (draw-function tikz fun 100 "red!80" 3.5d0 6.0d0)))
       (transform (tikz)
-	(draw-axis-ticks-x tikz (make-range 4 0.2 10) :precision 1)
-	(draw-axis-ticks-y tikz (make-range 4 0.5 6) :precision 1))
+	(draw-axis-ticks-x tikz (make-range 4 0.2 11) :precision 1)
+	(draw-axis-ticks-y tikz (make-range 4 0.5 7) :precision 1))
       (draw-path tikz (list 0 0 10) (list 5 0 0) "thick")
       (draw-legend-line tikz 5.5 4.0 1 "Not-a-knot spline" "blue!80")
       (draw-legend-line tikz 5.5 3.4 1 "Natural spline" "red!80"))))
@@ -308,17 +312,17 @@ A function with a zoomed view of a region of interest.
 |#
 (with-fname ("sub-fig.tex")
   (with-tikz-plot (tikz fname 10 5 -3.0 3.0 -1.0 1.0)
-    (flet ((erf-gauss (x) (+ (tikz-utils:erf x) (tikz-utils:gauss x (vector 0.001 -0.15 0.01)))))
+    (flet ((erf-gauss (x) (+ (tut:erf x) (tut:gauss x (vector 0.001 -0.15 0.01)))))
       (transform (tikz)
-	(draw-axis-ticks-x tikz (remove 0.0 (make-range -3.0 1 6)) :precision 1 :y-shift "2.5cm")
-	(draw-axis-ticks-y tikz (remove 0.0 (make-range -1 0.5 4)) :precision 1 :x-shift "5.0cm")
+	(draw-axis-ticks-x tikz (remove 0.0 (make-range -3.0 1 7)) :precision 1 :y-shift "2.5cm")
+	(draw-axis-ticks-y tikz (remove 0.0 (make-range -1 0.5 5)) :precision 1 :x-shift "5.0cm")
 	(tikz-helper::draw-axis-cross tikz)
 	(draw-function tikz #'erf-gauss 400 "red"))
       (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
 	(region-of-interest-zoom tikz tikz2 "gray" nil t t nil)
 	(transform (tikz2)
-	  (draw-axis-ticks-y tikz2 (make-range -0.2 0.05 2))
-	  (draw-axis-ticks-x tikz2 (make-range -0.2 0.05 3))
+	  (draw-axis-ticks-y tikz2 (make-range -0.2 0.05 3))
+	  (draw-axis-ticks-x tikz2 (make-range -0.2 0.05 4))
 	  (draw-plottingarea-rectangle tikz2 t "black,fill=white"))
 	(clip-and-transform (tikz2)
 	  (draw-function tikz2 #'erf-gauss 100 "red"))))))
@@ -339,15 +343,15 @@ Horizontal histograms, side by side.
       (draw-sub-histo 0.0 -2.0 2.2)
       (draw-sub-histo 2.0 -1.0 1.8)
       (draw-sub-histo 4.0  0.5 1.6)
-      (draw-sub-histo 6.0  0.0 1.4)
+      (draw-sub-histo 6.0 -0.2 1.4)
       (draw-sub-histo 8.0  0.0 1.2)
       (with-sugfigure (tikz tikz2 0.0 0.0 2.0 5 0.0 200 -6.0 6.0)
 	(transform (tikz2)
-	  (draw-axis-ticks-y tikz2 (make-range -6.0 2.0 6)
+	  (draw-axis-ticks-y tikz2 (make-range -6.0 2.0 7)
 			     :precision 1 :stop "10cm" :style "gray")))
-      (draw-axis-ticks-x tikz (make-range 1.0 2.0 4) 
+      (draw-axis-ticks-x tikz (make-range 1.0 2.0 5) 
 			 :names (mapcar (lambda (x) (format nil "Step ~a" x))
-					(make-range 1 2 4))
+					(make-range 1 2 5))
 			 :numberp nil))))
 
 #|
@@ -355,44 +359,82 @@ Overlaying plots, different scales
 |#
 (with-fname ("bubbles2.tex")
   (with-tikz-plot (tikz fname 10 5 0 10 0 10)
-    (let* ((x (make-range 0 0.1 100))
-	   (y1 (mapcar (lambda (x)  (+ x (tikz-utils:gaussian-random))) x))
-	   (y2 (mapcar (lambda (x)  (* 100 (- 10 (+ x (tikz-utils:gaussian-random))))) x)))
+    (let* ((x (make-range 0 0.1 101))
+	   (y1 (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
+	   (y2 (mapcar (lambda (x)  (* 100 (- 10 (+ x (tut:gaussian-random))))) x)))
       (draw-line tikz 0 0 10 0 "thick,black")
       (draw-line tikz 0 0 0 5 "thick,blue")
       (draw-text-node tikz -0.7 2.5 "Blue axis" "rotate=90,blue") 
       (transform (tikz)
-	(draw-axis-ticks-x tikz (make-range 0 1 10))
-	(draw-axis-ticks-y tikz (make-range 0 1 10) :style "blue"))
+	(draw-axis-ticks-x tikz (make-range 0 1 11))
+	(draw-axis-ticks-y tikz (make-range 0 1 11) :style "blue"))
       (clip-and-transform (tikz)
-	(draw-datapoints tikz x y1 "draw=black,fill=blue!20" (make-node-string "circle" 4 4)))
+	(draw-datapoints tikz x y1 "draw=black,fill=blue" (make-node-string "circle" 4 4)))
       (with-sugfigure (tikz tikz2 0 0 10 5 0 10 0 1000)
 	(draw-text-node tikz 11 2.5 "Red axis" "rotate=-90,red") 
 	(draw-line tikz2 10 0 10 5 "thick,red")
 	(transform (tikz2)
-	  (draw-axis-ticks-y tikz (make-range 0 100 10) :x-shift "10cm" :style "red" :text-style "right"
+	  (draw-axis-ticks-y tikz (make-range 0 100 11) :x-shift "10cm" :style "red" :text-style "right"
 			     :start "2pt" :stop "-2pt"))
 	(clip-and-transform (tikz2)
-	  (draw-datapoints tikz2 x y2 "draw=black,fill=red!20" (make-node-string "rectangle" 4 4)))))))
-	
-      
+	  (draw-datapoints tikz2 x y2 "draw=black,fill=red" (make-node-string "rectangle" 4 4))))
+      (draw-line tikz 0 5 10 5 "thick,black")
+      (draw-legend-line tikz 5.5 5.3 0.3 "Red data" "" "fill=red,draw=black" (make-node-string "rectangle" 4 4))
+      (draw-legend-line tikz 2.5 5.3 0.3 "Blue data" "" "fill=blue,draw=black" (make-node-string "circle" 4 4)))))
+
+
 #|
 Draw plot with log axis, explicit transformation. Also sub-ticks.
 |#
 (with-fname ("log-scale.tex")
-  (with-tikz-plot (tikz fname 10 5 0 10 -1 2)
-    (let* ((x (make-range 0.0 0.2 50))
-	   (y (mapcar (lambda (x) (max 0.1 (expt 10 (+ (* 0.20 x)  (* 0.5 (tikz-utils:gaussian-random)))))) x)))
+  (with-tikz-plot (tikz fname 10 5 0 10 -0.5 2)
+    (flet ((expt-10 (x params) (+ (aref params 0) (expt 10 (* (aref params 1) x)))))
+      (let* ((x (make-range 0.0 0.1 101))
+	     (err (mapcar (lambda (x) (+ (* (expt 10 (* 0.2 x)) 0.4 (tut:gaussian-random)))) x))
+	     (y (mapcar (lambda (x err) (max 0.01 (+ (expt 10 (* 0.20 x)) err))) x err))
+	     (params (levmar:levmar-optimize-errors #'expt-10 #(1.0 0.4) x y err nil)))
+	(transform (tikz)
+	  (draw-plottingarea-rectangle tikz)
+	  (draw-axis-ticks-x tikz (make-range 0 2 6))
+	  (tikz::draw-axis-subticks-y tikz (mapcar (lambda (x) (log x 10)) (list 0.5 0.75 2.5 5.0 7.5 25 50 75)) 
+				      :style "ultra thin,gray" :start 0 :stop "10cm")
+	  (draw-axis-ticks-y tikz (mapcar (lambda (x) (log x 10)) (list 1 10 100))
+			     :numberp nil :start 0 :stop "10cm" :style "gray"
+			     :names (mapcar (lambda (x) (format nil "$10^{~a}$" x)) (list 0 1 2))))
+	(clip-and-transform (tikz)
+	  (draw-function tikz (lambda (x) (log (expt-10 x params) 10)) 100 "blue,thick")
+	  (draw-datapoints tikz x (mapcar (lambda (x) (log x 10)) y) "fill=red,draw=red!20!black" (make-node-string "circle" 4 4)))
+	(draw-legend-line tikz 0.5 4.5 0.4 (format nil "$y(x) = ~2,2f + 10^{~2,2fx}$" (elt params 0) (elt params 1)) "blue,thick")))))
+
+#|
+Scatter plot,large tex file, compiles slowly
+|#
+(with-fname ("scatter.tex")
+  (with-tikz-plot (tikz fname 10 5 -2.5 2.5 -2.5 2.5)
+    (clip-and-transform (tikz)
+      (dotimes (i 200)
+	(multiple-value-bind (g1 g2) (tut:gaussian-random)
+	  (draw-node tikz g1 g2 "fill=black,draw=black" (make-node-string "circle" 1 1)))))
+    (transform (tikz)
+      (draw-axis-ticks-x tikz (make-range -2.5 0.5 11))
+      (draw-axis-ticks-y tikz (make-range -2.5 0.5 11))
+      (draw-plottingarea-rectangle tikz))))
+
+
+(with-fname ("histo-rect.tex")
+  (let* ((nbins 20)
+	 (histo (tikz::make-histogram2d -2.5 0.25 nbins -2.5 0.25 nbins)))
+    (with-tikz-plot (tikz fname 10 5 -2.5 2.5 -2.5 2.5)
+      (dotimes (i 100000)
+	(multiple-value-bind (g1 g2) (tut:gaussian-random)
+	  (tikz::incf-histo2d histo g1 g2)))
+      (format t "~a~%" (getf histo :data))
+      (clip-and-transform (tikz)
+	(tikz::draw-histo2d-rectangles tikz histo 0 
+				       (reduce #'max (make-array (* nbins nbins)
+								 :element-type 'double-float  
+								 :displaced-to (getf histo :data)))))
       (transform (tikz)
 	(draw-plottingarea-rectangle tikz)
-	(draw-axis-ticks-x tikz (make-range 0 2 5))
-	(tikz::draw-axis-subticks-y tikz (mapcar (lambda (x) (log x 10)) (list 0.25 0.5 0.75 2.5 5.0 7.5 25 50 75))
-				    :style "ultra thin,gray"
-				    :start 0 :stop "10cm")
-	(draw-axis-ticks-y tikz (mapcar (lambda (x) (log x 10)) (list 0.1 1 10 100))
-			   :numberp nil :start 0 :stop "10cm"
-			   :style "gray"
-			   :names (mapcar (lambda (x) (format nil "$10^{~a}$" x)) (list -1 0 1 2))))
-      (clip-and-transform (tikz)
-	(draw-datapoints tikz x (mapcar (lambda (x) (log x 10)) y) "fill=blue!20,draw=black" (make-node-string "rectangle" 4 4))))))
-
+	(draw-axis-ticks-y tikz (make-range -2.5 .5 11))
+	(draw-axis-ticks-x tikz (make-range -2.5 .5 11))))))

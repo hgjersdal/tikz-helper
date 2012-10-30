@@ -234,21 +234,28 @@ text-style: style of text node."
 
 (defun pdflatex-compile (tex-file)
   "Compile tex-file with pdflatex"
-  #+sbcl(sb-ext:run-program "pdflatex"
-			    (list
-			     "-output-directory"
-			     (sb-ext:native-namestring
-			      (make-pathname :directory (pathname-directory tex-file)))
-			     tex-file)
-			    :wait t :search t :output *standard-output*))
-
+  #+sbcl
+  (sb-ext:process-exit-code 
+   (sb-ext:run-program "pdflatex"
+		       (list
+			"-output-directory"
+			(sb-ext:native-namestring
+			 (make-pathname :directory (pathname-directory tex-file)))
+			tex-file)
+		       :wait t :search t :output *standard-output*))
+  #-sbcl (warn "Not implemented"))
+  
 (defun pdflatex-compile-view (tex-file &optional (viewer "emacsclient"))
   "Compile file, then view with viewer."
-  (pdflatex-compile tex-file)
-  #+sbcl(sb-ext:run-program viewer
-			    (list (sb-ext:native-namestring
-				   (make-pathname :type "pdf" :defaults tex-file)))
-			    :wait nil :search t))
+  #+sbcl
+  (if (= 0 (pdflatex-compile tex-file))
+      (sb-ext:run-program viewer
+			  (list (sb-ext:native-namestring
+				 (make-pathname :type "pdf" :defaults tex-file)))
+			  :wait nil :search t)
+      (warn "Process pdflatex failed"))
+  #-sbcl
+  (warn "Not implemented"))
 
 (defmacro with-tikz-plot ((name filename width height
 				plot-x-min plot-x-max
@@ -278,7 +285,7 @@ text-style: style of text node."
 (defun make-range (min stepsize steps)
   "Returns a list with steps elements, where the first is min the next is min+stepsize etc"
   (let ((my-list nil))
-    (dotimes (n (1+ steps))
+    (dotimes (n steps)
       (setf my-list (append my-list (list (+ min (* n stepsize))))))
     my-list))
 
@@ -321,8 +328,8 @@ text-style: style of text node."
     (path-stroke plottingarea t)
     (draw-node plottingarea x y style node-string)))
 
-(defun draw-profilepoints (plottingarea x y y-error style)
-  (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style))
+(defun draw-profilepoints (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
+  (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style node-string))
 	  x y y-error))
 
 (defun make-histogram (min bin-size data)
@@ -332,7 +339,7 @@ text-style: style of text node."
 (defun make-histogram-path-points (histo)
   "Make the path for a histogram, the path here is just a list of points."
   (let* ((y-pos (getf histo :data))
-	 (x-pos (make-range (getf histo :min) (getf histo :bin-size) (length y-pos)))
+	 (x-pos (make-range (getf histo :min) (getf histo :bin-size) (+ 1 (length y-pos))))
 	 (path-x nil)
 	 (path-y nil))
     (push (elt x-pos 0) path-x)
@@ -412,7 +419,7 @@ text-style: style of text node."
   "Draw a function y = f(x)"
   (when (null x-min) (setf x-min (plot-x-min tikz)))
   (when (null x-max) (setf x-max (plot-x-max tikz)))
-  (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) samples))
+  (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) (+ 1 samples)))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (draw-path tikz x-vals y-vals line-style)))
 
@@ -439,3 +446,37 @@ For graphs, functions, datapoints, most histograms"
 	(y (make-range y y-shift (length names))))
     (mapc (lambda (x y name style) (draw-legend-rectangle tikz x y width height name style "")) 
 	  x y names styles)))
+
+(defun make-histogram2d (x-min x-bin-size x-nbin y-min y-bin-size y-nbin)
+  (let ((data (make-array (list x-nbin y-nbin) :element-type 'double-float)))
+    ;;(declare (type (SIMPLE-ARRAY DOUBLE-FLOAT (2 2)) data))
+    (list :x-min x-min :x-bin-size x-bin-size :x-nbin x-nbin :y-min y-min :y-bin-size y-bin-size :y-nbin y-nbin :data data)))
+
+(defun incf-histo2d (histo x y &optional (val 1.0d0))
+  (let ((x-bin (floor (- x  (getf histo :x-min)) (getf histo :x-bin-size)))
+	(y-bin (floor (- y (getf histo :y-min)) (getf histo :y-bin-size))))
+    (when (and (>= x-bin 0) (>= y-bin 0) 
+	       (< x-bin (getf histo :x-nbin)) (< y-bin (getf histo :y-nbin)))
+      (incf (aref (getf histo :data) x-bin y-bin) val))))
+
+(defun draw-histo2d-rectangles (plottingarea  histo z-min z-max)
+  "Draw a rectangle for each bin. Colors go from cold to hot"
+  (let ((x-poses (make-range (getf histo :x-min) (getf histo :x-bin-size) (getf histo :x-nbin)))
+	(y-poses (make-range (getf histo :y-min) (getf histo :y-bin-size) (getf histo :y-nbin)))
+	(x-bins (make-range 0 1 (getf histo :x-nbin)))
+	(y-bins (make-range 0 1 (getf histo :y-nbin))))
+    (labels ((make-color (x-bin y-bin)
+	       (let ((z% (/ (* 100 (- (aref (getf histo :data) x-bin y-bin) z-min)) (- z-max z-min))))
+		 (cond ((< z% (/ 100 3.0)) (format nil "green!~a!blue"    (max 0 (floor (* 3 z%)))))
+		       ((< z% (/ 200 3.0)) (format nil "yellow!~a!green"  (floor (* 3 (- z% 33.3333)))))
+		       (t                  (format nil "red!~a!yellow"  (min (floor (* 3 (- z% 66.6666))) 100))))))
+	     (draw-bin (x-pos y-pos x-bin y-bin)
+	       (scope (plottingarea (make-color x-bin y-bin))
+		 (make-rectangle-path plottingarea x-pos y-pos  
+				      (+ x-pos (getf histo :x-bin-size))
+				      (+ y-pos (getf histo :y-bin-size)))
+		 (path-stroke plottingarea t t nil)))
+	     (draw-row (y-bin y-pos)
+	       (map nil (lambda (x-bin x-pos) (draw-bin x-pos y-pos x-bin y-bin)) x-bins x-poses)))
+      (map nil #'draw-row y-bins y-poses))))
+  

@@ -1,8 +1,8 @@
-(defpackage #:tikz-spline
+(defpackage :tikz-spline
   (:use :cl)
   (:nicknames :spline)
   (:documentation "A package for making quadric spline functions")
-  (:export get-spline-fun))
+  (:export :get-spline-fun))
 
 (defsystem tikz-spline
   :name "tikz-spline"

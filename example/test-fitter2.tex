@@ -6,6 +6,8 @@
 \usetikzlibrary{arrows,shapes}
 \begin{document}
 \begin{tikzpicture}
+\node[left] at (9.5,4.5) {Fitted mean:  5.02};
+\node[left] at (9.5,4.1) {Fitted sigma:  1.53};
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
@@ -17,271 +19,663 @@
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.016666668cm}}
 \begin{scope}[shift={(0.0,0.0)}]
-\begin{scope}[draw=blue]
+\begin{scope}[draw=blue!10,fill=blue!20]
 \pgfpathmoveto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {1.0}}
-\pgfpathlineto{ \pgfpointxy {9.5} {1.0}}
-\pgfpathlineto{ \pgfpointxy {9.5} {4.0}}
-\pgfpathlineto{ \pgfpointxy {9.0} {4.0}}
-\pgfpathlineto{ \pgfpointxy {9.0} {13.0}}
-\pgfpathlineto{ \pgfpointxy {8.5} {13.0}}
-\pgfpathlineto{ \pgfpointxy {8.5} {21.0}}
-\pgfpathlineto{ \pgfpointxy {8.0} {21.0}}
-\pgfpathlineto{ \pgfpointxy {8.0} {50.0}}
-\pgfpathlineto{ \pgfpointxy {7.5} {50.0}}
-\pgfpathlineto{ \pgfpointxy {7.5} {97.0}}
-\pgfpathlineto{ \pgfpointxy {7.0} {97.0}}
-\pgfpathlineto{ \pgfpointxy {7.0} {136.0}}
-\pgfpathlineto{ \pgfpointxy {6.5} {136.0}}
-\pgfpathlineto{ \pgfpointxy {6.5} {186.0}}
-\pgfpathlineto{ \pgfpointxy {6.0} {186.0}}
-\pgfpathlineto{ \pgfpointxy {6.0} {230.0}}
-\pgfpathlineto{ \pgfpointxy {5.5} {230.0}}
-\pgfpathlineto{ \pgfpointxy {5.5} {262.0}}
-\pgfpathlineto{ \pgfpointxy {5.0} {262.0}}
-\pgfpathlineto{ \pgfpointxy {5.0} {260.0}}
-\pgfpathlineto{ \pgfpointxy {4.5} {260.0}}
-\pgfpathlineto{ \pgfpointxy {4.5} {254.0}}
-\pgfpathlineto{ \pgfpointxy {4.0} {254.0}}
-\pgfpathlineto{ \pgfpointxy {4.0} {186.0}}
-\pgfpathlineto{ \pgfpointxy {3.5} {186.0}}
-\pgfpathlineto{ \pgfpointxy {3.5} {135.0}}
-\pgfpathlineto{ \pgfpointxy {3.0} {135.0}}
-\pgfpathlineto{ \pgfpointxy {3.0} {84.0}}
-\pgfpathlineto{ \pgfpointxy {2.5} {84.0}}
-\pgfpathlineto{ \pgfpointxy {2.5} {38.0}}
-\pgfpathlineto{ \pgfpointxy {2.0} {38.0}}
-\pgfpathlineto{ \pgfpointxy {2.0} {27.0}}
-\pgfpathlineto{ \pgfpointxy {1.5} {27.0}}
-\pgfpathlineto{ \pgfpointxy {1.5} {9.0}}
-\pgfpathlineto{ \pgfpointxy {1.0} {9.0}}
-\pgfpathlineto{ \pgfpointxy {1.0} {3.0}}
-\pgfpathlineto{ \pgfpointxy {0.5} {3.0}}
-\pgfpathlineto{ \pgfpointxy {0.5} {3.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {3.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {9.5} {0.0}}
+\pgfpathlineto{ \pgfpointxy {9.5} {10.0}}
+\pgfpathlineto{ \pgfpointxy {9.0} {10.0}}
+\pgfpathlineto{ \pgfpointxy {9.0} {14.0}}
+\pgfpathlineto{ \pgfpointxy {8.5} {14.0}}
+\pgfpathlineto{ \pgfpointxy {8.5} {24.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {24.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {61.0}}
+\pgfpathlineto{ \pgfpointxy {7.5} {61.0}}
+\pgfpathlineto{ \pgfpointxy {7.5} {88.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {88.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {121.0}}
+\pgfpathlineto{ \pgfpointxy {6.5} {121.0}}
+\pgfpathlineto{ \pgfpointxy {6.5} {195.0}}
+\pgfpathlineto{ \pgfpointxy {6.0} {195.0}}
+\pgfpathlineto{ \pgfpointxy {6.0} {223.0}}
+\pgfpathlineto{ \pgfpointxy {5.5} {223.0}}
+\pgfpathlineto{ \pgfpointxy {5.5} {268.0}}
+\pgfpathlineto{ \pgfpointxy {5.0} {268.0}}
+\pgfpathlineto{ \pgfpointxy {5.0} {280.0}}
+\pgfpathlineto{ \pgfpointxy {4.5} {280.0}}
+\pgfpathlineto{ \pgfpointxy {4.5} {220.0}}
+\pgfpathlineto{ \pgfpointxy {4.0} {220.0}}
+\pgfpathlineto{ \pgfpointxy {4.0} {168.0}}
+\pgfpathlineto{ \pgfpointxy {3.5} {168.0}}
+\pgfpathlineto{ \pgfpointxy {3.5} {141.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {141.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {92.0}}
+\pgfpathlineto{ \pgfpointxy {2.5} {92.0}}
+\pgfpathlineto{ \pgfpointxy {2.5} {49.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {49.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {22.0}}
+\pgfpathlineto{ \pgfpointxy {1.5} {22.0}}
+\pgfpathlineto{ \pgfpointxy {1.5} {15.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {15.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {7.0}}
+\pgfpathlineto{ \pgfpointxy {0.5} {7.0}}
+\pgfpathlineto{ \pgfpointxy {0.5} {2.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {2.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
+\pgfusepath{ stroke, fill, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {10.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {9.5} {0.0}}
+\pgfpathlineto{ \pgfpointxy {9.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {9.5} {10.0}}
+\pgfpathlineto{ \pgfpointxy {9.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {9.0} {10.0}}
+\pgfpathlineto{ \pgfpointxy {9.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {9.0} {14.0}}
+\pgfpathlineto{ \pgfpointxy {9.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {8.5} {14.0}}
+\pgfpathlineto{ \pgfpointxy {8.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {8.5} {24.0}}
+\pgfpathlineto{ \pgfpointxy {8.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {8.0} {24.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {8.0} {61.0}}
+\pgfpathlineto{ \pgfpointxy {8.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {7.5} {61.0}}
+\pgfpathlineto{ \pgfpointxy {7.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {7.5} {88.0}}
+\pgfpathlineto{ \pgfpointxy {7.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {7.0} {88.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {7.0} {121.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {6.5} {121.0}}
+\pgfpathlineto{ \pgfpointxy {6.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {6.5} {195.0}}
+\pgfpathlineto{ \pgfpointxy {6.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {6.0} {195.0}}
+\pgfpathlineto{ \pgfpointxy {6.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {6.0} {223.0}}
+\pgfpathlineto{ \pgfpointxy {6.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {5.5} {223.0}}
+\pgfpathlineto{ \pgfpointxy {5.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {5.5} {268.0}}
+\pgfpathlineto{ \pgfpointxy {5.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {5.0} {268.0}}
+\pgfpathlineto{ \pgfpointxy {5.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {5.0} {280.0}}
+\pgfpathlineto{ \pgfpointxy {5.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {4.5} {280.0}}
+\pgfpathlineto{ \pgfpointxy {4.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {4.5} {220.0}}
+\pgfpathlineto{ \pgfpointxy {4.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {4.0} {220.0}}
+\pgfpathlineto{ \pgfpointxy {4.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {4.0} {168.0}}
+\pgfpathlineto{ \pgfpointxy {4.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {3.5} {168.0}}
+\pgfpathlineto{ \pgfpointxy {3.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {3.5} {141.0}}
+\pgfpathlineto{ \pgfpointxy {3.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {3.0} {141.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {3.0} {92.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {2.5} {92.0}}
+\pgfpathlineto{ \pgfpointxy {2.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {2.5} {49.0}}
+\pgfpathlineto{ \pgfpointxy {2.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {2.0} {49.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {2.0} {22.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {1.5} {22.0}}
+\pgfpathlineto{ \pgfpointxy {1.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {1.5} {15.0}}
+\pgfpathlineto{ \pgfpointxy {1.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {1.0} {15.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {1.0} {7.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {0.5} {7.0}}
+\pgfpathlineto{ \pgfpointxy {0.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {0.5} {2.0}}
+\pgfpathlineto{ \pgfpointxy {0.5} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=blue!10,fill=blue!20]
+\pgfpathmoveto{ \pgfpointxy {0.0} {2.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
 \pgfusepath{ stroke, }
 \end{scope}
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
-\node[left] at (9.5,4.5) {Fitted mean:  5.02};
-\node[left] at (9.5,4.1) {Fitted sigma:  1.47};
-\begin{scope}[]
+\begin{scope}[draw=blue!10,fill=blue!20]
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
-\pgfpathclose
-\pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{0.016666668cm}}
-\begin{scope}[shift={(0.0,0.0)}]
+\pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {0.25} {3.4142137}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.25} {3.4142137}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.25} {3.4142137}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.25} {0.58578646}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.25} {0.58578646}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.25} {0.58578646}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (0.25,2.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {0.75} {9.645751}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.75} {9.645751}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.75} {9.645751}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.75} {4.354249}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.75} {4.354249}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.75} {4.354249}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (0.75,7.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {1.25} {18.872984}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {1.25} {18.872984}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.25} {18.872984}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.25} {11.127016}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.25} {11.127016}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.25} {11.127016}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (1.25,15.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {1.75} {26.690416}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {1.75} {26.690416}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.75} {26.690416}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.75} {17.309584}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.75} {17.309584}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {1.75} {17.309584}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (1.75,22.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {2.25} {56.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {2.25} {56.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.25} {56.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.25} {42.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.25} {42.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.25} {42.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (2.25,49.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {2.75} {101.59166}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {2.75} {101.59166}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.75} {101.59166}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.75} {82.40834}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.75} {82.40834}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {2.75} {82.40834}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (2.75,92.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {3.25} {152.87434}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {3.25} {152.87434}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.25} {152.87434}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.25} {129.12566}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.25} {129.12566}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.25} {129.12566}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (3.25,141.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {3.75} {180.96149}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {3.75} {180.96149}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.75} {180.96149}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.75} {155.03851}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.75} {155.03851}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {3.75} {155.03851}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (3.75,168.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {4.25} {234.8324}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {4.25} {234.8324}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.25} {234.8324}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.25} {205.1676}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.25} {205.1676}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.25} {205.1676}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (4.25,220.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {4.75} {296.73322}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {4.75} {296.73322}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.75} {296.73322}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.75} {263.26678}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.75} {263.26678}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {4.75} {263.26678}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (4.75,280.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {5.25} {284.3707}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {5.25} {284.3707}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.25} {284.3707}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.25} {251.6293}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.25} {251.6293}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.25} {251.6293}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (5.25,268.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {5.75} {237.93318}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {5.75} {237.93318}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.75} {237.93318}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.75} {208.06682}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.75} {208.06682}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {5.75} {208.06682}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (5.75,223.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {6.25} {208.96423}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {6.25} {208.96423}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.25} {208.96423}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.25} {181.03577}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.25} {181.03577}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.25} {181.03577}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (6.25,195.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {6.75} {132.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {6.75} {132.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.75} {132.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.75} {110.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.75} {110.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {6.75} {110.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (6.75,121.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {7.25} {97.38083}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {7.25} {97.38083}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.25} {97.38083}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.25} {78.61917}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.25} {78.61917}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.25} {78.61917}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (7.25,88.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {7.75} {68.81025}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {7.75} {68.81025}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.75} {68.81025}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.75} {53.18975}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.75} {53.18975}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {7.75} {53.18975}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (7.75,61.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {8.25} {28.89898}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {8.25} {28.89898}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.25} {28.89898}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.25} {19.10102}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.25} {19.10102}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.25} {19.10102}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (8.25,24.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {8.75} {17.741657}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {8.75} {17.741657}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.75} {17.741657}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.75} {10.258343}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.75} {10.258343}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {8.75} {10.258343}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (8.75,14.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {9.25} {13.162277}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {9.25} {13.162277}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.25} {13.162277}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.25} {6.8377223}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.25} {6.8377223}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.25} {6.8377223}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (9.25,10.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
+\begin{scope}[draw=gray,fill=gray]
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{-2pt}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{0pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{-2pt}{0}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {9.75} {0.0}} {\pgfpoint{2pt}{0}}\pgfpathlineto{ NIL }
+\pgfusepath{ stroke, }
+\node at (9.75,0.0) [rectangle,inner sep=0.0pt,minimum width =3.0pt,minimum height=0.0pt,draw=gray,fill=gray] {}; 
+\end{scope}
 \begin{scope}[thick,red]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.7817695669567688}}
-\pgfpathlineto{ \pgfpointxy {0.05} {0.8777969116520923}}
-\pgfpathlineto{ \pgfpointxy {0.1} {0.9844775799761227}}
-\pgfpathlineto{ \pgfpointxy {0.15} {1.1028440512399151}}
-\pgfpathlineto{ \pgfpointxy {0.2} {1.2340105505284376}}
-\pgfpathlineto{ \pgfpointxy {0.25} {1.379177406140649}}
-\pgfpathlineto{ \pgfpointxy {0.3} {1.5396354000091736}}
-\pgfpathlineto{ \pgfpointxy {0.35} {1.716770078278086}}
-\pgfpathlineto{ \pgfpointxy {0.4} {1.9120659856792597}}
-\pgfpathlineto{ \pgfpointxy {0.45} {2.1271107837500134}}
-\pgfpathlineto{ \pgfpointxy {0.5} {2.3635992093100344}}
-\pgfpathlineto{ \pgfpointxy {0.55} {2.6233368260001493}}
-\pgfpathlineto{ \pgfpointxy {0.6} {2.9082435181209823}}
-\pgfpathlineto{ \pgfpointxy {0.65} {3.220356672540138}}
-\pgfpathlineto{ \pgfpointxy {0.7} {3.561833991111321}}
-\pgfpathlineto{ \pgfpointxy {0.75} {3.9349558729205167}}
-\pgfpathlineto{ \pgfpointxy {0.8} {4.342127302797826}}
-\pgfpathlineto{ \pgfpointxy {0.85} {4.785879179968896}}
-\pgfpathlineto{ \pgfpointxy {0.9} {5.268869018527171}}
-\pgfpathlineto{ \pgfpointxy {0.95} {5.793880949651379}}
-\pgfpathlineto{ \pgfpointxy {1.0} {6.363824954235944}}
-\pgfpathlineto{ \pgfpointxy {1.05} {6.981735253910883}}
-\pgfpathlineto{ \pgfpointxy {1.1} {7.650767788366659}}
-\pgfpathlineto{ \pgfpointxy {1.15} {8.374196707532583}}
-\pgfpathlineto{ \pgfpointxy {1.2} {9.155409808546656}}
-\pgfpathlineto{ \pgfpointxy {1.25} {9.997902849657692}}
-\pgfpathlineto{ \pgfpointxy {1.3} {10.905272676273677}}
-\pgfpathlineto{ \pgfpointxy {1.35} {11.88120909836048}}
-\pgfpathlineto{ \pgfpointxy {1.4} {12.929485463346316}}
-\pgfpathlineto{ \pgfpointxy {1.45} {14.053947874635023}}
-\pgfpathlineto{ \pgfpointxy {1.5} {15.258503012799528}}
-\pgfpathlineto{ \pgfpointxy {1.55} {16.54710452453523}}
-\pgfpathlineto{ \pgfpointxy {1.6} {17.923737953502386}}
-\pgfpathlineto{ \pgfpointxy {1.65} {19.392404197274956}}
-\pgfpathlineto{ \pgfpointxy {1.7} {20.95710148571539}}
-\pgfpathlineto{ \pgfpointxy {1.75} {22.62180588818033}}
-\pgfpathlineto{ \pgfpointxy {1.8} {24.390450369981203}}
-\pgfpathlineto{ \pgfpointxy {1.85} {26.266902432410188}}
-\pgfpathlineto{ \pgfpointxy {1.9} {28.254940385319657}}
-\pgfpathlineto{ \pgfpointxy {1.95} {30.358228316613353}}
-\pgfpathlineto{ \pgfpointxy {2.0} {32.58028983895937}}
-\pgfpathlineto{ \pgfpointxy {2.05} {34.92448071044204}}
-\pgfpathlineto{ \pgfpointxy {2.1} {37.39396044258751}}
-\pgfpathlineto{ \pgfpointxy {2.15} {39.9916630260712}}
-\pgfpathlineto{ \pgfpointxy {2.2} {42.720266921271616}}
-\pgfpathlineto{ \pgfpointxy {2.25} {45.582164477492036}}
-\pgfpathlineto{ \pgfpointxy {2.3} {48.57943096093671}}
-\pgfpathlineto{ \pgfpointxy {2.35} {51.7137933871957}}
-\pgfpathlineto{ \pgfpointxy {2.4} {54.986599368856076}}
-\pgfpathlineto{ \pgfpointxy {2.45} {58.39878620270059}}
-\pgfpathlineto{ \pgfpointxy {2.5} {61.95085043355963}}
-\pgfpathlineto{ \pgfpointxy {2.55} {65.64281814303918}}
-\pgfpathlineto{ \pgfpointxy {2.6} {69.47421622083392}}
-\pgfpathlineto{ \pgfpointxy {2.65} {73.44404488395341}}
-\pgfpathlineto{ \pgfpointxy {2.7} {77.55075171474036}}
-\pgfpathlineto{ \pgfpointxy {2.75} {81.79220749185596}}
-\pgfpathlineto{ \pgfpointxy {2.8} {86.16568408928835}}
-\pgfpathlineto{ \pgfpointxy {2.85} {90.66783471674746}}
-\pgfpathlineto{ \pgfpointxy {2.9} {95.29467677042567}}
-\pgfpathlineto{ \pgfpointxy {2.95} {100.0415775559185}}
-\pgfpathlineto{ \pgfpointxy {3.0} {104.90324313504313}}
-\pgfpathlineto{ \pgfpointxy {3.05} {109.87371053532189}}
-\pgfpathlineto{ \pgfpointxy {3.1} {114.94634354499512}}
-\pgfpathlineto{ \pgfpointxy {3.15} {120.11383229762167}}
-\pgfpathlineto{ \pgfpointxy {3.2} {125.36819682867193}}
-\pgfpathlineto{ \pgfpointxy {3.25} {130.7007947621059}}
-\pgfpathlineto{ \pgfpointxy {3.3} {136.10233325790134}}
-\pgfpathlineto{ \pgfpointxy {3.35} {141.56288532200801}}
-\pgfpathlineto{ \pgfpointxy {3.4} {147.0719105484725}}
-\pgfpathlineto{ \pgfpointxy {3.45} {152.61828032973435}}
-\pgfpathlineto{ \pgfpointxy {3.5} {158.19030753561742}}
-\pgfpathlineto{ \pgfpointxy {3.55} {163.7757806246397}}
-\pgfpathlineto{ \pgfpointxy {3.6} {169.3620021132669}}
-\pgfpathlineto{ \pgfpointxy {3.65} {174.9358312900118}}
-\pgfpathlineto{ \pgfpointxy {3.7} {180.48373102221083}}
-\pgfpathlineto{ \pgfpointxy {3.75} {185.9918184642895}}
-\pgfpathlineto{ \pgfpointxy {3.8} {191.44591943778778}}
-\pgfpathlineto{ \pgfpointxy {3.85} {196.83162621576048}}
-\pgfpathlineto{ \pgfpointxy {3.9} {202.13435840784138}}
-\pgfpathlineto{ \pgfpointxy {3.95} {207.33942660767704}}
-\pgfpathlineto{ \pgfpointxy {4.0} {212.43209843201757}}
-\pgfpathlineto{ \pgfpointxy {4.05} {217.3976665509052}}
-\pgfpathlineto{ \pgfpointxy {4.1} {222.22151828150837}}
-\pgfpathlineto{ \pgfpointxy {4.15} {226.88920629457238}}
-\pgfpathlineto{ \pgfpointxy {4.2} {231.38651996253256}}
-\pgfpathlineto{ \pgfpointxy {4.25} {235.69955686235326}}
-\pgfpathlineto{ \pgfpointxy {4.3} {239.81479393438076}}
-\pgfpathlineto{ \pgfpointxy {4.35} {243.71915779114016}}
-\pgfpathlineto{ \pgfpointxy {4.4} {247.4000936672366}}
-\pgfpathlineto{ \pgfpointxy {4.45} {250.84563250345286}}
-\pgfpathlineto{ \pgfpointxy {4.5} {254.04445566483858}}
-\pgfpathlineto{ \pgfpointxy {4.55} {256.9859568040647}}
-\pgfpathlineto{ \pgfpointxy {4.6} {259.66030039753053}}
-\pgfpathlineto{ \pgfpointxy {4.65} {262.05847650255384}}
-\pgfpathlineto{ \pgfpointxy {4.7} {264.17235130929396}}
-\pgfpathlineto{ \pgfpointxy {4.75} {265.99471309063955}}
-\pgfpathlineto{ \pgfpointxy {4.8} {267.5193131868744}}
-\pgfpathlineto{ \pgfpointxy {4.85} {268.7409016992081}}
-\pgfpathlineto{ \pgfpointxy {4.9} {269.65525760685773}}
-\pgfpathlineto{ \pgfpointxy {4.95} {270.2592130659006}}
-\pgfpathlineto{ \pgfpointxy {5.0} {270.5506716941453}}
-\pgfpathlineto{ \pgfpointxy {5.05} {270.52862069432007}}
-\pgfpathlineto{ \pgfpointxy {5.1} {270.193136717468}}
-\pgfpathlineto{ \pgfpointxy {5.15} {269.5453854190433}}
-\pgfpathlineto{ \pgfpointxy {5.2} {268.5876147113064}}
-\pgfpathlineto{ \pgfpointxy {5.25} {267.3231417666806}}
-\pgfpathlineto{ \pgfpointxy {5.3} {265.7563338772286}}
-\pgfpathlineto{ \pgfpointxy {5.35} {263.8925833248091}}
-\pgfpathlineto{ \pgfpointxy {5.4} {261.7382764642714}}
-\pgfpathlineto{ \pgfpointxy {5.45} {259.30075726775186}}
-\pgfpathlineto{ \pgfpointxy {5.5} {256.58828562127917}}
-\pgfpathlineto{ \pgfpointxy {5.55} {253.60999070505383}}
-\pgfpathlineto{ \pgfpointxy {5.6} {250.37581982554062}}
-\pgfpathlineto{ \pgfpointxy {5.65} {246.8964831005492}}
-\pgfpathlineto{ \pgfpointxy {5.7} {243.18339442747742}}
-\pgfpathlineto{ \pgfpointxy {5.75} {239.24860918959047}}
-\pgfpathlineto{ \pgfpointxy {5.8} {235.10475917541268}}
-\pgfpathlineto{ \pgfpointxy {5.85} {230.7649852018585}}
-\pgfpathlineto{ \pgfpointxy {5.9} {226.24286794253965}}
-\pgfpathlineto{ \pgfpointxy {5.95} {221.55235746871563}}
-\pgfpathlineto{ \pgfpointxy {6.0} {216.70770201161815}}
-\pgfpathlineto{ \pgfpointxy {6.05} {211.72337645146112}}
-\pgfpathlineto{ \pgfpointxy {6.1} {206.6140110304529}}
-\pgfpathlineto{ \pgfpointxy {6.15} {201.39432077474945}}
-\pgfpathlineto{ \pgfpointxy {6.2} {196.0790360937337}}
-\pgfpathlineto{ \pgfpointxy {6.25} {190.6828350045461}}
-\pgfpathlineto{ \pgfpointxy {6.3} {185.22027740573208}}
-\pgfpathlineto{ \pgfpointxy {6.35} {179.70574179653767}}
-\pgfpathlineto{ \pgfpointxy {6.4} {174.15336480815327}}
-\pgfpathlineto{ \pgfpointxy {6.45} {168.57698388046003}}
-\pgfpathlineto{ \pgfpointxy {6.5} {162.9900833829764}}
-\pgfpathlineto{ \pgfpointxy {6.55} {157.4057444421662}}
-\pgfpathlineto{ \pgfpointxy {6.6} {151.83659869946288}}
-\pgfpathlineto{ \pgfpointxy {6.65} {146.29478618572855}}
-\pgfpathlineto{ \pgfpointxy {6.7} {140.79191745881928}}
-\pgfpathlineto{ \pgfpointxy {6.75} {135.33904011187784}}
-\pgfpathlineto{ \pgfpointxy {6.8} {129.94660972133408}}
-\pgfpathlineto{ \pgfpointxy {6.85} {124.62446526572765}}
-\pgfpathlineto{ \pgfpointxy {6.9} {119.38180900974636}}
-\pgfpathlineto{ \pgfpointxy {6.95} {114.22719081262409}}
-\pgfpathlineto{ \pgfpointxy {7.0} {109.16849678656443}}
-\pgfpathlineto{ \pgfpointxy {7.05} {104.21294219942709}}
-\pgfpathlineto{ \pgfpointxy {7.1} {99.3670684867594}}
-\pgfpathlineto{ \pgfpointxy {7.15} {94.6367442115849}}
-\pgfpathlineto{ \pgfpointxy {7.2} {90.02716978633242}}
-\pgfpathlineto{ \pgfpointxy {7.25} {85.54288575002731}}
-\pgfpathlineto{ \pgfpointxy {7.3} {81.18778437546936}}
-\pgfpathlineto{ \pgfpointxy {7.35} {76.96512436562884}}
-\pgfpathlineto{ \pgfpointxy {7.4} {72.87754838593379}}
-\pgfpathlineto{ \pgfpointxy {7.45} {68.92710316947122}}
-\pgfpathlineto{ \pgfpointxy {7.5} {65.11526192534005}}
-\pgfpathlineto{ \pgfpointxy {7.55} {61.44294877639398}}
-\pgfpathlineto{ \pgfpointxy {7.6} {57.91056495129057}}
-\pgfpathlineto{ \pgfpointxy {7.65} {54.518016456991425}}
-\pgfpathlineto{ \pgfpointxy {7.7} {51.264742961484465}}
-\pgfpathlineto{ \pgfpointxy {7.75} {48.14974762234977}}
-\pgfpathlineto{ \pgfpointxy {7.8} {45.17162760468592}}
-\pgfpathlineto{ \pgfpointxy {7.85} {42.3286050416472}}
-\pgfpathlineto{ \pgfpointxy {7.9} {39.61855820221496}}
-\pgfpathlineto{ \pgfpointxy {7.95} {37.03905264361906}}
-\pgfpathlineto{ \pgfpointxy {8.0} {34.58737213982464}}
-\pgfpathlineto{ \pgfpointxy {8.05} {32.26054919248954}}
-\pgfpathlineto{ \pgfpointxy {8.1} {30.05539494656171}}
-\pgfpathlineto{ \pgfpointxy {8.15} {27.96852834901679}}
-\pgfpathlineto{ \pgfpointxy {8.2} {25.996404405935593}}
-\pgfpathlineto{ \pgfpointxy {8.25} {24.135341409987177}}
-\pgfpathlineto{ \pgfpointxy {8.3} {22.38154702724786}}
-\pgfpathlineto{ \pgfpointxy {8.35} {20.731143148967067}}
-\pgfpathlineto{ \pgfpointxy {8.4} {19.180189430244166}}
-\pgfpathlineto{ \pgfpointxy {8.45} {17.72470545345716}}
-\pgfpathlineto{ \pgfpointxy {8.5} {16.360691469562354}}
-\pgfpathlineto{ \pgfpointxy {8.55} {15.084147684957902}}
-\pgfpathlineto{ \pgfpointxy {8.6} {13.891092075370814}}
-\pgfpathlineto{ \pgfpointxy {8.65} {12.777576721120258}}
-\pgfpathlineto{ \pgfpointxy {8.7} {11.739702670058689}}
-\pgfpathlineto{ \pgfpointxy {8.75} {10.773633345453561}}
-\pgfpathlineto{ \pgfpointxy {8.8} {9.875606526016428}}
-\pgfpathlineto{ \pgfpointxy {8.85} {9.041944934188301}}
-\pgfpathlineto{ \pgfpointxy {8.9} {8.26906547665213}}
-\pgfpathlineto{ \pgfpointxy {8.95} {7.553487187867459}}
-\pgfpathlineto{ \pgfpointxy {9.0} {6.8918379332266895}}
-\pgfpathlineto{ \pgfpointxy {9.05} {6.280859933247659}}
-\pgfpathlineto{ \pgfpointxy {9.1} {5.717414174074737}}
-\pgfpathlineto{ \pgfpointxy {9.15} {5.198483772508653}}
-\pgfpathlineto{ \pgfpointxy {9.2} {4.72117636587077}}
-\pgfpathlineto{ \pgfpointxy {9.25} {4.28272559828596}}
-\pgfpathlineto{ \pgfpointxy {9.3} {3.880491775501062}}
-\pgfpathlineto{ \pgfpointxy {9.35} {3.5119617602013093}}
-\pgfpathlineto{ \pgfpointxy {9.4} {3.174748179013304}}
-\pgfpathlineto{ \pgfpointxy {9.45} {2.86658801105177}}
-\pgfpathlineto{ \pgfpointxy {9.5} {2.585340626045218}}
-\pgfpathlineto{ \pgfpointxy {9.55} {2.3289853378274246}}
-\pgfpathlineto{ \pgfpointxy {9.6} {2.0956185363686393}}
-\pgfpathlineto{ \pgfpointxy {9.65} {1.883450458605802}}
-\pgfpathlineto{ \pgfpointxy {9.7} {1.690801655171364}}
-\pgfpathlineto{ \pgfpointxy {9.75} {1.5160992067716692}}
-\pgfpathlineto{ \pgfpointxy {9.8} {1.3578727404805888}}
-\pgfpathlineto{ \pgfpointxy {9.85} {1.2147502926393299}}
-\pgfpathlineto{ \pgfpointxy {9.9} {1.085454061434574}}
-\pgfpathlineto{ \pgfpointxy {9.95} {0.968796088603973}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.8636739061265777}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {1.2111666960304759}}
+\pgfpathlineto{ \pgfpointxy {0.05} {1.3472185222887296}}
+\pgfpathlineto{ \pgfpointxy {0.1} {1.496955859014585}}
+\pgfpathlineto{ \pgfpointxy {0.15} {1.6615628300367362}}
+\pgfpathlineto{ \pgfpointxy {0.2} {1.8423043036928184}}
+\pgfpathlineto{ \pgfpointxy {0.25} {2.040529085470599}}
+\pgfpathlineto{ \pgfpointxy {0.3} {2.2576729884863274}}
+\pgfpathlineto{ \pgfpointxy {0.35} {2.4952617478453303}}
+\pgfpathlineto{ \pgfpointxy {0.4} {2.7549137424845713}}
+\pgfpathlineto{ \pgfpointxy {0.45} {3.0383424857152606}}
+\pgfpathlineto{ \pgfpointxy {0.5} {3.3473588433961954}}
+\pgfpathlineto{ \pgfpointxy {0.55} {3.6838729365087577}}
+\pgfpathlineto{ \pgfpointxy {0.6} {4.049895682906978}}
+\pgfpathlineto{ \pgfpointxy {0.65} {4.447539931218373}}
+\pgfpathlineto{ \pgfpointxy {0.7} {4.8790211383109545}}
+\pgfpathlineto{ \pgfpointxy {0.75} {5.3466575404599}}
+\pgfpathlineto{ \pgfpointxy {0.8} {5.852869767382711}}
+\pgfpathlineto{ \pgfpointxy {0.85} {6.4001798477073875}}
+\pgfpathlineto{ \pgfpointxy {0.9} {6.991209554233749}}
+\pgfpathlineto{ \pgfpointxy {0.95} {7.628678037584626}}
+\pgfpathlineto{ \pgfpointxy {1.0} {8.315398697561735}}
+\pgfpathlineto{ \pgfpointxy {1.05} {9.054275242756631}}
+\pgfpathlineto{ \pgfpointxy {1.1} {9.848296890758554}}
+\pgfpathlineto{ \pgfpointxy {1.15} {10.700532663678674}}
+\pgfpathlineto{ \pgfpointxy {1.2} {11.614124736705492}}
+\pgfpathlineto{ \pgfpointxy {1.25} {12.59228080104288}}
+\pgfpathlineto{ \pgfpointxy {1.3} {13.638265406881162}}
+\pgfpathlineto{ \pgfpointxy {1.35} {14.755390257027903}}
+\pgfpathlineto{ \pgfpointxy {1.4} {15.947003427485736}}
+\pgfpathlineto{ \pgfpointxy {1.45} {17.216477497613123}}
+\pgfpathlineto{ \pgfpointxy {1.5} {18.56719657953227}}
+\pgfpathlineto{ \pgfpointxy {1.55} {20.002542244144898}}
+\pgfpathlineto{ \pgfpointxy {1.6} {21.525878349456082}}
+\pgfpathlineto{ \pgfpointxy {1.65} {23.140534785860325}}
+\pgfpathlineto{ \pgfpointxy {1.7} {24.849790162569136}}
+\pgfpathlineto{ \pgfpointxy {1.75} {26.656853469406464}}
+\pgfpathlineto{ \pgfpointxy {1.8} {28.564844758708965}}
+\pgfpathlineto{ \pgfpointxy {1.85} {30.57677490296882}}
+\pgfpathlineto{ \pgfpointxy {1.9} {32.695524495072874}}
+\pgfpathlineto{ \pgfpointxy {1.95} {34.92382196943308}}
+\pgfpathlineto{ \pgfpointxy {2.0} {37.26422103386931}}
+\pgfpathlineto{ \pgfpointxy {2.05} {39.71907751369812}}
+\pgfpathlineto{ \pgfpointxy {2.1} {42.29052572097797}}
+\pgfpathlineto{ \pgfpointxy {2.15} {44.98045447314955}}
+\pgfpathlineto{ \pgfpointxy {2.2} {47.790482896259405}}
+\pgfpathlineto{ \pgfpointxy {2.25} {50.72193615843553}}
+\pgfpathlineto{ \pgfpointxy {2.3} {53.77582128916371}}
+\pgfpathlineto{ \pgfpointxy {2.35} {56.952803249050966}}
+\pgfpathlineto{ \pgfpointxy {2.4} {60.253181423028266}}
+\pgfpathlineto{ \pgfpointxy {2.45} {63.676866717196056}}
+\pgfpathlineto{ \pgfpointxy {2.5} {67.2233594456231}}
+\pgfpathlineto{ \pgfpointxy {2.55} {70.89172819824594}}
+\pgfpathlineto{ \pgfpointxy {2.6} {74.68058988445348}}
+\pgfpathlineto{ \pgfpointxy {2.65} {78.58809114887273}}
+\pgfpathlineto{ \pgfpointxy {2.7} {82.61189135619011}}
+\pgfpathlineto{ \pgfpointxy {2.75} {86.74914734045379}}
+\pgfpathlineto{ \pgfpointxy {2.8} {90.9965001111335}}
+\pgfpathlineto{ \pgfpointxy {2.85} {95.350063703197}}
+\pgfpathlineto{ \pgfpointxy {2.9} {99.80541635155306}}
+\pgfpathlineto{ \pgfpointxy {2.95} {104.35759416138247}}
+\pgfpathlineto{ \pgfpointxy {3.0} {109.00108743511854}}
+\pgfpathlineto{ \pgfpointxy {3.05} {113.72983980416672}}
+\pgfpathlineto{ \pgfpointxy {3.1} {118.53725029889306}}
+\pgfpathlineto{ \pgfpointxy {3.15} {123.4161784740297}}
+\pgfpathlineto{ \pgfpointxy {3.2} {128.3589526885127}}
+\pgfpathlineto{ \pgfpointxy {3.25} {133.3573816189853}}
+\pgfpathlineto{ \pgfpointxy {3.3} {138.40276906489973}}
+\pgfpathlineto{ \pgfpointxy {3.35} {143.4859320804598}}
+\pgfpathlineto{ \pgfpointxy {3.4} {148.59722244475373}}
+\pgfpathlineto{ \pgfpointxy {3.45} {153.72655145649586}}
+\pgfpathlineto{ \pgfpointxy {3.5} {158.86341801404475}}
+\pgfpathlineto{ \pgfpointxy {3.55} {163.99693991501144}}
+\pgfpathlineto{ \pgfpointxy {3.6} {169.11588828304411}}
+\pgfpathlineto{ \pgfpointxy {3.65} {174.2087250025334}}
+\pgfpathlineto{ \pgfpointxy {3.7} {179.2636430152714}}
+\pgfpathlineto{ \pgfpointxy {3.75} {184.26860930678995}}
+\pgfpathlineto{ \pgfpointxy {3.8} {189.21141038446711}}
+\pgfpathlineto{ \pgfpointxy {3.85} {194.0797000247904}}
+\pgfpathlineto{ \pgfpointxy {3.9} {198.8610490436758}}
+\pgfpathlineto{ \pgfpointxy {3.95} {203.5429968217219}}
+\pgfpathlineto{ \pgfpointxy {4.0} {208.11310429598103}}
+\pgfpathlineto{ \pgfpointxy {4.05} {212.55900811150104}}
+\pgfpathlineto{ \pgfpointxy {4.1} {216.86847560975627}}
+\pgfpathlineto{ \pgfpointxy {4.15} {221.02946031735365}}
+\pgfpathlineto{ \pgfpointxy {4.2} {225.03015758725982}}
+\pgfpathlineto{ \pgfpointxy {4.25} {228.8590600364118}}
+\pgfpathlineto{ \pgfpointxy {4.3} {232.50501241808323}}
+\pgfpathlineto{ \pgfpointxy {4.35} {235.95726556489436}}
+\pgfpathlineto{ \pgfpointxy {4.4} {239.20552903895543}}
+\pgfpathlineto{ \pgfpointxy {4.45} {242.24002212936492}}
+\pgfpathlineto{ \pgfpointxy {4.5} {245.0515228441697}}
+\pgfpathlineto{ \pgfpointxy {4.55} {247.63141455390374}}
+\pgfpathlineto{ \pgfpointxy {4.6} {249.97172995691795}}
+\pgfpathlineto{ \pgfpointxy {4.65} {252.06519205279653}}
+\pgfpathlineto{ \pgfpointxy {4.7} {253.9052518291163}}
+\pgfpathlineto{ \pgfpointxy {4.75} {255.4861223884892}}
+\pgfpathlineto{ \pgfpointxy {4.8} {256.80280926705274}}
+\pgfpathlineto{ \pgfpointxy {4.85} {257.85113672213123}}
+\pgfpathlineto{ \pgfpointxy {4.9} {258.6277697954412}}
+\pgfpathlineto{ \pgfpointxy {4.95} {259.13023198869905}}
+\pgfpathlineto{ \pgfpointxy {5.0} {259.35691842052273}}
+\pgfpathlineto{ \pgfpointxy {5.05} {259.30710436680516}}
+\pgfpathlineto{ \pgfpointxy {5.1} {258.98094912095394}}
+\pgfpathlineto{ \pgfpointxy {5.15} {258.3794951452232}}
+\pgfpathlineto{ \pgfpointxy {5.2} {257.5046625194637}}
+\pgfpathlineto{ \pgfpointxy {5.25} {256.35923872866323}}
+\pgfpathlineto{ \pgfpointxy {5.3} {254.94686386529446}}
+\pgfpathlineto{ \pgfpointxy {5.35} {253.27201135640772}}
+\pgfpathlineto{ \pgfpointxy {5.4} {251.33996435827598}}
+\pgfpathlineto{ \pgfpointxy {5.45} {249.15678799290882}}
+\pgfpathlineto{ \pgfpointxy {5.5} {246.72929763060753}}
+\pgfpathlineto{ \pgfpointxy {5.55} {244.06502345066048}}
+\pgfpathlineto{ \pgfpointxy {5.6} {241.17217153801855}}
+\pgfpathlineto{ \pgfpointxy {5.65} {238.0595817971262}}
+\pgfpathlineto{ \pgfpointxy {5.7} {234.73668298480322}}
+\pgfpathlineto{ \pgfpointxy {5.75} {231.2134451820126}}
+\pgfpathlineto{ \pgfpointxy {5.8} {227.5003300393715}}
+\pgfpathlineto{ \pgfpointxy {5.85} {223.6082391432501}}
+\pgfpathlineto{ \pgfpointxy {5.9} {219.5484608581957}}
+\pgfpathlineto{ \pgfpointxy {5.95} {215.33261600716708}}
+\pgfpathlineto{ \pgfpointxy {6.0} {210.97260275366466}}
+\pgfpathlineto{ \pgfpointxy {6.05} {206.48054104932706}}
+\pgfpathlineto{ \pgfpointxy {6.1} {201.8687170069839}}
+\pgfpathlineto{ \pgfpointxy {6.15} {197.14952755261}}
+\pgfpathlineto{ \pgfpointxy {6.2} {192.3354257002325}}
+\pgfpathlineto{ \pgfpointxy {6.25} {187.43886678174542}}
+\pgfpathlineto{ \pgfpointxy {6.3} {182.47225594897026}}
+\pgfpathlineto{ \pgfpointxy {6.35} {177.44789724834578}}
+\pgfpathlineto{ \pgfpointxy {6.4} {172.37794454956872}}
+\pgfpathlineto{ \pgfpointxy {6.45} {167.27435458856053}}
+\pgfpathlineto{ \pgfpointxy {6.5} {162.14884236255418}}
+\pgfpathlineto{ \pgfpointxy {6.55} {157.01283909114147}}
+\pgfpathlineto{ \pgfpointxy {6.6} {151.8774529320507}}
+\pgfpathlineto{ \pgfpointxy {6.65} {146.7534326145162}}
+\pgfpathlineto{ \pgfpointxy {6.7} {141.65113412661708}}
+\pgfpathlineto{ \pgfpointxy {6.75} {136.580490566173}}
+\pgfpathlineto{ \pgfpointxy {6.8} {131.55098523795775}}
+\pgfpathlineto{ \pgfpointxy {6.85} {126.5716280533677}}
+\pgfpathlineto{ \pgfpointxy {6.9} {121.6509352625195}}
+\pgfpathlineto{ \pgfpointxy {6.95} {116.79691252327353}}
+\pgfpathlineto{ \pgfpointxy {7.0} {112.01704128709673}}
+\pgfpathlineto{ \pgfpointxy {7.05} {107.31826845820085}}
+\pgfpathlineto{ \pgfpointxy {7.1} {102.70699926018372}}
+\pgfpathlineto{ \pgfpointxy {7.15} {98.18909322363046}}
+\pgfpathlineto{ \pgfpointxy {7.2} {93.76986318893405}}
+\pgfpathlineto{ \pgfpointxy {7.25} {89.45407720107768}}
+\pgfpathlineto{ \pgfpointxy {7.3} {85.24596315739284}}
+\pgfpathlineto{ \pgfpointxy {7.35} {81.14921605541831}}
+\pgfpathlineto{ \pgfpointxy {7.4} {77.16700767600099}}
+\pgfpathlineto{ \pgfpointxy {7.45} {73.30199852671527}}
+\pgfpathlineto{ \pgfpointxy {7.5} {69.55635186254068}}
+\pgfpathlineto{ \pgfpointxy {7.55} {65.93174959451726}}
+\pgfpathlineto{ \pgfpointxy {7.6} {62.429409892749}}
+\pgfpathlineto{ \pgfpointxy {7.65} {59.05010628760889}}
+\pgfpathlineto{ \pgfpointxy {7.7} {55.794188072233894}}
+\pgfpathlineto{ \pgfpointxy {7.75} {52.6616018103083}}
+\pgfpathlineto{ \pgfpointxy {7.8} {49.65191375562166}}
+\pgfpathlineto{ \pgfpointxy {7.85} {46.76433299384159}}
+\pgfpathlineto{ \pgfpointxy {7.9} {43.997735122250226}}
+\pgfpathlineto{ \pgfpointxy {7.95} {41.35068628972852}}
+\pgfpathlineto{ \pgfpointxy {8.0} {38.82146742690355}}
+\pgfpathlineto{ \pgfpointxy {8.05} {36.40809850497056}}
+\pgfpathlineto{ \pgfpointxy {8.1} {34.1083626711224}}
+\pgfpathlineto{ \pgfpointxy {8.15} {31.919830118628923}}
+\pgfpathlineto{ \pgfpointxy {8.2} {29.839881560278045}}
+\pgfpathlineto{ \pgfpointxy {8.25} {27.865731184970613}}
+\pgfpathlineto{ \pgfpointxy {8.3} {25.994448988644752}}
+\pgfpathlineto{ \pgfpointxy {8.35} {24.222982382245995}}
+\pgfpathlineto{ \pgfpointxy {8.4} {22.54817699105651}}
+\pgfpathlineto{ \pgfpointxy {8.45} {20.96679657123113}}
+\pgfpathlineto{ \pgfpointxy {8.5} {19.475541980755615}}
+\pgfpathlineto{ \pgfpointxy {8.55} {18.071069153158174}}
+\pgfpathlineto{ \pgfpointxy {8.6} {16.750006033071053}}
+\pgfpathlineto{ \pgfpointxy {8.65} {15.508968443092174}}
+\pgfpathlineto{ \pgfpointxy {8.7} {14.344574861262245}}
+\pgfpathlineto{ \pgfpointxy {8.75} {13.25346009779529}}
+\pgfpathlineto{ \pgfpointxy {8.8} {12.232287868440613}}
+\pgfpathlineto{ \pgfpointxy {8.85} {11.277762269962134}}
+\pgfpathlineto{ \pgfpointxy {8.9} {10.386638170681085}}
+\pgfpathlineto{ \pgfpointxy {8.95} {9.555730535812069}}
+\pgfpathlineto{ \pgfpointxy {9.0} {8.781922713422688}}
+\pgfpathlineto{ \pgfpointxy {9.05} {8.062173712262226}}
+\pgfpathlineto{ \pgfpointxy {9.1} {7.393524507434213}}
+\pgfpathlineto{ \pgfpointxy {9.15} {6.773103413946846}}
+\pgfpathlineto{ \pgfpointxy {9.2} {6.198130571578638}}
+\pgfpathlineto{ \pgfpointxy {9.25} {5.665921587265249}}
+\pgfpathlineto{ \pgfpointxy {9.3} {5.173890383377671}}
+\pgfpathlineto{ \pgfpointxy {9.35} {4.719551301847938}}
+\pgfpathlineto{ \pgfpointxy {9.4} {4.300520515144431}}
+\pgfpathlineto{ \pgfpointxy {9.45} {3.914516795638613}}
+\pgfpathlineto{ \pgfpointxy {9.5} {3.559361694977829}}
+\pgfpathlineto{ \pgfpointxy {9.55} {3.23297918472648}}
+\pgfpathlineto{ \pgfpointxy {9.6} {2.933394808798035}}
+\pgfpathlineto{ \pgfpointxy {9.65} {2.65873439711739}}
+\pgfpathlineto{ \pgfpointxy {9.7} {2.4072223885661064}}
+\pgfpathlineto{ \pgfpointxy {9.75} {2.1771798096123676}}
+\pgfpathlineto{ \pgfpointxy {9.8} {1.9670219531539979}}
+\pgfpathlineto{ \pgfpointxy {9.85} {1.7752558000422938}}
+\pgfpathlineto{ \pgfpointxy {9.9} {1.6004772235449882}}
+\pgfpathlineto{ \pgfpointxy {9.95} {1.4413680146816723}}
+\pgfpathlineto{ \pgfpointxy {10.0} {1.296692763956704}}
 \pgfusepath{ stroke, }
 \end{scope}
 \end{scope}
@@ -331,9 +725,9 @@
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
-\draw[draw=blue,fill=blue] (0.5,4.5) -- (1.5,4.5);
-\node[right,] at (1.5,4.5) {2000 Gauss-rand};
-\draw[thick,red] (0.5,4.1) -- (1.5,4.1);
-\node[right,] at (1.5,4.1) {Gauss fit};
+\draw[draw=blue!10,fill=blue!20] (0.5,4.4) rectangle (0.9,4.6);
+\node[right,] at (0.9,4.5) {Data};
+\draw[thick,red] (0.5,4.1) -- (0.9,4.1);
+\node[right,] at (0.9,4.1) {Gauss fit};
 \end{tikzpicture}
 \end{document}
