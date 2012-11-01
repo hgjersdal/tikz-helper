@@ -1,10 +1,10 @@
 tikz-helper
 
-Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations like sets of data points, histograms or functions.
+Tikz is a LaTeX package for making figures that look great in LaTeX documents. This package uses common lisp to generate tikz code for simple 2D data representations like sets of data points, histograms and functions.
 
-Also included is an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points.
+Also included is an implementation of the Levenberg-Martquart algorithm for fitting functions to data, as well as cubic spline interpolation for drawing smooth lines between data points. An algorithm for calculating contour lines for 2D histograms is also available.
 
-The file tikz-helper-example.lisp contains code that generates a few plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex, or the individual tex files.
+The file tikz-helper-example.lisp contains code that generates a few plots. Make sure the parameter *plotting-dir* is set to something appropriate. The plots can be viewed by compiling master.tex, or the individual tex files, or just opening examples.pdf.
 
 The generate latex files can be compiled independently, or included in another tex file, thanks to the latex package standalone. If the files are included in another tex file, the master file must contain \usepackage{standalone} asw ell as all the packages listed in the preamble of the generated tikz tex files.
 

@@ -13,12 +13,13 @@
 	   :draw-axis-subticks-x :draw-axis-subticks-y :draw-plottingarea-rectangle
 	   :draw-line :draw-text-node :draw-node :draw-datapoints :path-move-to
 	   :path-stroke-to :path-stroke :region-of-interest-zoom :pdflatex-compile 
-	   :pdflatex-compile-view))   
+	   :pdflatex-compile-view
+	   :incf-histo2d :draw-histo2d-rectangles :draw-histo2d-contour :make-histogram2d))
 
 (defsystem tikz-helper
   :name "tikz-helper"
   :version "0.0.1"
   :maintainer "haavagj"
-  :description "tikz-helper"
+  :description "A package for drawing tikz plots."
   :depends-on (:lla :tikz-spline)
   :components ((:file "tikz-helper")))

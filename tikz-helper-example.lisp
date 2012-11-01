@@ -14,7 +14,7 @@
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-fname ((name) &body body)
@@ -327,6 +327,7 @@ A function with a zoomed view of a region of interest.
 	(clip-and-transform (tikz2)
 	  (draw-function tikz2 #'erf-gauss 100 "red"))))))
 
+
 #|
 Horizontal histograms, side by side.
 |#
@@ -396,7 +397,7 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
 	(transform (tikz)
 	  (draw-plottingarea-rectangle tikz)
 	  (draw-axis-ticks-x tikz (make-range 0 2 6))
-	  (tikz::draw-axis-subticks-y tikz (mapcar (lambda (x) (log x 10)) (list 0.5 0.75 2.5 5.0 7.5 25 50 75)) 
+	  (draw-axis-subticks-y tikz (mapcar (lambda (x) (log x 10)) (list 0.5 0.75 2.5 5.0 7.5 25 50 75)) 
 				      :style "ultra thin,gray" :start 0 :stop "10cm")
 	  (draw-axis-ticks-y tikz (mapcar (lambda (x) (log x 10)) (list 1 10 100))
 			     :numberp nil :start 0 :stop "10cm" :style "gray"
@@ -404,7 +405,7 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
 	(clip-and-transform (tikz)
 	  (draw-function tikz (lambda (x) (log (expt-10 x params) 10)) 100 "blue,thick")
 	  (draw-datapoints tikz x (mapcar (lambda (x) (log x 10)) y) "fill=red,draw=red!20!black" (make-node-string "circle" 4 4)))
-	(draw-legend-line tikz 0.5 4.5 0.4 (format nil "$y(x) = ~2,2f + 10^{~2,2fx}$" (elt params 0) (elt params 1)) "blue,thick")))))
+	(draw-legend-line tikz 0.5 5.3 0.4 (format nil "$y(x) = ~2,2f + 10^{~2,2fx}$" (elt params 0) (elt params 1)) "blue,thick")))))
 
 #|
 Scatter plot,large tex file, compiles slowly
@@ -420,21 +421,51 @@ Scatter plot,large tex file, compiles slowly
       (draw-axis-ticks-y tikz (make-range -2.5 0.5 11))
       (draw-plottingarea-rectangle tikz))))
 
+(defun make-2d-histo ()
+  (let* ((nbins 40)
+	 (histo (make-histogram2d -2.5 0.125 nbins -2.5 0.125 nbins)))
+    (dotimes (i 100000)
+      (multiple-value-bind (g1 g2) (tut:gaussian-random)
+	(incf-histo2d histo (- (* g1 0.3) 1.0)  (- (random 5.0) 2.5))
+	(incf-histo2d histo   (- (random 5.0) 2.5) (- (* g2 0.3) 1.0)))
+      (multiple-value-bind (g1 g2) (tut:gaussian-random)
+	(incf-histo2d histo (+ (* g1 0.3) 1.0)  (- (random 5.0) 2.5))
+	(incf-histo2d histo   (- (random 5.0) 2.5) (+ (* g2 0.3) 1.0))))
+    histo))
 
+(defun get-histo-max (histo)
+  "Get the bin with the largest content"
+  (max (reduce #'max (make-array (* (getf histo :x-nbin)
+				    (getf histo :y-nbin))
+				 :element-type 'double-float
+				 :displaced-to (getf histo :data)))))
+
+(defun 2d-histo-axes (tikz)
+  "Axes for the 2d histograms"
+  (transform (tikz)
+    (draw-plottingarea-rectangle tikz)
+    (draw-axis-ticks-y tikz (make-range -2.5 .5 11))
+    (draw-axis-ticks-x tikz (make-range -2.5 .5 11))))
+
+#|
+Tree ways of plotting 2D histograms
+|#
 (with-fname ("histo-rect.tex")
-  (let* ((nbins 20)
-	 (histo (tikz::make-histogram2d -2.5 0.25 nbins -2.5 0.25 nbins)))
+  (let* ((histo (make-2d-histo)))
     (with-tikz-plot (tikz fname 10 5 -2.5 2.5 -2.5 2.5)
-      (dotimes (i 100000)
-	(multiple-value-bind (g1 g2) (tut:gaussian-random)
-	  (tikz::incf-histo2d histo g1 g2)))
-      (format t "~a~%" (getf histo :data))
       (clip-and-transform (tikz)
-	(tikz::draw-histo2d-rectangles tikz histo 0 
-				       (reduce #'max (make-array (* nbins nbins)
-								 :element-type 'double-float  
-								 :displaced-to (getf histo :data)))))
-      (transform (tikz)
-	(draw-plottingarea-rectangle tikz)
-	(draw-axis-ticks-y tikz (make-range -2.5 .5 11))
-	(draw-axis-ticks-x tikz (make-range -2.5 .5 11))))))
+	(draw-histo2d-rectangles tikz histo 0 (get-histo-max histo)))
+      (2d-histo-axes tikz))))
+(with-fname ("histo-rect-cont.tex")
+  (let* ((histo (make-2d-histo)))
+    (with-tikz-plot (tikz fname 10 5 -2.5 2.5 -2.5 2.5)
+      (clip-and-transform (tikz)
+	(draw-histo2d-rectangles tikz histo 0 (get-histo-max histo))
+	(draw-histo2d-contour tikz histo 0 (get-histo-max histo) 10 nil))
+      (2d-histo-axes tikz))))
+(with-fname ("histo-cont.tex")
+  (let* ((histo (make-2d-histo)))
+    (with-tikz-plot (tikz fname 10 5 -2.5 2.5 -2.5 2.5)
+      (clip-and-transform (tikz)
+	(draw-histo2d-contour tikz histo 0 (get-histo-max histo) 10 t))
+      (2d-histo-axes tikz))))
