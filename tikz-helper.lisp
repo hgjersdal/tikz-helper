@@ -165,10 +165,10 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
   (if numberp
       (format (ostream plottingarea)
 	      "\\num[round-mode=places,round-precision=~a]{~a}}};~%"
-	      precision name)
+	      precision (if (= 0 precision) (floor name) name))
       (format (ostream plottingarea) "~a}};~%" name)))
 
-(defun draw-axis-ticks-x (plottingarea x-list &key (names nil) (numberp t) (precision 2)
+(defun draw-axis-ticks-x (plottingarea x-list &key (names nil) (numberp t) (precision 1)
 						(y-shift "0cm") (start "-2pt") (stop "2pt")
 						(style "black") (text-style "below"))
   "Draw axis tick marks. Names on the tick marks
@@ -185,7 +185,7 @@ text-style: style of text node."
 	       (draw-tick-mark plottingarea numberp precision name style text-style x (plot-y-min plottingarea) 0 0 stop start))
 	 x-list (if (null names) x-list names))))
 
-(defun draw-axis-ticks-y (plottingarea y-list &key (names nil) (numberp t) (precision 2)
+(defun draw-axis-ticks-y (plottingarea y-list &key (names nil) (numberp t) (precision 1)
 						(x-shift "0cm") (start "-2pt") (stop "2pt")
 						(style "black") (text-style "left"))
   "Draw axis tick marks. See draw-axis-tizks-x for details."
@@ -209,19 +209,6 @@ text-style: style of text node."
   "Draw ticks with no text"
   (scope (plottingarea (format nil "xshift=~a" x-shift))
     (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list)))
-
-(defun draw-plottingarea-rectangle (plottingarea &optional (fill nil) (style "thick,black,fill=white"))
-  "Draw a thick square around the ploting area"
-  (scope (plottingarea style)
-    (make-rectangle-path plottingarea
-			 (plot-x-min plottingarea) (plot-y-min plottingarea)
-			 (plot-x-max plottingarea) (plot-y-max plottingarea))
-    (path-stroke plottingarea t fill)))
-
-(defun draw-axis-cross (plottingarea &optional (style "thick"))
-  "Draw axis lines crossing at the origin"
-  (draw-line plottingarea (plot-x-min plottingarea) 0 (plot-x-max plottingarea) 0 style)
-  (draw-line plottingarea 0 (plot-y-min plottingarea) 0 (plot-y-max plottingarea) style))
 
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
@@ -260,7 +247,7 @@ text-style: style of text node."
 (defmacro with-tikz-plot ((name filename width height
 				plot-x-min plot-x-max
 				plot-y-min plot-y-max) &body body)
-  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment"
+  "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment."
   (let ((stream-name (gensym)))
     `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
        (let ((,name (make-instance 'plottingarea :stream ,stream-name :width ,width :height ,height
@@ -423,9 +410,9 @@ text-style: style of text node."
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (draw-path tikz x-vals y-vals line-style)))
 
-(defun draw-legend-line (tikz x y width name line-style
-			 &optional (mark-style "") (node-string (make-node-string "circle" 3 3))
-			   (name-style "") (error-style "") (error-height 0.1))
+(defun draw-legend-line (tikz x y name &key (width 0.4) (line-style "") (mark-style "") 
+					 (node-string (make-node-string "circle" 3 3))
+					 (name-style "") (error-style "") (error-height 0.1))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
 For graphs, functions, datapoints, most histograms"
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
@@ -440,172 +427,3 @@ For graphs, functions, datapoints, most histograms"
 		  (+ x width) (+ y (* 0.5 height)) style)
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
 
-(defun draw-legend-rectangles (tikz x y width height names styles &key (x-shift -0.4) (y-shift 0.0))
-  "Draw a (filled) rectangle with a legend entry. This is for filled histograms."
-  (let ((x (make-range x x-shift (length names)))
-	(y (make-range y y-shift (length names))))
-    (mapc (lambda (x y name style) (draw-legend-rectangle tikz x y width height name style ""))
-	  x y names styles)))
-
-(defun make-histogram2d (x-min x-bin-size x-nbin y-min y-bin-size y-nbin)
-  "Alloacte a histogram"
-  (let ((data (make-array (list x-nbin y-nbin) :element-type 'double-float)))
-    (list :x-min x-min :x-bin-size x-bin-size :x-nbin x-nbin :y-min y-min :y-bin-size y-bin-size :y-nbin y-nbin :data data)))
-
-(defun incf-histo2d (histo x y &optional (val 1.0d0))
-  "Increment the histogram bin at x y"
-  (let ((x-bin (floor (- x  (getf histo :x-min)) (getf histo :x-bin-size)))
-	(y-bin (floor (- y (getf histo :y-min)) (getf histo :y-bin-size))))
-    (when (and (>= x-bin 0) (>= y-bin 0)
-	       (< x-bin (getf histo :x-nbin)) (< y-bin (getf histo :y-nbin)))
-      (incf (aref (getf histo :data) x-bin y-bin) val))))
-
-(defun make-color-combo (z-min z-max val)
-  "Make a color somehwere between cold and warm"
-  (let ((z% (/ (* 100 (- val z-min)) (- z-max z-min))))
-    (cond ((< z% (/ 100 3.0)) (format nil "green!~a!blue"   (max 0 (floor (* 3  z%)))))
-	  ((< z% (/ 200 3.0)) (format nil "yellow!~a!green"  (floor (* 3 (- z% 33.3333)))))
-	  (t                  (format nil "red!~a!yellow"  (min (floor (* 3 (- z% 66.6666))) 100))))))
-
-(defun draw-histo2d-rectangles (plottingarea histo z-min z-max)
-  "Draw a rectangle for each bin. Colors go from cold to hot"
-  (let ((x-poses (make-range (getf histo :x-min) (getf histo :x-bin-size) (getf histo :x-nbin)))
-	(y-poses (make-range (getf histo :y-min) (getf histo :y-bin-size) (getf histo :y-nbin)))
-	(x-bins (make-range 0 1 (getf histo :x-nbin)))
-	(y-bins (make-range 0 1 (getf histo :y-nbin))))
-    (labels ((draw-bin (x-pos y-pos x-bin y-bin)
-	       (scope (plottingarea (make-color-combo z-min z-max (aref (getf histo :data) x-bin y-bin)))
-		 (make-rectangle-path plottingarea x-pos y-pos
-				      (+ x-pos (getf histo :x-bin-size))
-				      (+ y-pos (getf histo :y-bin-size)))
-		 (path-stroke plottingarea t t nil)))
-	     (draw-row (y-bin y-pos)
-	       (map nil (lambda (x-bin x-pos) (draw-bin x-pos y-pos x-bin y-bin)) x-bins x-poses)))
-      (map nil #'draw-row y-bins y-poses))))
-
-(defun check-neighbour (x y val data cmap)
-  "See if there are borders around the cell. Border means the cell is above val, the neighbour is below."
-  (flet ((isbelow (x y)
-	   (let ((dim (array-dimensions cmap)))
-	     (cond ((or (< x 0) (< y 0)) t)
-		   ((or (>= x (first dim)) (>= y (second dim))) t)
-		   (t (< (aref data x y) val))))))
-    (when (>= (aref data x y) val)
-      ;;Vector is left up right below
-      (let ((nb (vector (isbelow (- x 1) y) (isbelow x (+ y 1))
-			(isbelow (+ x 1) y) (isbelow x (- y 1)))))
-	(when (reduce (lambda (x y) (or x y)) nb)
-	  (setf (aref cmap x y) nb))))))
-
-(defun make-contour-cells (histo cmap z-val)
-  "Count borders for all the cells in histo"
-  (let ((data (getf histo :data))
-	(xbins (make-range 0 1 (getf histo :x-nbin)))
-	(ybins (make-range 0 1 (getf histo :y-nbin))))
-    (mapc (lambda (x) (mapc (lambda (y) (check-neighbour x y z-val data cmap)) ybins)) xbins)))
-
-(defun dir-to-num (dir)
-  (case dir (:left 0) (:up 1) (:right 2) (:down 3)))
-
-(defun num-to-dir (num)
-  (elt (list :left :up :right :down) num))
-
-(defun oposite-dir (dir)
-  (let ((num (dir-to-num dir)))
-    (num-to-dir (if (> num 1) (- num 2) (+ 2 num)))))
-
-(defun turn-left (dir)
-  (let ((num (dir-to-num dir)))
-    (num-to-dir (if (= num 0) 3 (- num 1)))))
-
-(defun turn-right (dir)
-  (let ((num (dir-to-num dir)))
-    (num-to-dir (if (= num 3) 0 (+ num 1)))))
-
-(defun turn-left-xy (dir xy)
-  (mapcar #'+ xy
-	  (case dir (:left (list -1 -1)) (:up (list -1 1))
-		(:right (list 1 1)) (:down (list 1 -1)))))
-
-(defun continue-xy (dir xy)
-  (mapcar #'+ xy
-	  (case dir (:left  (list -1 0)) (:up    (list 0 1))
-		(:right (list 1 0)) (:down  (list 0 -1)))))
-
-(defun borderp (xy borderdir cmap)
-  "Does cell xy have a border in direction borderdir?"
-  (let ((dim (array-dimensions cmap)))
-    (cond ((minusp (elt xy 0)) nil)
-	  ((minusp (elt xy 1)) nil)
-	  ((>= (elt xy 0) (elt dim 0)) nil)
-	  ((>= (elt xy 1) (elt dim 1)) nil)
-	  ((null (aref cmap (first xy) (second  xy))) nil)
-	  ((aref (aref cmap (first xy) (second  xy)) (dir-to-num borderdir)) t))))
-
-(defun border-correction (max-bin min-bin val)
-  "Linear interpolation"
-  (if (= max-bin min-bin) 0.0
-      (- (/ (- val min-bin) (- max-bin min-bin))  0.5d0)))
-
-(defun move-to-border (xy dir histo val)
-  "Which side of the cell should the contour line be on? Positions are corrected with a linear interpolation."
-  (flet ((get-correction (xy x-shift y-shift)
-	   (let ((dim (array-dimensions (getf histo :data))))
-	     (if (or (minusp (+ x-shift (first xy))) (minusp (+ y-shift (second xy)))
-		     (>= (+ x-shift (first xy)) (elt dim 0)) (>= (+ y-shift (second xy)) (elt dim 1))
-		     (<= val 0)) 
-		 0.0
-		 (border-correction (aref (getf histo :data) (first xy) (second xy))
-				    (aref (getf histo :data) (+ x-shift (first xy)) (+ y-shift (second xy)))
-				    val)))))
-    (mapcar #'+ xy (case dir
-		     (:left (list (get-correction xy -1 0) 0.5))
-		     (:up (list 0.5 (- 1.0 (get-correction xy 0 1))))
-		     (:right (list (- 1.0 (get-correction xy 1 0)) 0.5))
-		     (:down (list 0.5 (get-correction xy 0 -1)))))))
-
-(defun add-contour-path-point (xy dir histo tikz val)
-  "Add a contour point to path,"
-  (let* ((xy (move-to-border xy dir histo val))
-	 (x (+ (getf histo :x-min) (* (elt xy 0) (getf histo :x-bin-size))))
-	 (y (+ (getf histo :y-min) (* (elt xy 1) (getf histo :y-bin-size)))))
-    (path-line-to tikz x y)))
-
-(defun continue-path (xy dir cmap histo tikz val)
-  "Stroll along path with border at left hand side."
-  (let ((borderdir (turn-left dir)))
-    (setf (aref (aref cmap (first xy) (second xy)) (dir-to-num borderdir)) nil)
-    (add-contour-path-point xy borderdir histo tikz val))
-  (cond ((borderp (turn-left-xy dir xy) (oposite-dir dir) cmap)
-	 (continue-path (turn-left-xy dir xy) (turn-left dir) cmap histo tikz val))
-	((borderp (continue-xy dir xy) (turn-left dir) cmap)
-	 (continue-path (continue-xy dir xy) dir cmap histo tikz val))
-	((borderp xy dir cmap)
-	 (continue-path xy (turn-right dir) cmap histo tikz val))))
-
-(defun start-contour-line (x y cmap histo tikz val)
-  "Start the contour line, if cell has borders."
-  (let ((cell (aref cmap x y)))
-    (unless (or (null cell) (reduce (lambda (x y) (and (not x) (not y))) cell))
-      (let* ((dir (num-to-dir 
-		   (cond ((aref cell 0) 0) ((aref cell 1) 1) ((aref cell 2) 2) ((aref cell 3) 3))))
-	     (xy (move-to-border (list x y) dir histo val))
-	     (xx (+ (getf histo :x-min) (* (first xy) (getf histo :x-bin-size))))
-	     (yy (+ (getf histo :y-min) (* (second xy) (getf histo :y-bin-size)))))
-	(path-move-to tikz xx yy)
-	(continue-path (list x y) (turn-right dir) cmap histo tikz val)
-	(path-close tikz)))))
-
-(defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp)
-  "Draw possibly filled contour lines."
-  (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
-	(data (getf histo :data))
-	(xbins (make-range 0 1 (getf histo :x-nbin)))
-	(ybins (make-range 0 1 (getf histo :y-nbin))))
-    (dotimes (i nlines)
-      (let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
-	(mapc (lambda (x) (mapc (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
-	(scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height)))
-	  (mapc (lambda (x) (mapc (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	  (path-stroke plottingarea t fillp))))))
-  

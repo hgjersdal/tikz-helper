@@ -967,14 +967,23 @@
 \begin{scope}[yshift=0cm]
 \draw[black] [shift={(-3.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-3\sigma$}};
 \draw[black] [shift={(-2.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-2\sigma$}};
-\draw[black] [shift={(-1.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-1\sigma$}};
+\draw[black] [shift={(-1.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$\sigma$}};
 \draw[black] [shift={(0.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$\mu$}};
-\draw[black] [shift={(1.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$1\sigma$}};
+\draw[black] [shift={(1.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$\sigma$}};
 \draw[black] [shift={(2.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$2\sigma$}};
 \draw[black] [shift={(3.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$3\sigma$}};
 \end{scope}
-\draw[thick] (-3.2,0.0) -- (3.2,0.0);
-\draw[thick] (0.0,0.0) -- (0.0,0.45);
+\begin{scope}[thick,black,fill=white]
+\pgfpathmoveto{ \pgfpointxy {-3.2} {0.0}}
+\pgfpathlineto{ \pgfpointxy {3.2} {0.0}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {0.45}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[yshift=0.0cm]
+\end{scope}
+\begin{scope}[xshift=5.0cm]
+\end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}

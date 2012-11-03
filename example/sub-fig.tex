@@ -10,22 +10,33 @@
 \pgfsetxvec{\pgfpoint{1.6666666cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.5cm}}
 \begin{scope}[shift={(3.0,1.0)}]
+\begin{scope}[thick,black,fill=white]
+\pgfpathmoveto{ \pgfpointxy {-3.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {3.0} {0.0}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {1.0}}
+\pgfusepath{ stroke, }
+\end{scope}
 \begin{scope}[yshift=2.5cm]
-\draw[black] [shift={(-3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-3.0}}};
-\draw[black] [shift={(-2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-2.0}}};
-\draw[black] [shift={(-1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[black] [shift={(1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
-\draw[black] [shift={(2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{2.0}}};
-\draw[black] [shift={(3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{3.0}}};
+\draw[] [shift={(-3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-3.0}}};
+\draw[] [shift={(-2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-2.0}}};
+\draw[] [shift={(-1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
+\draw[] [shift={(1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\draw[] [shift={(2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{2.0}}};
+\draw[] [shift={(3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{3.0}}};
 \end{scope}
 \begin{scope}[xshift=5.0cm]
-\draw[black] [shift={(-3.0,-1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[black] [shift={(-3.0,-0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
-\draw[black] [shift={(-3.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
-\draw[black] [shift={(-3.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\draw[] [shift={(-3.0,-1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
+\draw[] [shift={(-3.0,-0.8)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.8}}};
+\draw[] [shift={(-3.0,-0.6)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.6}}};
+\draw[] [shift={(-3.0,-0.39999998)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.39999998}}};
+\draw[] [shift={(-3.0,-0.19999999)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.19999999}}};
+\draw[] [shift={(-3.0,0.20000005)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.20000005}}};
+\draw[] [shift={(-3.0,0.39999998)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.39999998}}};
+\draw[] [shift={(-3.0,0.6)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.6}}};
+\draw[] [shift={(-3.0,0.8000001)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.8000001}}};
+\draw[] [shift={(-3.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
-\draw[thick] (-3.0,0.0) -- (3.0,0.0);
-\draw[thick] (0.0,-1.0) -- (0.0,1.0);
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {-3.0} {-0.9999778948512584}}
 \pgfpathlineto{ \pgfpointxy {-2.985} {-0.9999757083350379}}
@@ -492,24 +503,24 @@
 \pgfsetxvec{\pgfpoint{20.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{15.0cm}}
 \begin{scope}[shift={(0.2,0.2)}]
-\begin{scope}[xshift=0cm]
-\draw[black] [shift={(-0.2,-0.2)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
-\draw[black] [shift={(-0.2,-0.15)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
-\draw[black] [shift={(-0.2,-0.1)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
-\end{scope}
-\begin{scope}[yshift=0cm]
-\draw[black] [shift={(-0.2,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
-\draw[black] [shift={(-0.15,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
-\draw[black] [shift={(-0.1,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
-\draw[black] [shift={(-0.049999997,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.049999997}}};
-\end{scope}
-\begin{scope}[black,fill=white]
+\begin{scope}[thick,black,fill=white]
 \pgfpathmoveto{ \pgfpointxy {-0.2} {-0.2}}
 \pgfpathlineto{ \pgfpointxy {-0.05} {-0.2}}
 \pgfpathlineto{ \pgfpointxy {-0.05} {-0.1}}
 \pgfpathlineto{ \pgfpointxy {-0.2} {-0.1}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
+\end{scope}
+\begin{scope}[yshift=0cm]
+\draw[] [shift={(-0.2,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
+\draw[] [shift={(-0.15,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
+\draw[] [shift={(-0.1,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
+\draw[] [shift={(-0.049999997,-0.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.049999997}}};
+\end{scope}
+\begin{scope}[xshift=0cm]
+\draw[] [shift={(-0.2,-0.2)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.2}}};
+\draw[] [shift={(-0.2,-0.15)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.15}}};
+\draw[] [shift={(-0.2,-0.1)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}

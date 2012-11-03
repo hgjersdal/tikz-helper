@@ -18,20 +18,47 @@
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
 \begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[yshift=2.5cm]
-\draw[ultra thin,gray] [shift={(-6.283185307179586,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$-2\pi$}};
-\draw[ultra thin,gray] [shift={(-3.141592653589793,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$-\pi$}};
-\draw[ultra thin,gray] [shift={(3.141592653589793,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$\pi$}};
-\draw[ultra thin,gray] [shift={(6.283185307179586,-1.2)}] (0,2.5cm) -- (0,-2.5cm) node[black,midway,below]{ \scriptsize{$2\pi$}};
+\draw[black] [shift={(-6.283185307179586,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-2\pi$}};
+\draw[black] [shift={(-3.141592653589793,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-\pi$}};
+\draw[black] [shift={(3.141592653589793,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$\pi$}};
+\draw[black] [shift={(6.283185307179586,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$2\pi$}};
 \end{scope}
-\begin{scope}[xshift=5cm]
-\draw[ultra thin,gray] [shift={(-7.0,-1.0)}] (5cm,0) -- (-5cm,0) node[above=3pt,black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[ultra thin,gray] [shift={(-7.0,-0.5)}] (5cm,0) -- (-5cm,0) node[above=3pt,black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
-\draw[ultra thin,gray] [shift={(-7.0,0.0)}] (5cm,0) -- (-5cm,0) node[above=3pt,black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.0}}};
-\draw[ultra thin,gray] [shift={(-7.0,0.5)}] (5cm,0) -- (-5cm,0) node[above=3pt,black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
-\draw[ultra thin,gray] [shift={(-7.0,1.0)}] (5cm,0) -- (-5cm,0) node[above=3pt,black,midway,left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\begin{scope}[thin,gray]
+\pgfpathmoveto{ \pgfpointxy {-6.283185307179586} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {-6.283185307179586} {1.2}}
+\pgfpathmoveto{ \pgfpointxy {-3.141592653589793} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {-3.141592653589793} {1.2}}
+\pgfpathmoveto{ \pgfpointxy {3.141592653589793} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {3.141592653589793} {1.2}}
+\pgfpathmoveto{ \pgfpointxy {6.283185307179586} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {6.283185307179586} {1.2}}
+\pgfpathmoveto{ \pgfpointxy {-7.0} {-1.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-1.0}}
+\pgfpathmoveto{ \pgfpointxy {-7.0} {-0.5}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-0.5}}
+\pgfpathmoveto{ \pgfpointxy {-7.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {0.0}}
+\pgfpathmoveto{ \pgfpointxy {-7.0} {0.5}}
+\pgfpathlineto{ \pgfpointxy {7.0} {0.5}}
+\pgfpathmoveto{ \pgfpointxy {-7.0} {1.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {1.0}}
+\pgfusepath{ stroke, }
 \end{scope}
-\draw[thick] (-7.0,0.0) -- (7.0,0.0);
-\draw[thick] (0.0,-1.2) -- (0.0,1.2);
+\begin{scope}[thick,black,fill=white]
+\pgfpathmoveto{ \pgfpointxy {-7.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {7.0} {0.0}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {0.0} {1.2}}
+\pgfusepath{ stroke, }
+\end{scope}
+\begin{scope}[yshift=2.5cm]
+\end{scope}
+\begin{scope}[xshift=5.0cm]
+\draw[] [shift={(-7.0,-1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
+\draw[] [shift={(-7.0,-0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
+\draw[] [shift={(-7.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
+\draw[] [shift={(-7.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\end{scope}
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {-7.0} {-0.6569866}}
 \pgfpathlineto{ \pgfpointxy {-6.86} {-0.54535675}}
@@ -257,13 +284,17 @@
 \pgfpathclose
 \pgfusepath{ stroke, }
 \end{scope}
+\begin{scope}[yshift=0cm]
+\end{scope}
+\begin{scope}[xshift=0cm]
+\end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
-\draw[red] (5.5,4.8) -- (6.1,4.8);
-\node[right,] at (6.1,4.8) {sin(x)};
-\draw[blue] (7.5,4.8) -- (8.1,4.8);
-\node[right,] at (8.1,4.8) {cos(x)};
+\draw[red] (5.5,4.8) -- (5.9,4.8);
+\node[right,] at (5.9,4.8) {sin(x)};
+\draw[blue] (7.5,4.8) -- (7.9,4.8);
+\node[right,] at (7.9,4.8) {cos(x)};
 \end{tikzpicture}
 \end{document}
