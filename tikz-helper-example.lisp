@@ -14,7 +14,7 @@
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
