@@ -172,6 +172,7 @@ Gaussian function, with some clipping, filling and text boxes
 			  (make-node-string "rectangle" 2 2 2) text)
 	       (draw-node tikz x-pos (* 0.5 (tut:gauss x-pos-height #(1.0 0.0 1.0)))
 			  "text=black" (make-node-string "rectangle" 2 2 ) text))))
+      ;;Fill different regions with different colors.
       (clip-draw -3.5 -2  -2.5 -1.6 "fill=red!80" "2.2\\%")
       (clip-draw   -2 -1  -1.5 -1.7 "fill=orange!60" "13.6\\%")
       (clip-draw   -1  0  -0.5 -0.5 "fill=blue!40" "34.1\\%")
@@ -230,25 +231,26 @@ Gaussian histogram, with a fitted function
     (draw-axis-rectangle tikz)))
 
 
+(defun polynomial (x params) 
+  "Polynomial of degree (- (length params) 1)"
+  (reduce #'+ (map 'vector (lambda (param degree) 
+			     (* param (expt x degree))) params 
+			     (make-range (- (length params) 1) -1 (length params)))))
+
 #|
 Make some noisy datapoints from polynomial, fit and plot.
 |#
-(defun polynomial-3 (x params) 
-  "Polynomial of degree three"
-  (+ (* (aref params 0) x x x) (* (aref params 1) x x)
-     (* (aref params 2) x) (aref params 3)))
-
 (with-example-plot ("test-fitter3.tex" -7 7 -100 100)
   (let* ((x-poses (make-range -10 0.5 41))
-	 (y-poses (mapcar (lambda (x) (polynomial-3 x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
+	 (y-poses (mapcar (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
 	 (y-errors (mapcar (lambda (x) (+ 2.0  (sqrt (abs x)))) y-poses))
 	 (y-smeared (mapcar (lambda (x err) (+ x (* err (tut:gaussian-random)))) y-poses y-errors))
-	 (params (levmar:levmar-optimize-errors #'polynomial-3 #(1.0d0 1.0d0 1.0d0 1.0d0)
+	 (params (levmar:levmar-optimize-errors #'polynomial #(1.0d0 1.0d0 1.0d0 1.0d0)
 						x-poses y-smeared y-errors)))
     (clip-and-transform (tikz)
       (draw-profilepoints tikz x-poses y-smeared y-errors "draw=red,fill=red")
-      (draw-function tikz (lambda (x) (polynomial-3 x params)) 200 "blue")
-      (draw-function tikz (lambda (x) (polynomial-3 x #(0.5 -1 -2 3)))
+      (draw-function tikz (lambda (x) (polynomial x params)) 200 "blue")
+      (draw-function tikz (lambda (x) (polynomial x #(0.5 -1 -2 3)))
 		     200 "green!80!black"))
     (draw-node tikz 5.1 1.4 "right" "" "Fitted parameters: ")
     (draw-node tikz 5.1 1.0 "right" "" (format nil "~{$~3,1fx^3 ~3,1@fx^2 ~3,1@fx ~3,1@f$~}"
@@ -289,8 +291,7 @@ A function with a zoomed view of a region of interest.
     (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
       (region-of-interest-zoom tikz tikz2 "gray" nil t t nil)
       (transform (tikz2)
-	(draw-axis-rectangle tikz2 :fill t 
-			     :x-ticks-min 2 :x-ticks-max 4
+	(draw-axis-rectangle tikz2 :fill t  :x-ticks-min 2 :x-ticks-max 4
 			     :y-ticks-min 2 :y-ticks-max 4))
       (clip-and-transform (tikz2)
 	(draw-function tikz2 #'erf-gauss 100 "red")))))
@@ -385,7 +386,8 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
     histo))
 
 #|
-Tree ways of plotting 2D histograms
+Tree ways of plotting 2D histograms, filled rectangles, 
+filled rectangles with contour lines, contour plot
 |#
 (let* ((histo (make-2d-histo)))
   (with-example-plot ("histo-rect.tex" -2.5 2.5 -2.5 2.5)

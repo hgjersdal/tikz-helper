@@ -291,8 +291,6 @@ text-style: style of text node."
 (defun draw-node (tikz x y style node-string &optional (text ""))
   "Draw a node at point."
   (format (ostream tikz) "\\node at (~f,~f) [~a,~a] {~a};~%" x y style node-string text))
-  (format (ostream tikz) "\\node at (~f,~f) [~a] {~a}; ~%" x y
-	  (concatenate 'string node-string "," style) text))
 
 (defun draw-circle (plottingarea x y style)
   "Generate tikz code to draw a circle."
