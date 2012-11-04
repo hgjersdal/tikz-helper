@@ -24,24 +24,28 @@
 		  (make-range min-tick step (* 2 nsteps)))
        (if (> power 0) 0 (- power))))))
 
+(defun guess-precision (vals)
+  (if vals 
+      (second (multiple-value-list 
+	       (auto-ticks (reduce #'min vals) (reduce #'max vals) 4 10)))
+      0))
+
 (defun auto-ticks-x (plottingarea x-list step-min step-max)
-  (if (listp x-list) (values x-list nil)
+  (if (listp x-list) (values x-list (guess-precision x-list))
       (auto-ticks (plot-x-min plottingarea) (plot-x-max plottingarea)  
 		  step-min step-max)))
 
 (defun auto-ticks-y (plottingarea y-list step-min step-max)
-  (if (listp y-list) (values y-list nil)
+  (if (listp y-list) (values y-list (guess-precision y-list))
       (auto-ticks (plot-y-min plottingarea) (plot-y-max plottingarea)
 		  step-min step-max)))
 
 (defun draw-axis-rectangle (plottingarea 
 			    &key (fill nil) (rectangle-style "thick,black,fill=white")
-			      (precision-x 1) (precision-y 1)
 			      (x-ticks-max 10) (x-ticks-min 4) (y-ticks-max 10) (y-ticks-min 4)
 			      (x-list t) (y-list t) (tick-style ""))
   "Draw a rectanle around the plottingarea, and add ticks. Keywords mean:
 fill: Fill the rectangle with fill color. Helpful if the plot is overlaying another plot.
-precision-x amd -y: Number of digits after '.'. If 0 all the tick mark names will be floored.
 x- of y-ticks-max or -min: The minimum or maximum number of tick marks in the x or y direction. With bad numbers, auto-tick will fail.
 x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, one tick mark per value in list. If T, ticks are automatically generated."
   (scope (plottingarea rectangle-style)
@@ -51,20 +55,18 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (path-stroke plottingarea t fill))
   (multiple-value-bind (ticksx precisionx) (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max)
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
-      (let ((precision (and precisionx precisiony (max precisionx precisiony))))
+      (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
-			   :style tick-style :precision (if precision precision precision-x))
+			   :style tick-style :precision precision)
 	(draw-axis-ticks-y plottingarea ticksy
-			   :style tick-style :precision (if precision precision precision-y))))))
+			   :style tick-style :precision precision)))))
 
 (defun draw-axis-cross (plottingarea
 			&key (line-style "thick,black,fill=white")
 			  (x-ticks-max 10) (x-ticks-min 4) (y-ticks-max 10) (y-ticks-min 4)
-			  (precision-x 1) (precision-y 1)
 			  (x-list t) (y-list t) (tick-style ""))
   "Draw axes that cross at the origin.
 Keywords mean:
-precision-x amd -y: Number of digits after '.'. If 0 all the tick mark names will be floored.
 x- of y-ticks-max or -min: The minimum or maximum number of tick marks in the x or y direction. With bad numbers, auto-tick will fail.
 x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, one tick mark per value in list. If T, ticks are automatically generated."
   (scope (plottingarea line-style)
@@ -75,24 +77,22 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (path-stroke plottingarea))
   (multiple-value-bind (ticksx precisionx) (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max)
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
-      (let ((precision (and precisionx precisiony (max precisionx precisiony))))
+      (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea (remove 0.0 ticksx)
 			   :y-shift (format nil "~acm" (apply-transform-y plottingarea 0.0))
-			   :style tick-style :precision (if precision precision precision-x))
+			   :style tick-style :precision precision)
 	(draw-axis-ticks-y plottingarea (remove 0.0 ticksy)
 			   :x-shift (format nil "~acm" (apply-transform-x plottingarea 0.0))
-			   :style tick-style :precision (if precision precision precision-y))))))
+			   :style tick-style :precision precision)))))
 
 (defun draw-axis-popped-out (plottingarea
 			&key (line-style "thick,black,fill=white")
-			  (precision-x 1) (precision-y 1)
 			  (x-ticks-max 10) (x-ticks-min 4) (y-ticks-max 10) (y-ticks-min 4)
 			  (x-list t) (y-list t) (x-shift "-0.15cm") (y-shift "-0.15cm")
 			  (tick-style ""))
   "Draw axes that are shifted from plot-x-min and plot-y-min.
 Keywords mean:
 y- or x-shift: How far the axis should be shifted from plot-min.
-precision-x amd -y: Number of digits after '.'. If 0 all the tick mark names will be floored.
 x- of y-ticks-max or -min: The minimum or maximum number of tick marks in the x or y direction. With bad numbers, auto-tick will fail.
 x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, one tick mark per value in list. If T, ticks are automatically generated."
   (scope (plottingarea line-style)
@@ -103,23 +103,20 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (path-stroke plottingarea))
   (multiple-value-bind (ticksx precisionx) (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max)
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
-      (let ((precision (and precisionx precisiony (max precisionx precisiony))))
+      (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
 			   :y-shift y-shift :stop 0
-			   :style tick-style :precision (if precision precision precision-x))
+			   :style tick-style :precision precision)
 	(draw-axis-ticks-y plottingarea ticksy
 			   :x-shift x-shift :stop 0
-			   :style tick-style :precision (if precision precision precision-y))))))
-
+			   :style tick-style :precision precision)))))
 
 (defun draw-axis-left-bottom (plottingarea
 			      &key (line-style "thick,black,fill=white")
 				(x-ticks-max 10) (x-ticks-min 4) (y-ticks-max 10) (y-ticks-min 4)
-				(precision-x 1) (precision-y 1)
 				(x-list t) (y-list t) (tick-style ""))
   "Draw axes along the left and bottom side of the figure.
 Keywords mean:
-precision-x amd -y: Number of digits after '.'. If 0 all the tick mark names will be floored.
 x- of y-ticks-max or -min: The minimum or maximum number of tick marks in the x or y direction. With bad numbers, auto-tick will fail.
 x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, one tick mark per value in list. If T, ticks are automatically generated."
   (draw-line plottingarea (plot-x-min plottingarea) (plot-y-min plottingarea) 
@@ -128,11 +125,11 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 	     (plot-x-min plottingarea) (plot-y-max plottingarea) line-style)
   (multiple-value-bind (ticksx precisionx) (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max)
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
-      (let ((precision (and precisionx precisiony (max precisionx precisiony))))
+      (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
-			   :style tick-style :precision (if precision precision precision-x))
+			   :style tick-style :precision precision)
 	(draw-axis-ticks-y plottingarea ticksy
-			   :style tick-style :precision (if precision precision precision-y))))))
+			   :style tick-style :precision precision)))))
 
 (defun draw-grid-lines (plottingarea
 			&key (line-style "thin,gray")

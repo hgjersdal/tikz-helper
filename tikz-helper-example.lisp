@@ -55,7 +55,7 @@ Different styles of graphs
 	  (draw-path tikz x-vals y-vals "red" nil)
 	  (draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 11) "draw=red,fill=red")))))
   (transform (tikz)
-    (draw-axis-rectangle tikz  :precision-y 0)))
+    (draw-axis-rectangle tikz)))
 
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
   "Generate a Gaussian histogram with ndraws Gaussian random numbers."
