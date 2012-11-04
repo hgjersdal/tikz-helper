@@ -17,7 +17,9 @@
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
-  "A macro wrapping the with-tikz-plot macro for the example plots."
+  "A macro wrapping the with-tikz-plot macro for the example plots. It makes a plot with name in the 
+*plotting-dir* directory, with a width of 10cm, a height of 5 cm. If *compilep* is T, the produced file is
+compiled with pdflatex, the reults are viewed with *viewer*."
   (let ((fname (gensym)))
     `(let ((,fname 
 	    #+sbcl(sb-ext:native-namestring (make-pathname :name ,name :defaults (pathname *plotting-dir*)))
@@ -100,7 +102,7 @@ Datapoints of varying sizes,shapes and colors
       (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a!40,opacity=0.5" (elt colors (random 3)))
 					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size)))
   (transform (tikz)
-    (tikz::draw-axis-popped-out tikz)))
+    (draw-axis-popped-out tikz)))
 
 #|
 Histogram with horizontal bins.
@@ -128,8 +130,8 @@ Plotting sin(x) and cos(x)
     (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
      		       :names (list "$-2\\pi$" "$-\\pi$" "$\\pi$" "$2\\pi$")
 		       :y-shift "2.5cm" :numberp nil)
-    (tikz::draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) pi (* 2 pi)))
-    (tikz-helper::draw-axis-cross tikz :x-list nil)
+    (draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) pi (* 2 pi)))
+    (draw-axis-cross tikz :x-list nil)
     (draw-function tikz #'sin 100 "red")
     (draw-function tikz #'cos 100 "blue"))
   (transform (tikz)
@@ -167,7 +169,7 @@ Gaussian function, with some clipping, filling and text boxes
 		       :names (list "$-3\\sigma$" "$-2\\sigma$" "$-\\sigma$" 
 				    "$\\mu$" "$\\sigma$" "$2\\sigma$" "$3\\sigma$")
 		       :numberp nil)
-    (tikz-helper::draw-axis-cross tikz :x-list nil :y-list nil)))
+    (draw-axis-cross tikz :x-list nil :y-list nil)))
 
 #|
 Som Gauss smeared datapoints, with a fitted function
@@ -269,7 +271,7 @@ A function with a zoomed view of a region of interest.
 (with-example-plot ("sub-fig.tex" -3.0 3.0 -1.0 1.0)
   (flet ((erf-gauss (x) (+ (tut:erf x) (tut:gauss x (vector 0.001 -0.15 0.01)))))
     (transform (tikz)
-      (tikz-helper::draw-axis-cross tikz :y-ticks-max 6)
+      (draw-axis-cross tikz :y-ticks-max 6)
       (draw-function tikz #'erf-gauss 400 "red"))
     (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
       (region-of-interest-zoom tikz tikz2 "gray" nil t t nil)

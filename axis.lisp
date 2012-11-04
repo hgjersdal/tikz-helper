@@ -24,19 +24,13 @@
 		  (make-range min-tick step (* 2 nsteps)))
        (if (> power 0) 0 (- power))))))
 
-(defun guess-precision (vals)
-  (if vals 
-      (second (multiple-value-list 
-	       (auto-ticks (reduce #'min vals) (reduce #'max vals) 4 10)))
-      0))
-
 (defun auto-ticks-x (plottingarea x-list step-min step-max)
-  (if (listp x-list) (values x-list (guess-precision x-list))
+  (if (listp x-list) (values x-list 0)
       (auto-ticks (plot-x-min plottingarea) (plot-x-max plottingarea)  
 		  step-min step-max)))
 
 (defun auto-ticks-y (plottingarea y-list step-min step-max)
-  (if (listp y-list) (values y-list (guess-precision y-list))
+  (if (listp y-list) (values y-list 0)
       (auto-ticks (plot-y-min plottingarea) (plot-y-max plottingarea)
 		  step-min step-max)))
 
@@ -57,9 +51,9 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
       (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
-			   :style tick-style :precision precision)
+			   :style tick-style :precision precision :numberp (not (listp x-list)))
 	(draw-axis-ticks-y plottingarea ticksy
-			   :style tick-style :precision precision)))))
+			   :style tick-style :precision precision :numberp (not (listp y-list)))))))
 
 (defun draw-axis-cross (plottingarea
 			&key (line-style "thick,black,fill=white")
@@ -80,10 +74,10 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea (remove 0.0 ticksx)
 			   :y-shift (format nil "~acm" (apply-transform-y plottingarea 0.0))
-			   :style tick-style :precision precision)
+			   :style tick-style :precision precision  :numberp (not (listp x-list)))
 	(draw-axis-ticks-y plottingarea (remove 0.0 ticksy)
 			   :x-shift (format nil "~acm" (apply-transform-x plottingarea 0.0))
-			   :style tick-style :precision precision)))))
+			   :style tick-style :precision precision :numberp (not (listp y-list)))))))
 
 (defun draw-axis-popped-out (plottingarea
 			&key (line-style "thick,black,fill=white")
@@ -106,10 +100,10 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
 			   :y-shift y-shift :stop 0
-			   :style tick-style :precision precision)
+			   :style tick-style :precision precision :numberp (not (listp x-list)))
 	(draw-axis-ticks-y plottingarea ticksy
 			   :x-shift x-shift :stop 0
-			   :style tick-style :precision precision)))))
+			   :style tick-style :precision precision :numberp (not (listp y-list)))))))
 
 (defun draw-axis-left-bottom (plottingarea
 			      &key (line-style "thick,black,fill=white")
@@ -127,9 +121,9 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (multiple-value-bind (ticksy precisiony) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
       (let ((precision (max precisionx precisiony)))
 	(draw-axis-ticks-x plottingarea ticksx
-			   :style tick-style :precision precision)
+			   :style tick-style :precision precision :numberp (not (listp x-list)))
 	(draw-axis-ticks-y plottingarea ticksy
-			   :style tick-style :precision precision)))))
+			   :style tick-style :precision precision :numberp (not (listp y-list)))))))
 
 (defun draw-grid-lines (plottingarea
 			&key (line-style "thin,gray")
