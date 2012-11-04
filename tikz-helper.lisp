@@ -413,20 +413,17 @@ text-style: style of text node."
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (draw-path tikz x-vals y-vals line-style)))
 
-(defun draw-legend-line (tikz x y name &key (width 0.4) (line-style "") (mark-style "") 
+(defun draw-legend-entry (tikz x y name &key (width 0.4) (line-style "") (mark-style "") 
 					 (node-string (make-node-string "circle" 3 3))
-					 (name-style "") (error-style "") (error-height 0.1))
+					 (name-style "") (error-style "") (error-height 0.1)
+					 (histogram-node-p nil))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
 For graphs, functions, datapoints, most histograms"
   (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
   (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x)
 						    y error-height error-style))
-  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style node-string))
+  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style 
+					   (if histogram-node-p 
+					       (make-node-string "rectangle" width 0.2 0 "cm")
+					       node-string)))
   (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
-
-(defun draw-legend-rectangle (tikz x y width height name style name-style)
-  "Draw a (filled) rectangle with a legend entry. This is for filled histograms."
-  (draw-rectangle tikz x (- y (* 0.5 height))
-		  (+ x width) (+ y (* 0.5 height)) style)
-  (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
-

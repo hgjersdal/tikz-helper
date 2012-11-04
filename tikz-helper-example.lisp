@@ -10,11 +10,10 @@
 ;; (ql:quickload 'tikz-utils)
 
 (use-package :tikz-helper)
-(declaim (optimize (safety 3) (debug 3)))
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
@@ -56,7 +55,7 @@ Different styles of graphs
 	  (draw-path tikz x-vals y-vals "red" nil)
 	  (draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 11) "draw=red,fill=red")))))
   (transform (tikz)
-    (draw-axis-rectangle tikz :precision-x 0 :precision-y 0)))
+    (draw-axis-rectangle tikz  :precision-y 0)))
 
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
   "Generate a Gaussian histogram with ndraws Gaussian random numbers."
@@ -84,9 +83,9 @@ Some Gaussian histograms
 	(draw-histogram tikz histo3 "draw=blue!50,fill=green,ultra thick" t t))))
   (transform (tikz)
     (draw-axis-rectangle tikz))
-  (draw-legend-rectangle tikz 0.5 4.5 0.5 0.2 "Histogram 1" "gray,fill=blue!50" "")
-  (draw-legend-line tikz 0.5 4.1 "Histogram 2" :line-style "red,ultra thick")
-  (draw-legend-rectangle tikz 0.5 3.7 0.5 0.2 "Histogram 3" "white,fill=green" ""))
+  (draw-legend-entry tikz 0.5 4.5 "Histogram 1" :mark-style "gray,fill=blue!50" :histogram-node-p t)
+  (draw-legend-entry tikz 0.5 4.1 "Histogram 2" :line-style "red,ultra thick")
+  (draw-legend-entry tikz 0.5 3.7 "Histogram 3" :mark-style "white,fill=green" :histogram-node-p t))
 
 #|
 Datapoints of varying sizes,shapes and colors
@@ -135,8 +134,8 @@ Plotting sin(x) and cos(x)
     (draw-function tikz #'cos 100 "blue"))
   (transform (tikz)
     (draw-axis-rectangle tikz :x-list nil :y-list nil))
-  (draw-legend-line tikz 5.5 4.8 "sin(x)" :line-style "red")
-  (draw-legend-line tikz 7.5 4.8 "cos(x)" :line-style "blue"))
+  (draw-legend-entry tikz 5.5 4.8 "sin(x)" :line-style "red")
+  (draw-legend-entry tikz 7.5 4.8 "cos(x)" :line-style "blue"))
 
 #|
 Gaussian function, with some clipping, filling and text boxes
@@ -165,7 +164,7 @@ Gaussian function, with some clipping, filling and text boxes
       (clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%")))
   (transform (tikz)
     (draw-axis-ticks-x tikz (make-range -3 1 7)
-		       :names (list "$-3\\sigma$" "$-2\\sigma$" "$\\sigma$" 
+		       :names (list "$-3\\sigma$" "$-2\\sigma$" "$-\\sigma$" 
 				    "$\\mu$" "$\\sigma$" "$2\\sigma$" "$3\\sigma$")
 		       :numberp nil)
     (tikz-helper::draw-axis-cross tikz :x-list nil :y-list nil)))
@@ -186,9 +185,9 @@ Som Gauss smeared datapoints, with a fitted function
       (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"))
     (transform (tikz)
       (draw-axis-rectangle tikz))
-    (draw-legend-line tikz 0.5 4.5 "Noisy data" :mark-style "draw=blue,fill=blue")
-    (draw-legend-line tikz 0.5 4.1 "Spline fit" :line-style "draw=green,thick")
-    (draw-legend-line tikz 0.5 3.7 "Gauss fit" :line-style "thick,gray")
+    (draw-legend-entry tikz 0.5 4.5 "Noisy data" :mark-style "draw=blue,fill=blue")
+    (draw-legend-entry tikz 0.5 4.1 "Spline fit" :line-style "draw=green,thick")
+    (draw-legend-entry tikz 0.5 3.7 "Gauss fit" :line-style "thick,gray")
     ;;Print the fit parameters to the plot.
     (draw-text-node tikz 9.5 4.5 (format nil "Fitted mean: ~5,2f" (aref fit-params 1)) "left")
     (draw-text-node tikz 9.5 4.1 (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)) "left")))
@@ -213,8 +212,8 @@ Gaussian histogram, with a fitted function
       (draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red")))
   (transform (tikz)
     (draw-axis-rectangle tikz))
-  (draw-legend-rectangle tikz 0.5 4.5 0.4 0.2 "Data" "draw=blue!10,fill=blue!20" "")
-  (draw-legend-line tikz 0.5 4.1 "Gauss fit" :line-style "thick,red"))
+  (draw-legend-entry tikz 0.5 3.7 "Data" :mark-style "draw=blue!10,fill=blue!20" :histogram-node-p t)
+  (draw-legend-entry tikz 0.5 4.1 "Gauss fit" :line-style "thick,red"))
 
 #|
 Make some noisy datapoints from polynomial, fit and plot.
@@ -240,11 +239,11 @@ Make some noisy datapoints from polynomial, fit and plot.
     (draw-text-node tikz 5.1 1.0 (format nil "~{$~3,1fx^3 ~3,1@fx^2 ~3,1@fx ~3,1@f$~}"
 					 (coerce params 'list)) "right"))
   (transform (tikz)
-    (draw-axis-cross tikz :precision-x 0 :precision-y 0 :y-ticks-max 8 :y-ticks-min 4))
-  (draw-legend-line tikz 0.0 4.6 "$0.5x^3 - x^2 - 2x + 3$" :line-style "green!80!black")
-  (draw-legend-line tikz 0.0 4.2 "Noisy measurements" :line-style "draw=red,fill=red"
+    (draw-axis-cross tikz :y-ticks-max 8 :y-ticks-min 4))
+  (draw-legend-entry tikz 0.0 4.6 "$0.5x^3 - x^2 - 2x + 3$" :line-style "green!80!black")
+  (draw-legend-entry tikz 0.0 4.2 "Noisy measurements" :line-style "draw=red,fill=red"
 		    :error-style "red" :error-height 0.2)
-  (draw-legend-line tikz 0.0 3.8 "Fitted polynomial" :line-style "blue"))
+  (draw-legend-entry tikz 0.0 3.8 "Fitted polynomial" :line-style "blue"))
 
 #|
 Qubic splines, with different end conditions.
@@ -261,8 +260,8 @@ Qubic splines, with different end conditions.
 	(draw-function tikz fun 100 "red!80" 3.5d0 6.0d0)))
     (transform (tikz)
       (draw-axis-left-bottom tikz))
-    (draw-legend-line tikz 5.5 4.0 "Not-a-knot spline" :line-style "blue!80")
-    (draw-legend-line tikz 5.5 3.4 "Natural spline" :line-style "red!80")))
+    (draw-legend-entry tikz 5.5 4.0 "Not-a-knot spline" :line-style "blue!80")
+    (draw-legend-entry tikz 5.5 3.4 "Natural spline" :line-style "red!80")))
 
 #|
 A function with a zoomed view of a region of interest.
@@ -270,14 +269,14 @@ A function with a zoomed view of a region of interest.
 (with-example-plot ("sub-fig.tex" -3.0 3.0 -1.0 1.0)
   (flet ((erf-gauss (x) (+ (tut:erf x) (tut:gauss x (vector 0.001 -0.15 0.01)))))
     (transform (tikz)
-      (tikz-helper::draw-axis-cross tikz)
+      (tikz-helper::draw-axis-cross tikz :y-ticks-max 6)
       (draw-function tikz #'erf-gauss 400 "red"))
     (with-sugfigure (tikz tikz2 7.5 0.1 3 1.5 -0.2 -0.05 -0.20 -0.1)
       (region-of-interest-zoom tikz tikz2 "gray" nil t t nil)
       (transform (tikz2)
-	(draw-axis-rectangle tikz2 :fill t :x-list (make-range -0.2 0.05 4)
-			     :y-list (make-range -0.2 0.05 3)
-			     :precision-y 2 :precision-x 2))
+	(draw-axis-rectangle tikz2 :fill t 
+			     :x-ticks-min 2 :x-ticks-max 4
+			     :y-ticks-min 2 :y-ticks-max 4))
       (clip-and-transform (tikz2)
 	(draw-function tikz2 #'erf-gauss 100 "red")))))
 
@@ -331,9 +330,9 @@ Overlaying plots, different scales
       (clip-and-transform (tikz2)
 	(draw-datapoints tikz2 x y2 "draw=black,fill=red" (make-node-string "rectangle" 4 4))))
     (draw-line tikz 0 5 10 5 "thick,black")
-    (draw-legend-line tikz 5.5 5.3 "Red data"  :mark-style "fill=red,draw=black" 
+    (draw-legend-entry tikz 5.5 5.3 "Red data"  :mark-style "fill=red,draw=black" 
 		      :node-string (make-node-string "rectangle" 4 4))
-    (draw-legend-line tikz 2.5 5.3 "Blue data" :mark-style "fill=blue,draw=black"
+    (draw-legend-entry tikz 2.5 5.3 "Blue data" :mark-style "fill=blue,draw=black"
 		      :node-string (make-node-string "circle" 4 4))))
 
 #|
@@ -355,7 +354,7 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
       (clip-and-transform (tikz)
 	(draw-function tikz (lambda (x) (log (expt-10 x params) 10)) 100 "blue,thick")
 	(draw-datapoints tikz x (mapcar (lambda (x) (log x 10)) y) "fill=red,draw=red!20!black" (make-node-string "circle" 4 4)))
-      (draw-legend-line tikz 0.5 5.3 (format nil "~{$y(x) = ~2,2f + 10^{~3,1fx}$~}" (coerce params 'list)) :line-style "blue,thick"))))
+      (draw-legend-entry tikz 0.5 5.3 (format nil "~{$y(x) = ~2,2f + 10^{~3,1fx}$~}" (coerce params 'list)) :line-style "blue,thick"))))
 
 (defun make-2d-histo ()
   "Make and fill a histogram"
