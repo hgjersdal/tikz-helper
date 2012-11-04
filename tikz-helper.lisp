@@ -288,12 +288,9 @@ text-style: style of text node."
   "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
 
-(defun draw-text-node (plottingarea x y text style)
-  "Generate tikz code to draw a text node."
-  (format (ostream plottingarea) "\\node[~a] at (~f,~f) {~a};~%" style x y text))
-
 (defun draw-node (tikz x y style node-string &optional (text ""))
   "Draw a node at point."
+  (format (ostream tikz) "\\node at (~f,~f) [~a,~a] {~a};~%" x y style node-string text))
   (format (ostream tikz) "\\node at (~f,~f) [~a] {~a}; ~%" x y
 	  (concatenate 'string node-string "," style) text))
 
@@ -426,4 +423,4 @@ For graphs, functions, datapoints, most histograms"
 					   (if histogram-node-p 
 					       (make-node-string "rectangle" width 0.2 0 "cm")
 					       node-string)))
-  (draw-text-node tikz (+ x width) y name (concatenate 'string "right," name-style)))
+  (draw-node tikz (+ x width) y (concatenate 'string "right," name-style) ""  name))

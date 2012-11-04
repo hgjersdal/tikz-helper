@@ -6,7 +6,7 @@
 \usetikzlibrary{arrows,shapes}
 \begin{document}
 \begin{tikzpicture}
-\node[] at (5.0,5.0) {Cubic splines};
+\node at (5.0,5.0) [,] {Cubic splines};
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
@@ -18,12 +18,12 @@
 \pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
 \begin{scope}[shift={(-4.0,-4.0)}]
-\node at (4.0,4.19) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
-\node at (4.35,5.77) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
-\node at (4.57,6.57) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
-\node at (4.76,6.23) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
-\node at (5.26,4.9) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
-\node at (5.88,4.77) [diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt,draw=black!80,fill=black!80] {}; 
+\node at (4.0,4.19) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.35,5.77) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.57,6.57) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.76,6.23) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.26,4.9) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.88,4.77) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
 \begin{scope}[blue!80]
 \pgfpathmoveto{ \pgfpointxy {3.5} {8.676635081444513}}
 \pgfpathlineto{ \pgfpointxy {3.525} {8.111627296367582}}

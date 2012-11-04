@@ -12,7 +12,7 @@
 	   :draw-legend-entry :draw-axis-ticks-x :draw-axis-ticks-y
 	   :draw-axis-subticks-x :draw-axis-subticks-y 
 	   :draw-axis-rectangle :draw-axis-cross :draw-axis-popped-out :draw-grid-lines :draw-axis-left-bottom
-	   :draw-line :draw-text-node :draw-node :draw-datapoints :path-move-to
+	   :draw-line :draw-node :draw-datapoints :path-move-to
 	   :path-stroke-to :path-stroke :region-of-interest-zoom :pdflatex-compile 
 	   :pdflatex-compile-view
 	   :histo2d-incf :histo2d-get-max :draw-histo2d-rectangles :draw-histo2d-contour :make-histogram2d))
