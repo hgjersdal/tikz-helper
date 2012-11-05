@@ -28,11 +28,14 @@
     (multiple-value-bind (zbin col) (floor z% 100)
       (cond ((< zbin 0) (first cols))
 	    ((>= zbin nbins) (elt cols (- ncol 1)))
-	    (t (format nil "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
+	    (t 
+	     (format t "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
+		       (elt cols zbin))
+	     (format nil "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
 		       (elt cols zbin)))))))
 
 (defun draw-histo2d-rectangles (plottingarea histo z-min z-max
-				&optional (cols (list "blue" "green" "yellow" "red")))
+				&optional (cols (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red")))
   "Draw a rectangle for each bin. Colors go from cold to hot"
   (let ((x-poses (make-range (getf histo :x-min) (getf histo :x-bin-size) (getf histo :x-nbin)))
 	(y-poses (make-range (getf histo :y-min) (getf histo :y-bin-size) (getf histo :y-nbin)))
@@ -163,13 +166,13 @@
 	(path-close tikz)))))
 
 (defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
-			     &optional (cols (list "blue" "green" "yellow" "red")))
+			     &optional (cols (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red")))
   "Draw possibly filled contour lines."
   (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
 	(data (getf histo :data))
 	(xbins (make-range 0 1 (getf histo :x-nbin)))
 	(ybins (make-range 0 1 (getf histo :y-nbin))))
-    (dotimes (i nlines)
+    (dotimes (i (+ nlines 1))
       (let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
 	(mapc (lambda (x) (mapc (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
 	(scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height cols)))

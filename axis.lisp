@@ -143,3 +143,26 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (mapcar #'y-lines (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max))
       (mapcar #'x-lines (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max))
       (path-stroke plottingarea))))
+
+
+(defun color-palette (tikz x-pos y-pos width height z-min z-max
+		      &optional (cols (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red")))
+  "Draw the colors of the z-axis. Hack."
+  (let* ((nrect (1- (length cols)))
+	 (poses (make-range 0.0 (/ height nrect) (1+ nrect))))
+    (format (ostream tikz) "\\pgfdeclareverticalshading{myshadingD}~%{~acm}{" width)
+    (format (ostream tikz) "color(~acm)=(~a)" (car poses) (car cols))
+    (mapc (lambda (pos col)
+	    (format (ostream tikz) "; color(~acm)=(~a)" pos col)) (cdr poses) (cdr cols))
+    (format (ostream tikz)
+	    "}~%\\pgftext[at=\\pgfpoint{~acm}{~acm}] {\\pgfuseshading{myshadingD}}" 
+	    (+ x-pos (* 0.5 width)) (+ y-pos (* 0.5 height)))
+    (make-rectangle-path tikz x-pos y-pos (+ x-pos width) (+ y-pos height))
+    (path-stroke tikz)
+    (multiple-value-bind (axis precision) (auto-ticks z-min z-max 4 10)
+      ;;Transform from z-axis to canvas
+      (let ((y-poses (mapcar (lambda (z) (+ y-pos (* height (/ (- z z-min) (- z-max z-min))))) axis)))
+	(draw-axis-ticks-y tikz y-poses :names axis :precision precision
+			   :x-shift (format nil "~acm" (+ (- (plot-x-min tikz)) x-pos width))
+			   :start "3pt" :stop "-3pt"
+			   :text-style "right")))))

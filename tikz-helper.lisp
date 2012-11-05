@@ -216,6 +216,7 @@ text-style: style of text node."
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
 \\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi
+\\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \\usepackage{tikz}
 \\usepackage{color}
 \\usepackage{siunitx}

@@ -132,21 +132,21 @@ Histogram with horizontal bins.
 Plotting sin(x) and cos(x).
 |#
 (with-example-plot ("functions.tex" -7 7 -1.2 1.2)
-  (clip-and-transform (tikz)
+  (transform (tikz)
     ;;Names axis, so x-axis is not drawn automatically, but manually
-    (draw-axis-cross tikz :x-list nil)
-    (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) pi (* 2 pi))
-     		       :names (list "$-2\\pi$" "$-\\pi$" "$\\pi$" "$2\\pi$")
-		       :y-shift "2.5cm" :numberp nil)
+    (draw-axis-cross tikz :x-list nil :y-list nil)
     ;;Grid lines ar specific values in the x-direction, automatic in the y-direct ion
     (draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) pi (* 2 pi)))
+    ;;Draw a rectangle around the plorringarea, with no axes.
+    (draw-axis-rectangle tikz :x-list nil)
+    (draw-axis-ticks-x tikz  (list (* -2 pi) (* -1 pi) 0 pi (* 2 pi))
+     		       :names (list "$-2\\pi$" "$-\\pi$" "0.0" "$\\pi$" "$2\\pi$")
+		       :numberp nil))
+  (clip-and-transform (tikz)
     (draw-function tikz #'sin 100 "red")
     (draw-function tikz #'cos 100 "blue"))
-  (transform (tikz)
-    ;;Draw a rectangle around the plorringarea, with no axes.
-    (draw-axis-rectangle tikz :x-list nil :y-list nil))
-  (draw-legend-entry tikz 5.5 4.8 "sin(x)" :line-style "red")
-  (draw-legend-entry tikz 7.5 4.8 "cos(x)" :line-style "blue"))
+  (draw-legend-entry tikz 0.5 5.2 "sin(x)" :line-style "red")
+  (draw-legend-entry tikz 2.5 5.2 "cos(x)" :line-style "blue"))
 
 #|
 Gaussian function, with some clipping, filling and text boxes
@@ -225,8 +225,8 @@ Gaussian histogram, with a fitted function
       (draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red"))
     (draw-legend-entry tikz 0.5 3.7 "Data" :mark-style "draw=blue!10,fill=blue!20" :histogram-node-p t)
     (draw-legend-entry tikz 0.5 4.1 "Gauss fit" :line-style "thick,red")
-    (draw-node tikz  9.5 4.1 "left" "" (format nil "Fitted mean: ~5,2f" (aref parameters 1)))
-    (draw-node tikz  9.5 3.7 "left" "" (format nil "Fitted sigma: ~5,2f" (aref parameters 2))))
+    (draw-node tikz  9.5 4.1 "left" "" (format nil "Fitted mean: ~5,1f" (aref parameters 1)))
+    (draw-node tikz  9.5 3.7 "left" "" (format nil "Fitted sigma: ~5,1f" (aref parameters 2))))
   (transform (tikz)
     (draw-axis-rectangle tikz)))
 
@@ -378,11 +378,12 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
 	 (histo (make-histogram2d -2.5 0.2 nbins -2.5 0.2 nbins)))
     (dotimes (i 100000)
       (multiple-value-bind (g1 g2) (tut:gaussian-random)
-	(histo2d-incf histo (- (* g1 0.3) 1.0)  (- (random 5.0) 2.5))
-	(histo2d-incf histo   (- (random 5.0) 2.5) (- (* g2 0.3) 1.0)))
+	(histo2d-incf histo (- (* g1 0.3) -1.0)  (- (random 5.0) 2.5))
+	(histo2d-incf histo (- (random 5.0) 2.5) (- (* g2 0.3) 1.0))))
+    (dotimes (i 100000)
       (multiple-value-bind (g1 g2) (tut:gaussian-random)
-	(histo2d-incf histo (+ (* g1 0.3) 1.0)  (- (random 5.0) 2.5))
-	(histo2d-incf histo   (- (random 5.0) 2.5) (+ (* g2 0.3) 1.0))))
+	(histo2d-incf histo (+ (* g1 0.3) -1.0)  (- (random 5.0) 2.5))
+	(histo2d-incf histo (- (random 5.0) 2.5) (+ (* g2 0.3) 1.0))))
     histo))
 
 #|
@@ -393,17 +394,35 @@ filled rectangles with contour lines, contour plot
   (with-example-plot ("histo-rect.tex" -2.5 2.5 -2.5 2.5)
     (clip-and-transform (tikz)
       (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo)))
-    (transform (tikz) (draw-axis-rectangle tikz))))
+    (transform (tikz) (draw-axis-rectangle tikz))
+    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
+
 
 (let* ((histo (make-2d-histo)))
   (with-example-plot ("histo-rect-cont.tex" -2.5 2.5 -2.5 2.5)
     (clip-and-transform (tikz)
       (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-      (draw-histo2d-contour tikz histo 0 (histo2d-get-max histo) 15 nil))
-    (transform (tikz) (draw-axis-rectangle tikz))))
+      (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 15 nil))
+    (transform (tikz) (draw-axis-rectangle tikz))
+    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
 (with-example-plot ("histo-cont.tex" -2.5 2.5 -2.5 2.5)
   (let* ((histo (make-2d-histo)))
     (clip-and-transform (tikz)
-      (draw-histo2d-contour tikz histo 0 (histo2d-get-max histo) 15 t))
-    (transform (tikz) (draw-axis-rectangle tikz))))
+      (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 t))
+    (transform (tikz) (draw-axis-rectangle tikz))
+    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
+
+(let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20)))
+  (dotimes (i 100000)
+    (multiple-value-bind (g1 g2) (tut:gaussian-random)
+      (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0))
+      (histo2d-incf histo (random 22.0) (+ (* g2 1.3) 8.0))))
+  (with-example-plot ("histo-cont2.tex" 0 22 0 16)
+    (clip-and-transform (tikz)
+      (draw-histo2d-contour tikz histo 0 (/ (histo2d-get-max histo) 2.6) 2 t (list "red" "white" "blue")))
+    (transform (tikz)
+      (draw-axis-popped-out tikz :x-list (list 0 6 7 9 10 22)
+			    :y-list (list 0 6 7 9 10 16)))
+    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6) (list "red" "white" "blue"))))
+

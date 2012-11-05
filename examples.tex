@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{standalone}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{tikz}
 \usepackage{siunitx}
 \usepackage{float}
@@ -91,6 +92,9 @@
   \caption{ Histograms with mean and sigmas.}
 \end{figure}
 
+\section{Different axis}
+\label{sec:axis}
+
 \begin{figure}[H]
   \centering
   \input{example/bubbles2}
@@ -102,6 +106,9 @@
   \input{example/log-scale}
   \caption{ Log scale with sub ticks. The log scaling is done explicitly, not using tikz.}
 \end{figure}
+
+\section{2D Histograms}
+\label{sec:2dhisto}
 
 \begin{figure}[H]
   \centering
@@ -119,6 +126,12 @@
   \centering
   \input{example/histo-rect-cont}
   \caption{ 2D histogram  with filled rectangles and contour lines.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \input{example/histo-cont2}
+  \caption{ 2D histogram with filled contours, not using rainbow colors.}
 \end{figure}
 
 \end{document}
