@@ -13,7 +13,7 @@
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
 (defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
@@ -106,6 +106,7 @@ Datapoints of varying sizes,shapes and colors
       (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a!40,opacity=0.5" (elt colors (random 3)))
 					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size)))
   (transform (tikz)
+    (draw-axis-rectangle tikz :x-list nil :y-list nil :rectangle-style "thin")
     (draw-axis-popped-out tikz)))
 
 #|

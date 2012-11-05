@@ -147,7 +147,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 
 (defun color-palette (tikz x-pos y-pos width height z-min z-max
 		      &optional (cols (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red")))
-  "Draw the colors of the z-axis. Hack."
+  "Draw the colors of the z-axis with ticks and a black box around it."
   (let* ((nrect (1- (length cols)))
 	 (poses (make-range 0.0 (/ height nrect) (1+ nrect))))
     (format (ostream tikz) "\\pgfdeclareverticalshading{myshadingD}~%{~acm}{" width)

@@ -122,7 +122,7 @@
 	   (let ((dim (array-dimensions (getf histo :data))))
 	     (if (or (minusp (+ x-shift (first xy))) (minusp (+ y-shift (second xy)))
 		     (>= (+ x-shift (first xy)) (elt dim 0)) (>= (+ y-shift (second xy)) (elt dim 1))
-		     (<= val 0)) 
+		     (<= val 0))
 		 0.0
 		 (border-correction (aref (getf histo :data) (first xy) (second xy))
 				    (aref (getf histo :data) (+ x-shift (first xy)) (+ y-shift (second xy)))
