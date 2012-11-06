@@ -9,10 +9,10 @@
 \begin{tikzpicture}
 \node at (5.0,5.0) [,] {Cubic splines};
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
 \pgfpathclose
 \pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
@@ -25,6 +25,22 @@
 \node at (4.76,6.23) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
 \node at (5.26,4.9) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
 \node at (5.88,4.77) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\end{scope}
+\begin{scope}[]
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
+\begin{scope}[shift={(-4.0,-4.0)}]
 \begin{scope}[blue!80]
 \pgfpathmoveto{ \pgfpointxy {3.5} {8.676635081444513}}
 \pgfpathlineto{ \pgfpointxy {3.525} {8.111627296367582}}
@@ -129,6 +145,22 @@
 \pgfpathlineto{ \pgfpointxy {6.0} {5.071237031634667}}
 \pgfusepath{ stroke, }
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\end{scope}
+\begin{scope}[]
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
+\begin{scope}[shift={(-4.0,-4.0)}]
 \begin{scope}[red!80]
 \pgfpathmoveto{ \pgfpointxy {3.5} {1.8364352975005682}}
 \pgfpathlineto{ \pgfpointxy {3.525} {1.9716254413042698}}

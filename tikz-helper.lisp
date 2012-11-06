@@ -9,6 +9,7 @@
    (plot-x-max :initform 1 :initarg :plot-x-max :reader plot-x-max)
    (plot-y-min :initform 0 :initarg :plot-y-min :reader plot-y-min)
    (plot-y-max :initform 1 :initarg :plot-y-max :reader plot-y-max)
+   (transformedp :initform nil :accessor transformedp)
    (ostream :initform t :initarg :stream :accessor ostream))
   (:documentation "Contains output-stream for latex file as well as ingo needed for transformations"))
 
@@ -23,7 +24,7 @@
 	 (format (ostream ,plottingarea) "\\begin{~a}[~a]~%" ,environ ,args)
 	 ,@body
 	 (format (ostream ,plottingarea) "\\end{~a}~%" ,environ))))
-  
+
 (defun make-transformation (cmax pmin pmax)
   "Makes a linear transformation from data space(pmin-pmax) to figura space 0-cmax"
   (let ((scale (/ (- pmax pmin) cmax)))
@@ -39,13 +40,22 @@
   `(latex-environ (,plottingarea "scope" ,style)
      ,@body))
 
+(defun cm (num)
+  (format nil "~acm" num))
+
 (defmacro clip ((plottingarea) &body body)
   "Clip a rectangle from origin."
   `(scope (,plottingarea)
-     (make-rectangle-path ,plottingarea
-			  (x-offset ,plottingarea) (y-offset ,plottingarea)
-			  (+ (width ,plottingarea) (x-offset ,plottingarea))
-			  (+ (height ,plottingarea) (y-offset ,plottingarea)))
+     (let ((xmin (if (transformedp ,plottingarea) (plot-x-min ,plottingarea) 0))
+	   (ymin (if (transformedp ,plottingarea) (plot-y-min ,plottingarea) 0)))
+       (path-move-to-mixed ,plottingarea xmin (cm (x-offset ,plottingarea)) ymin (cm (y-offset ,plottingarea)))
+       (path-line-to-mixed ,plottingarea xmin (cm (+ (x-offset ,plottingarea) (width ,plottingarea)))
+			   ymin (cm (y-offset ,plottingarea)))
+       (path-line-to-mixed ,plottingarea xmin (cm (+ (x-offset ,plottingarea) (width ,plottingarea)))
+			   ymin (cm (+ (height ,plottingarea) (y-offset ,plottingarea))))
+       (path-line-to-mixed ,plottingarea xmin (cm (x-offset ,plottingarea))
+			   ymin (cm (+ (height ,plottingarea) (y-offset ,plottingarea)))))
+     (path-close ,plottingarea)
      (path-stroke ,plottingarea nil nil t)
      ,@body))
 
@@ -67,12 +77,19 @@
 	   ,@body)))))
 
 (defmacro transform ((plottingarea) &body body)
+  `(if (transformedp ,plottingarea)
+       (progn ,@body)
+       (progn (setf (transformedp ,plottingarea) t)
+	      (transform-write (,plottingarea) ,@body)
+	      (setf (transformedp ,plottingarea) nil))))
+
+(defmacro transform-write ((plottingarea) &body body)
   "Perform transformationf from data coord system to plottingarea system. If this fails, try using transform-scale."
   (let ((x-scale (gensym))
 	(y-scale (gensym)))
     `(let ((,x-scale (/  (width ,plottingarea) (- (plot-x-max ,plottingarea) (plot-x-min ,plottingarea))))
 	   (,y-scale (/  (height ,plottingarea) (- (plot-y-max ,plottingarea) (plot-y-min ,plottingarea)))))
-       (scope (,plottingarea
+       (scope (,plottingarea 
 	       (format nil "shift={(~f,~f)}"
 		       (x-offset ,plottingarea)
 		       (y-offset ,plottingarea)))
@@ -136,11 +153,11 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
   (path-move-to-mixed tikz (car x-data) (car x-units) (car y-data) (car y-units))
   (mapc (lambda (x xx y yy) (path-line-to-mixed tikz x xx y yy)) (cdr x-data) (cdr x-units) (cdr y-data) (cdr y-units)))
 
-(defun draw-path (tikz x y style &optional fill)
+(defun draw-path (plottingarea x y style &optional fill)
   "Make a path and draw it."
-  (scope (tikz style)
-    (make-path tikz x y)
-    (path-stroke tikz t fill)))
+  (scope (plottingarea style)
+    (make-path plottingarea x y)
+    (path-stroke plottingarea t fill)))
 
 (defun make-rectangle-path (plottingarea x-min y-min x-max y-max)
   "Make a rectangle path."
@@ -183,20 +200,22 @@ start: The tick line will start at y-shift + start.
 stop: The tick line will stop at y-shift + stop.
 style: style of line
 text-style: style of text node."
-  (scope (plottingarea (format nil "yshift=~a" y-shift))
-    (map nil (lambda (x name)
-	       (draw-tick-mark plottingarea numberp precision name style text-style x (plot-y-min plottingarea) 0 0 stop start))
-	 x-list (if (null names) x-list names))))
+  (transform (plottingarea)
+    (scope (plottingarea (format nil "yshift=~a" y-shift))
+      (map nil (lambda (x name)
+		 (draw-tick-mark plottingarea numberp precision name style text-style x (plot-y-min plottingarea) 0 0 stop start))
+	   x-list (if (null names) x-list names)))))
 
 (defun draw-axis-ticks-y (plottingarea y-list &key (names nil) (numberp t) (precision 1)
 						(x-shift "0cm") (start "-2pt") (stop "2pt")
 						(style "black") (text-style "left"))
   "Draw axis tick marks. See draw-axis-tizks-x for details."
-  (scope (plottingarea (format nil "xshift=~a" x-shift))
-    (map nil (lambda (y name)
-	       (draw-tick-mark plottingarea numberp precision name style text-style (plot-x-min plottingarea) y stop start 0 0))
-	 y-list (if (null names) y-list names))))
-
+  (transform (plottingarea)
+	    (scope (plottingarea (format nil "xshift=~a" x-shift))
+	      (map nil (lambda (y name)
+			 (draw-tick-mark plottingarea numberp precision name style text-style (plot-x-min plottingarea) y stop start 0 0))
+		   y-list (if (null names) y-list names)))))
+  
 (defun draw-subtick-mark (plottingarea style x y xpt+ xpt- ypt+ ypt-)
   "Draw a tick mark with no text"
   (format (ostream plottingarea)
@@ -205,13 +224,15 @@ text-style: style of text node."
 
 (defun draw-axis-subticks-x (plottingarea x-list &key (y-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
   "Draw ticks with no text."
-  (scope (plottingarea (format nil "yshift=~a" y-shift))
-    (mapc (lambda (x) (draw-subtick-mark plottingarea style x (plot-y-min plottingarea) 0 0 stop start)) x-list)))
+  (transform (plottingarea)
+    (scope (plottingarea (format nil "yshift=~a" y-shift))
+      (mapc (lambda (x) (draw-subtick-mark plottingarea style x (plot-y-min plottingarea) 0 0 stop start)) x-list))))
 
 (defun draw-axis-subticks-y (plottingarea y-list &key (x-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
   "Draw ticks with no text"
-  (scope (plottingarea (format nil "xshift=~a" x-shift))
-    (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list)))
+  (transform (plottingarea)
+    (scope (plottingarea (format nil "xshift=~a" x-shift))
+      (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list))))
 
 (defparameter *tikz-preamble*
 "\\documentclass{standalone}
@@ -262,7 +283,7 @@ text-style: style of text node."
 	   (latex-environ (,name "tikzpicture")
 	     ,@body))))))
 
-(defmacro with-sugfigure ((plottingarea name
+(defmacro with-subfigure ((plottingarea name
 					x-offset y-offset width height
 					plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
   "Macro that keeps details of a sub-figure. Used for cliping and transformations."
@@ -305,18 +326,20 @@ text-style: style of text node."
 (defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
   "Draw a data-point with error bars in y direction"
   ;;(draw-path plottingarea (list x x) (list (- y y-error) (+ y y-error)) style)
-  (scope (plottingarea style)
-    (make-path-mixed-units plottingarea
-			   (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
-			   (list (+ y y-error) (+ y y-error) (+ y y-error)
-				 (- y y-error) (- y y-error) (- y y-error))
-			   (list 0 0 0 0 0 0))
-    (path-stroke plottingarea t)
-    (draw-node plottingarea x y style node-string)))
+  (transform (plottingarea)
+    (scope (plottingarea style)
+      (make-path-mixed-units plottingarea
+			     (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
+			     (list (+ y y-error) (+ y y-error) (+ y y-error)
+				   (- y y-error) (- y y-error) (- y y-error))
+			     (list 0 0 0 0 0 0))
+      (path-stroke plottingarea t)
+      (draw-node plottingarea x y style node-string))))
 
 (defun draw-profilepoints (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
-  (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style node-string))
-	  x y y-error))
+  (clip-and-transform (plottingarea)
+    (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style node-string))
+	    x y y-error)))
 
 (defun make-histogram (min bin-size data)
   "A histogram as a simple plist"
@@ -339,19 +362,21 @@ text-style: style of text node."
     (push 0 path-y)
     (values path-x path-y)))
 
-(defun draw-histogram-horizontal (tikz histo style &optional (fill nil) (separate-bins nil))
+(defun draw-histogram-horizontal (plottingarea histo style &optional (fill nil) (separate-bins nil))
   "Draw a histogram."
   (multiple-value-bind (y x) (make-histogram-path-points histo)
-    (draw-path tikz x y style fill)
-    (when separate-bins
-      (mapcar (lambda (x y) (draw-path tikz (list 0 x) (list y y) style nil)) x y))))
-
-(defun draw-histogram (tikz histo style &optional (fill nil) (separate-bins nil))
+    (clip-and-transform (plottingarea)
+      (draw-path plottingarea x y style fill)
+      (when separate-bins
+	(mapcar (lambda (x y) (draw-path plottingarea (list 0 x) (list y y) style nil)) x y)))))
+  
+(defun draw-histogram (plottingarea histo style &optional (fill nil) (separate-bins nil))
   "Draw a histogram."
   (multiple-value-bind (x y) (make-histogram-path-points histo)
-    (draw-path tikz x y style fill)
-    (when separate-bins
-      (mapcar (lambda (x y) (draw-path tikz (list x x) (list y 0) style nil)) x y))))
+    (clip-and-transform (plottingarea)
+      (draw-path plottingarea x y style fill)
+      (when separate-bins
+	(mapcar (lambda (x y) (draw-path plottingarea (list x x) (list y 0) style nil)) x y)))))
 
 (defun region-of-interest-zoom (top sub style &optional (top-left t) (top-right t) (bottom-left t) (bottom-right t))
   "Draw a rectangle around region of interest, and draw lines connecting it with a sub-figure."
@@ -386,14 +411,16 @@ text-style: style of text node."
     (when (or bottom-right bottom-left top-right top-left)
       (path-stroke top))))
 
-(defun draw-datapoints (tikz x y style &optional (node (make-node-string "circle" 3 3)))
+(defun draw-datapoints (plottingarea x y style &optional (node (make-node-string "circle" 3 3)))
   "Draw a set of datapoints"
-  (map 'nil (lambda (x y) (draw-node tikz x y style node)) x y))
+  (clip-and-transform (plottingarea)
+    (map 'nil (lambda (x y) (draw-node plottingarea x y style node)) x y)))
 
-(defun draw-graph (tikz x y line-style mark-style &optional (node (make-node-string "circle" 3 3)))
+(defun draw-graph (plottingarea x y line-style mark-style &optional (node (make-node-string "circle" 3 3)))
   "Draw a graph, with a line connecting datapoints"
-  (draw-path tikz x y line-style)
-  (draw-datapoints tikz x y mark-style node))
+  (clip-and-transform (plottingarea)
+    (draw-path plottingarea x y line-style)
+    (draw-datapoints plottingarea x y mark-style node)))
 
 (defun draw-graph-spline (tikz x y line-style mark-style  &optional (node (make-node-string "circle" 3 3)))
   "Draw a graph, with a spline connecting datapoints"
@@ -401,13 +428,14 @@ text-style: style of text node."
     (draw-function tikz (tikz-spline:get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
   (draw-datapoints tikz x y mark-style node))
 
-(defun draw-function (tikz function samples line-style &optional (x-min nil) (x-max nil))
+(defun draw-function (plottingarea function samples line-style &optional (x-min nil) (x-max nil))
   "Draw a function y = f(x)"
-  (when (null x-min) (setf x-min (plot-x-min tikz)))
-  (when (null x-max) (setf x-max (plot-x-max tikz)))
+  (when (null x-min) (setf x-min (plot-x-min plottingarea)))
+  (when (null x-max) (setf x-max (plot-x-max plottingarea)))
   (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) (+ 1 samples)))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
-    (draw-path tikz x-vals y-vals line-style)))
+    (clip-and-transform (plottingarea)
+      (draw-path plottingarea x-vals y-vals line-style))))
 
 (defun draw-legend-entry (tikz x y name &key (width 0.4) (line-style "") (mark-style "") 
 					 (node-string (make-node-string "circle" 3 3))

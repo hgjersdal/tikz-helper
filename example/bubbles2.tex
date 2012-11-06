@@ -27,6 +27,14 @@
 \draw[black] [shift={(9.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{9}}};
 \draw[black] [shift={(10.0,0.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{10}}};
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{0.5cm}}
+\begin{scope}[shift={(0.0,0.0)}]
 \begin{scope}[xshift=0cm]
 \draw[blue] [shift={(0.0,0.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0}}};
 \draw[blue] [shift={(0.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1}}};
@@ -45,117 +53,117 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
 \pgfpathclose
 \pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.5cm}}
 \begin{scope}[shift={(0.0,0.0)}]
-\node at (0.0,0.5337641038578063) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.1,-2.066922794539618) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.2,-0.7244991149003538) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.3,-0.4423195386721246) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.4,1.1551491827146068) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.5,2.1161142565867745) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.6,-0.23595158095277335) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.7,1.355709331575367) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.8,1.7842315586617503) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.90000004,2.6879675595905885) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.0,0.9821208639888854) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.1,0.9803516670296553) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.2,1.5809737159606425) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.3000001,1.2404476110958709) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.4,3.3616358560257322) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.5,1.7106372548755948) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.6,1.7073913184063414) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.7,2.137541120021713) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.8000001,2.3127207758718242) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.9,3.2257985100147337) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.0,2.4379132553778255) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.1000001,3.1389994019941385) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.2,1.616273225165815) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.3,3.3866033554100876) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.4,1.8240888782275606) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.5,1.1197954823660679) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.6000001,2.0822662178040123) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.7,1.5827140385031788) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.8,1.837282966743415) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.9,3.3586934494200804) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.0,3.9758972517566162) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.1000001,3.963186940152827) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.2,1.268525975099225) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.3,4.211162837367793) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.4,2.9776937138114006) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.5,3.7744307312199834) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.6000001,2.7122057977476857) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.7,4.635892062297211) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.8,3.5392943547139133) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.9,3.1448918188443953) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.0,5.158193650167596) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.1,4.257860000460275) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.2000003,3.417451192281063) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.3,5.65137207972821) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.4,5.120858436604713) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.5,5.436266851074517) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.6,4.58400853658734) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.7000003,4.488110219550206) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.8,3.95482502780656) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.9,4.012761308805183) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.0,5.002706177071186) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.1,4.866772886314207) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.2000003,5.91440075841842) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.3,5.428168977508783) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.4,6.31148575995028) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.5,3.9075563206443205) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.6,4.526787744697033) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.7000003,6.489252885120558) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.8,5.44891560662933) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.9,7.046482501985295) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.0,6.823962413121858) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.1,5.479018753986929) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.2000003,6.040504955091466) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.3,5.0061722188348) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.4,6.396879976982499) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.5,6.473118494377527) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.6,6.979094163841646) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.7000003,8.929887997307791) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.8,7.439069599525953) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.9,6.304582920482645) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.0,7.246657623029267) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.1,5.071463499448856) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.2000003,7.821149700061124) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.3,5.8783438630897695) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.4,6.947472115289324) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.5,6.7843566510931606) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.6,7.034616638420127) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.7000003,7.950280061906613) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.8,8.451920587659528) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.9,8.783696851650015) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.0,8.124135005940081) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.1,10.356995248356364) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.2,8.100397048977506) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.3,8.201424692084036) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.400001,7.290758052155659) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.5,9.958574892608217) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.6,7.131695333884334) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.7,6.730060255044739) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.8,9.810836511409638) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.900001,9.191286822757837) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.0,9.825783437493744) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.1,10.080168699079652) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.2,10.32841939878887) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.3,8.394190931666634) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.400001,9.99975173472816) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.5,10.920480192498818) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.6,10.397776478942234) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.7,10.227755482677809) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.8,9.492265330620478) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.900001,11.079706828921056) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (10.0,9.405554227399042) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.0,-0.7530540812367451) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.1,-0.19245240060567814) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.2,-0.9948281282918419) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.3,1.2360955245793792) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.4,-0.7592752848197069) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.5,-0.3378204509736439) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.6,0.5280566481451047) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.7,0.644847535636478) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.8,0.3384206873539709) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.90000004,0.2234748009420654) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.0,-0.4681670196731367) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.1,-1.1115272837278871) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.2,1.8679282591678632) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.3000001,-0.5884754757348241) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.4,2.2062262374337958) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.5,1.72083783095411) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.6,1.9302354963776545) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.7,0.618217960981688) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.8000001,1.762848647073242) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.9,2.5507362509575953) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.0,2.437298058546523) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.1000001,2.6588527165779468) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.2,3.9777581964098223) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.3,2.597885043074949) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.4,2.886102140370506) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.5,2.7445879656122583) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.6000001,2.170424513257939) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.7,1.9060715200574303) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.8,4.668524182732347) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.9,1.170447974326179) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.0,1.4436195396750098) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.1000001,1.9596133813722605) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.2,2.1320164144779152) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.3,4.353139532142527) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.4,2.483811977863571) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.5,3.7134310382244915) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.6000001,1.981589507446402) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.7,2.6758132617281634) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.8,4.088017081897185) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.9,5.03582606908318) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.0,3.746582039322406) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.1,3.57390630184206) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.2000003,5.9759555044435375) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.3,3.3277077561476602) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.4,5.444054108524836) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.5,5.964465608919078) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.6,2.519294232475578) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.7000003,3.7361120691586835) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.8,3.534386801456381) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.9,5.140002633549183) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.0,5.616607534185556) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.1,5.324377172179913) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.2000003,5.045145716668884) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.3,5.480760356887337) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.4,3.0429712564331424) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.5,4.208123475592149) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.6,5.238246904678464) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.7000003,5.916901394532718) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.8,3.729491705327055) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.9,5.990126386362027) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.0,5.277921215283762) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.1,6.690964647108347) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.2000003,7.828442138923822) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.3,5.983121763554156) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.4,6.257124651021646) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.5,5.860624599438689) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.6,4.518958518741558) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.7000003,6.47177219558856) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.8,7.375343300127703) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.9,6.700974459260845) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.0,6.6405588307941805) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.1,6.975973735181482) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.2000003,5.819641796197111) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.3,7.4283683792421) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.4,8.192575500264487) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.5,9.159286969624922) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.6,8.199303985102667) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.7000003,7.864938970529522) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.8,7.929455827171371) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.9,7.235015454141253) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.0,7.654345497372451) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.1,10.568074022150892) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.2,8.956128574505636) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.3,10.311361478202741) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.400001,7.630942819092076) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.5,9.412956452412532) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.6,8.024640839202988) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.7,7.743335604280339) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.8,7.155941678401322) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.900001,10.341656129517826) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.0,9.749648035151543) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.1,7.928233850475681) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.2,8.63541989439423) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.3,8.952267726498674) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.400001,11.679149481388594) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.5,9.013953895369418) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.6,10.170004549041604) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.7,9.396127566279688) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.8,9.922220561459543) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.900001,9.891468919532596) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (10.0,12.019643641089365) [draw=black,fill=blue,circle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
@@ -185,117 +193,117 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
 \pgfpathclose
 \pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.005cm}}
 \begin{scope}[shift={(0.0,0.0)}]
-\node at (0.0,1219.7009614195943) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.1,928.3498632459188) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.2,1005.1890333871913) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.3,919.9424404459917) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.4,913.4336486924178) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.5,1059.326596914061) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.6,879.1825293386097) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.7,879.4830010432687) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.8,935.9699397800964) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (0.90000004,824.1897940194128) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.0,938.5903954693049) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.1,943.961768637101) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.2,918.3619130945368) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.3000001,1070.5846574550676) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.4,626.8788857355424) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.5,858.881109121778) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.6,769.3958397234313) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.7,877.4823612982487) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.8000001,812.5316498309146) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (1.9,832.8679660782019) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.0,899.3675360989218) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.1000001,767.387492407453) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.2,588.6588701065193) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.3,704.320526511737) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.4,1122.6095712126091) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.5,531.4848638604238) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.6000001,670.8349088947771) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.7,923.3365362230691) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.8,595.0304791553552) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (2.9,712.0570976491854) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.0,739.5047114811086) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.1000001,885.4477202168265) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.2,727.1144099949566) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.3,445.50215259829497) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.4,762.6036166438028) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.5,630.4108612582323) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.6000001,522.6736094682437) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.7,619.5290958964215) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.8,584.7447426305537) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (3.9,836.0114190487827) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.0,618.8125158776814) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.1,623.4603117796796) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.2000003,646.076641947186) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.3,601.4084952580639) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.4,424.13368843683304) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.5,601.0833332657614) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.6,493.72683677455314) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.7000003,588.7229974691762) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.8,651.4565183330133) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (4.9,468.62143652418666) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.0,635.4360995410307) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.1,527.5244530992846) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.2000003,256.963331725177) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.3,504.3749576578052) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.4,383.43697945503374) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.5,307.6624602786724) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.6,481.13497145276085) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.7000003,388.63486244506066) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.8,371.67898273194015) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (5.9,512.9611515675912) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.0,489.74618514324345) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.1,329.2579364963462) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.2000003,386.7511106400616) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.3,199.3535202941576) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.4,373.92579020311956) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.5,374.6396990676953) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.6,331.0060982014872) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.7000003,210.87094797593525) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.8,364.79566103460013) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (6.9,243.5982298287281) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.0,328.6155822557208) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.1,291.34942804610125) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.2000003,417.63423987887427) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.3,262.57413470468987) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.4,322.5241435932737) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.5,277.2571880635992) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.6,230.1539628377352) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.7000003,208.4731525541901) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.8,171.04238144258517) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (7.9,366.09101330028597) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.0,263.88758569830213) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.1,62.34163026414414) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.2,247.6190210993038) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.3,71.78758741441538) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.400001,269.510107524997) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.5,200.05160224765302) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.6,201.80433677720427) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.7,115.5535418867805) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.8,19.567780978889893) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (8.900001,261.81388666495826) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.0,170.60668196541258) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.1,172.128719718137) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.2,97.44925591242257) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.3,106.62090802842172) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.400001,17.216375211767243) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.5,-15.52800495889528) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.6,-209.58311754240935) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.7,-219.034375641424) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.8,129.4300110017879) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (9.900001,74.62569576933689) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
-\node at (10.0,86.90564367126399) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.0,982.8389594478306) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.1,982.1179277735966) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.2,898.8058813446663) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.3,910.3599663621553) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.4,941.5981237958409) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.5,925.5686276745464) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.6,943.0437744669227) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.7,881.3214483270589) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.8,994.4914550345453) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (0.90000004,885.302120750967) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.0,849.3347794799167) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.1,979.5069715731291) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.2,885.0722579198873) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.3000001,937.1188052180031) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.4,747.2997249086955) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.5,809.0604014661525) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.6,911.4872080037733) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.7,931.0178977052036) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.8000001,850.8139479844182) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (1.9,790.1129846160436) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.0,822.2373586315096) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.1000001,893.85630155428) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.2,846.2321477573038) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.3,852.9149036329613) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.4,675.6733649976662) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.5,729.2951250260766) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.6000001,931.6822599859977) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.7,725.9302427777089) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.8,728.4096774706213) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (2.9,490.203423084229) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.0,844.6296204658106) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.1000001,724.5241130788975) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.2,579.4043272515684) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.3,870.2416276164889) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.4,829.2231355632032) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.5,626.7279957100719) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.6000001,736.3593826429662) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.7,675.7204025729593) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.8,478.49651753774083) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (3.9,492.7944352327862) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.0,790.0175620675691) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.1,619.7893753324179) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.2000003,634.5816817486708) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.3,557.3025045631995) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.4,472.8170650429166) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.5,585.7730564768681) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.6,613.0367867572984) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.7000003,648.8644386868501) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.8,467.64922302803365) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (4.9,654.8127851688978) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.0,587.9220658476062) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.1,767.5048349393091) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.2000003,430.7553991072592) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.3,343.65528516979583) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.4,480.60179060754234) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.5,304.22715507889376) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.6,361.598874554722) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.7000003,288.38085417554413) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.8,421.55540560497514) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (5.9,455.20066086127366) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.0,486.04111773348) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.1,370.0399120257215) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.2000003,340.14302253862303) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.3,490.3471411739477) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.4,376.58953505404077) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.5,433.8206891358261) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.6,454.9512725298192) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.7000003,224.75310336823247) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.8,214.05721054918772) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (6.9,172.52492754585978) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.0,369.5344396316222) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.1,111.97429344542478) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.2000003,411.5818929838782) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.3,219.1741430102498) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.4,339.06099207989274) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.5,195.2863053566027) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.6,34.6712318423954) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.7000003,111.38565718459752) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.8,-65.8550723708025) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (7.9,221.0810365481155) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.0,198.6682596108775) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.1,141.4897073604376) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.2,141.62720772478502) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.3,161.2295796604995) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.400001,184.87792347055586) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.5,220.7674215683552) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.6,-49.075392373823234) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.7,258.25779048709927) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.8,26.808485678787797) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (8.900001,-19.0481540724301) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.0,138.5535211278233) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.1,169.4540514787434) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.2,64.99166224838876) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.3,196.03645564097116) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.400001,63.298429245649146) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.5,147.73341710900993) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.6,112.00827933614477) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.7,82.92013389062696) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.8,78.30874121057576) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (9.900001,28.609364691289052) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
+\node at (10.0,-201.95819855233682) [draw=black,fill=red,rectangle,inner sep=0.0pt,minimum width =4.0pt,minimum height=4.0pt] {};
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}

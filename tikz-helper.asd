@@ -2,7 +2,7 @@
   (:use :cl)
   (:nicknames :tikz)
   (:documentation "A package for making tikz drawings")
-  (:export :plottingarea :with-tikz-plot :with-sugfigure
+  (:export :plottingarea :with-tikz-plot :with-subfigure
 	   :scope :clip :transform :clip-and-transform
 	   :make-range :make-transformation :make-histogram
 	   :make-node-string :draw-histogram :draw-histogram-horizontal
@@ -25,4 +25,4 @@
   :depends-on (:lla :tikz-spline)
   :components ((:file "tikz-helper")
 	       (:file "axis" :depends-on ("tikz-helper"))
-	       (:file "histo2d" :depends-on ("tikz-helper"))))
+	       (:file "histo2d" :depends-on ("tikz-helper" "axis"))))

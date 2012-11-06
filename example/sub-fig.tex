@@ -32,6 +32,21 @@
 \draw[] [shift={(-3.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
 \draw[] [shift={(-3.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[]
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{1.6666666cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.5cm}}
+\begin{scope}[shift={(3.0,1.0)}]
 \begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {-3.0} {-0.9999778948512584}}
 \pgfpathlineto{ \pgfpointxy {-2.985} {-0.9999757083350379}}
@@ -440,6 +455,7 @@
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
+\end{scope}
 \begin{scope}[gray]
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.6666666cm}{0cm}}
@@ -522,10 +538,10 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointxy {7.5} {0.1}}
-\pgfpathlineto{ \pgfpointxy {10.5} {0.1}}
-\pgfpathlineto{ \pgfpointxy {10.5} {1.6}}
-\pgfpathlineto{ \pgfpointxy {7.5} {1.6}}
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{7.5cm}{0.1cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10.5cm}{0.1cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10.5cm}{1.6cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{7.5cm}{1.6cm}}\pgfpathlineto{ NIL }
 \pgfpathclose
 \pgfusepath{  clip, }
 \begin{scope}[shift={(7.5,0.1)}]

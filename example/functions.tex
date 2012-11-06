@@ -22,6 +22,14 @@
 \end{scope}
 \begin{scope}[xshift=5.0cm]
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
+\begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[thin,gray]
 \pgfpathmoveto{ \pgfpointxy {-6.283185307179586} {-1.2}}
 \pgfpathlineto{ \pgfpointxy {-6.283185307179586} {1.2}}
@@ -43,6 +51,14 @@
 \pgfpathlineto{ \pgfpointxy {7.0} {1.0}}
 \pgfusepath{ stroke, }
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
+\begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[thick,black,fill=white]
 \pgfpathmoveto{ \pgfpointxy {-7.0} {-1.2}}
 \pgfpathlineto{ \pgfpointxy {7.0} {-1.2}}
@@ -60,6 +76,14 @@
 \draw[] [shift={(-7.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
 \draw[] [shift={(-7.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
+\begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[yshift=0cm]
 \draw[black] [shift={(-6.283185307179586,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-2\pi$}};
 \draw[black] [shift={(-3.141592653589793,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-\pi$}};
@@ -72,10 +96,10 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.0} {5.0}}
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
 \pgfpathclose
 \pgfusepath{  clip, }
 \begin{scope}[shift={(0.0,0.0)}]
@@ -186,6 +210,22 @@
 \pgfpathlineto{ \pgfpointxy {7.0} {0.6569866}}
 \pgfusepath{ stroke, }
 \end{scope}
+\end{scope}
+\pgfsetxvec{\pgfpoint{1cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{1cm}}
+\end{scope}
+\end{scope}
+\begin{scope}[]
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}}\pgfpathlineto{ NIL }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[shift={(0.0,0.0)}]
+\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
+\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
+\begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[blue]
 \pgfpathmoveto{ \pgfpointxy {-7.0} {0.75390226}}
 \pgfpathlineto{ \pgfpointxy {-6.86} {0.838204}}
