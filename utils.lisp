@@ -17,7 +17,6 @@
 	 (sigma (aref params 2))
 	 (pull (/ (- x mean) sigma)))
     (* (/ scale (* sigma (sqrt (* 2 pi)))) (exp (* -0.5 pull pull)))))
-	
 
 (defvar tcoeff
   (list 1.00000000000000000000  0.57721566490153286061 -0.65587807152025388108
@@ -32,8 +31,8 @@
 	0.00000000000000000141 -0.00000000000000000023  0.00000000000000000002))
  
 ; number of coefficients
-(defconstant numcoeff (length tcoeff))
- 
+(defconstant numcoeff 30)
+
 (defun gamma (x)
   "Gamma function"
   (let ((y (- x 1.0))

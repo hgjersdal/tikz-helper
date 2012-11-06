@@ -9,7 +9,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 (defparameter *epsillon-2* 0.00000000001d0 "Convergance parameter")
 (defparameter *tau* 1.0d-8)
 (defparameter kmax 1000)
-  
+
 (defun get-diff-vector (function parameters step param)
   "Extract numerical partial derivates using the three point rule."
   (flet ((step-and-call (step)
@@ -30,7 +30,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	  (setf (lla:mref J m i) (aref diffs m)
 		(lla:mref JT i m) (aref diffs m)))))
     (values J JT)))
-    
+
 (defun get-g (function parameters JT nmeas)
   "g = J^T f"
   (let ((g (lla:make-matrix 'lla:dense nmeas 1 :element-type 'double-float))
@@ -38,7 +38,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     (dotimes (i nmeas)
       (setf (lla:mref g i 0) (aref funres i)))
     (lla:mm JT g)))
-    
+
 (defun get-vector-abs (vec)
   "||vec||"
   (sqrt (reduce #'+ (map 'vector (lambda (x) (* x x)) vec))))
@@ -59,7 +59,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	(setf (lla:mref Amu i j) (lla:mref A i j)))
       (setf (lla:mref Amu i i) (+ (lla:mref Amu i i) mu)))
     Amu))
-	
+
 (defun levmar-update (function iteration mu nu params nparams nmeas)
   "Updating estimate, preparing next iretarion"
   (multiple-value-bind (J JT) (get-J function params nparams nmeas)
@@ -73,7 +73,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	(setf mu (* *tau* mu)))
       (levmar-iterate function params iteration A (get-g function params JT nmeas)
 			    mu nu nparams nmeas))))
-  
+
 (defun as-array (matrix nparams)
   "Get array from matrix vector"
   (let ((array (make-array nparams :element-type 'double-float)))
@@ -86,7 +86,7 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
     (dotimes (i nparams)
       (setf (lla:mref matrix2 i 0) (* scale (lla:mref matrix i 0))))
     matrix2))
-      
+
 (defun levmar-iterate (function parameters iteration A g mu nu nparam nmeas)
   "An iteration in levenberg marquart."
   (when (> mu 1.0d15) (setf mu 10000.d0 nu 2))
@@ -94,11 +94,11 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
   (let* ((A-prime (add-mu A mu nparam))
 	 (h (as-array (lla:solve A-prime (scale-matrix g nparam -1.0)) nparam))
 	 (params (map 'vector #'+ parameters h))
-	 (Q (/ (- 
+	 (Q (/ (-
 		(reduce #'+ (map 'vector (lambda (x) (* x x)) (funcall function parameters)))
 		(reduce #'+ (map 'vector (lambda (x) (* x x)) (funcall function params))))
 	       (+ (L0-Lhm h g mu) 0.0000000000000000001))));vector sum of sorts
-    (cond ((< (get-vector-abs h) (* *epsillon-2* (+ (get-vector-abs parameters) *epsillon-2*))) 
+    (cond ((< (get-vector-abs h) (* *epsillon-2* (+ (get-vector-abs parameters) *epsillon-2*)))
 	   (progn (format t "Converged after ~a iterations!~% ~a~%" iteration parameters) parameters))
 	  ((>= iteration kmax) (progn (format t "Reached maximum number of iterations") parameters))
 	  ((<= Q 0) (levmar-iterate function parameters (+ 1 iteration) A g (* mu nu) (* 1.1 nu) nparam nmeas))

@@ -8,6 +8,6 @@
   :name "tikz-levmar"
   :version "0.0.1"
   :maintainer "haavagj"
-  :description "tikz-levmar"
+  :description "A package for fitting functions to data."
   :depends-on (:lla)
   :components ((:file "levmar")))
