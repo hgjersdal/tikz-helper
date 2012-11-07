@@ -28,10 +28,7 @@
     (multiple-value-bind (zbin col) (floor z% 100)
       (cond ((< zbin 0) (first cols))
 	    ((>= zbin nbins) (elt cols (- ncol 1)))
-	    (t 
-	     (format t "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
-		       (elt cols zbin))
-	     (format nil "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
+	    (t (format nil "~a!~a!~a" (elt cols (1+ zbin)) (floor col)
 		       (elt cols zbin)))))))
 
 (defun draw-histo2d-rectangles (plottingarea histo z-min z-max
@@ -43,8 +40,9 @@
 	  (x-bins (make-range 0 1 (getf histo :x-nbin)))
 	  (y-bins (make-range 0 1 (getf histo :y-nbin))))
       (labels ((draw-bin (x-pos y-pos x-bin y-bin)
-		 (scope (plottingarea (make-color-combo z-min z-max (aref (getf histo :data) x-bin y-bin) 
-							cols))
+		 (scope (plottingarea (format nil "draw=black,ultra thin, fill=~a"
+					      (make-color-combo z-min z-max (aref (getf histo :data) x-bin y-bin) 
+								cols)))
 		   (make-rectangle-path plottingarea x-pos y-pos
 					(+ x-pos (getf histo :x-bin-size))
 					(+ y-pos (getf histo :y-bin-size)))
@@ -134,26 +132,26 @@
 		     (:right (list (- 1.0 (get-correction xy 1 0)) 0.5))
 		     (:down (list 0.5 (get-correction xy 0 -1)))))))
 
-(defun add-contour-path-point (xy dir histo tikz val)
+(defun add-contour-path-point (xy dir histo plottingarea val)
   "Add a contour point to path,"
   (let* ((xy (move-to-border xy dir histo val))
 	 (x (+ (getf histo :x-min) (* (elt xy 0) (getf histo :x-bin-size))))
 	 (y (+ (getf histo :y-min) (* (elt xy 1) (getf histo :y-bin-size)))))
-    (path-line-to tikz x y)))
+    (path-line-to plottingarea x y)))
 
-(defun continue-path (xy dir cmap histo tikz val)
+(defun continue-path (xy dir cmap histo plottingarea val)
   "Stroll along path with border at left hand side."
   (let ((borderdir (turn-left dir)))
     (setf (aref (aref cmap (first xy) (second xy)) (dir-to-num borderdir)) nil)
-    (add-contour-path-point xy borderdir histo tikz val))
+    (add-contour-path-point xy borderdir histo plottingarea val))
   (cond ((borderp (turn-left-xy dir xy) (oposite-dir dir) cmap)
-	 (continue-path (turn-left-xy dir xy) (turn-left dir) cmap histo tikz val))
+	 (continue-path (turn-left-xy dir xy) (turn-left dir) cmap histo plottingarea val))
 	((borderp (continue-xy dir xy) (turn-left dir) cmap)
-	 (continue-path (continue-xy dir xy) dir cmap histo tikz val))
+	 (continue-path (continue-xy dir xy) dir cmap histo plottingarea val))
 	((borderp xy dir cmap)
-	 (continue-path xy (turn-right dir) cmap histo tikz val))))
+	 (continue-path xy (turn-right dir) cmap histo plottingarea val))))
 
-(defun start-contour-line (x y cmap histo tikz val)
+(defun start-contour-line (x y cmap histo plottingarea val)
   "Start the contour line, if cell has borders."
   (let ((cell (aref cmap x y)))
     (unless (or (null cell) (reduce (lambda (x y) (and (not x) (not y))) cell))
@@ -162,9 +160,10 @@
 	     (xy (move-to-border (list x y) dir histo val))
 	     (xx (+ (getf histo :x-min) (* (first xy) (getf histo :x-bin-size))))
 	     (yy (+ (getf histo :y-min) (* (second xy) (getf histo :y-bin-size)))))
-	(path-move-to tikz xx yy)
-	(continue-path (list x y) (turn-right dir) cmap histo tikz val)
-	(path-close tikz)))))
+	(path-move-to plottingarea xx yy)
+	(continue-path (list x y) (turn-right dir) cmap histo plottingarea val)
+	(path-close plottingarea)
+	(list x y)))))
 
 (defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
 			     &optional (cols *colors*))
@@ -176,7 +175,7 @@
 	  (ybins (make-range 0 1 (getf histo :y-nbin))))
       (dotimes (i (+ nlines 1))
 	(let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
-	  (mapc (lambda (x) (mapc (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
+	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
 	  (scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height cols)))
-	    (mapc (lambda (x) (mapc (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
+	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
 	    (path-stroke plottingarea t fillp)))))))

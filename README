@@ -10,4 +10,4 @@ The generate latex files can be compiled independently, or included in another t
 
 The files can also be compiled to HTML/SVG through tex4ht, like 'htlatex spline.tex'. The text is often not displayed correctly in the produced SVG files. The program pdf2svg seems to produce more consistent results for text, but curved lines are not as smooth.
 
-Only tested on SBCL on linux, and relies on the package lla (available through quicklisp).
+Relies on the package lla (available through quicklisp).

@@ -68,7 +68,7 @@ Different styles of graphs
 	;; The transform macro adds tikz code to transform data points within a scope
 	;; draw-path does not autoimatically transform, since it is often needed in the cm frame.
 	(transform (tikz) (draw-path tikz x-vals y-vals "red" nil))
-	(draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 11) "draw=red,fill=red")))
+	(draw-profilepoints tikz x-vals y-vals (make-range 0.5 0 11) "draw=red,fill=red" (make-node-string "circle" 3 3))))
     ;;Draw a rectangle and axes with ticks.
     (draw-axis-rectangle tikz)))
 
@@ -87,17 +87,17 @@ Different styles of graphs
 Some Gaussian histograms
 |#
 (let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2500))
-      (histo2 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 1700))
-      (histo3 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 1000)))
+      (histo2 (make-gaussian-histogram 0.0 0.25 40 5.0 1.8 1600))
+      (histo3 (make-gaussian-histogram 0.0 0.25 40 5.0 1.6 1000)))
   (with-example-plot ("test-histo2.tex" 0 10 0 150)
     ;;Draw the histograms with different styles
     (draw-histogram tikz histo1 "draw=gray,fill=blue!50" t)
-    (draw-histogram tikz histo2 "red,ultra thick" nil)
-    (draw-histogram tikz histo3 "draw=blue!50,fill=green,ultra thick" t t)
+    (draw-histogram tikz histo2 "red!80,thick" nil)
+    (draw-histogram tikz histo3 "draw=blue!50,fill=green, thick" t t)
     (draw-axis-rectangle tikz)
     ;;Legend entries for the histograms
     (draw-legend-entry tikz 0.5 4.5 "Histogram 1" :mark-style "gray,fill=blue!50" :histogram-node-p t)
-    (draw-legend-entry tikz 0.5 4.1 "Histogram 2" :line-style "red,ultra thick")
+    (draw-legend-entry tikz 0.5 4.1 "Histogram 2" :line-style "red!80,thick")
     (draw-legend-entry tikz 0.5 3.7 "Histogram 3" :mark-style "white,fill=green" :histogram-node-p t)))
 
 #|
@@ -112,7 +112,7 @@ Datapoints of varying sizes,shapes and colors
     ;; The clip-and-transform macro clips the plottingarea, and adds tikz code to transform data points within a scope
     ;; Draw node does not autoimatically transform, since it is often needed in the cm frame.
     (clip-and-transform (tikz)
-      (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a!40,opacity=0.5" (elt colors (random 3)))
+      (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a,opacity=0.3" (elt colors (random 3)))
 					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size))
     (draw-axis-popped-out tikz)))
 
@@ -156,38 +156,28 @@ Plotting sin(x) and cos(x).
 Gaussian function, with some clipping, filling and text boxes
 |#
 (with-example-plot ("gaussian-distribution.tex" -3.2 3.2 0 0.45)
-  ;;A Gaussian ditribution path
-  (let* ((x (make-range -3.2 0.05 128))
-	 (y (mapcar (lambda (x) (tut:gauss x #( 1.0 0.0 1.0))) x))
-	 (x-vals (append (list -3.2) x (list 3.2)))
-	 (y-vals (append (list 0)  y (list 0))))
-    (flet ((clip-draw (x-min x-max x-pos x-pos-height color text)
-	     ;;The clip area is active vithin scope.
+  (flet ((clip-draw (x-min x-max x-pos x-pos-height color text)
+	   (multiple-value-bind (x y) (tikz-helper::make-function-path
+				       (lambda (x) (tut:gauss x #( 1.0 0.0 1.0))) 
+				       100 x-min x-max)
 	     (clip-and-transform (tikz)
-	       (scope (tikz)
-		 ;;Clip a rectangle
-		 (make-rectangle-path tikz x-min 0 x-max 5)
-		 (path-stroke tikz nil nil t)
-		 ;;Draw and fill the entire Gaussian distribution path,
-		 (draw-path tikz x-vals y-vals color t))
+	       (draw-path tikz (append (list (car x)) x (list (elt x (1- (length x)))))
+			  (append (list 0) y (list 0)) color t)
 	       ;;A text node with an opaque background box.
 	       (draw-node tikz x-pos (* 0.5 (tut:gauss x-pos-height #(1.0 0.0 1.0)))
-			  "fill=white,opacity=0.3,draw=black, rounded corners"
-			  (make-node-string "rectangle" 2 2 2) text)
-	       (draw-node tikz x-pos (* 0.5 (tut:gauss x-pos-height #(1.0 0.0 1.0)))
-			  "text=black" (make-node-string "rectangle" 2 2 ) text))))
-      ;;Fill different regions with different colors.
-      (clip-draw -3.5 -2  -2.5 -1.6 "fill=red!80" "2.2\\%")
-      (clip-draw   -2 -1  -1.5 -1.7 "fill=orange!60" "13.6\\%")
-      (clip-draw   -1  0  -0.5 -0.5 "fill=blue!40" "34.1\\%")
-      (clip-draw    0  1   0.5  0.5 "fill=blue!40" "34.1\\%")
-      (clip-draw    1  2   1.5  1.7 "fill=orange!60" "13.6\\%")
-      (clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%")))
-  (draw-axis-ticks-x tikz (make-range -3 1 7)
+			  "draw=black,fill=white,fill opacity=0.3,text opacity=1.0" 
+			  (make-node-string "rectangle,rounded corners" 2 2 2) text)))))
+    ;;Fill different regions with different colors.
+    (clip-draw -3.5 -2  -2.5 -1.6 "fill=red!80" "2.2\\%")
+    (clip-draw   -2 -1  -1.5 -1.7 "fill=orange!60" "13.6\\%")
+    (clip-draw   -1  0  -0.5 -0.5 "fill=blue!40" "34.1\\%")
+    (clip-draw    0  1   0.5  0.5 "fill=blue!40" "34.1\\%")
+    (clip-draw    1  2   1.5  1.7 "fill=orange!60" "13.6\\%")
+    (clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%"))
+  (draw-axis-ticks-x tikz (make-range -3 1 7) :numberp nil
 		     :names (list "$-3\\sigma$" "$-2\\sigma$" "$-\\sigma$" 
-				  "$\\mu$" "$\\sigma$" "$2\\sigma$" "$3\\sigma$")
-		     :numberp nil)
-  (draw-axis-cross tikz :x-list nil :y-list nil))
+				  "$\\mu$" "$\\sigma$" "$2\\sigma$" "$3\\sigma$"))
+  (draw-line tikz 0 0 10 0 "thick,black"))
 
 #|
 Som Gauss smeared datapoints, with a fitted function
@@ -208,7 +198,7 @@ Som Gauss smeared datapoints, with a fitted function
     (draw-legend-entry tikz 0.5 3.7 "Gauss fit" :line-style "thick,gray")
     ;;Print the fit parameters to the plot, in the cm frame
     (draw-node tikz 9.5 4.5 "left" "" (format nil "Fitted mean: ~5,2f" (aref fit-params 1)))
-    (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted mean: ~5,2f" (aref fit-params 2)))))
+    (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)))))
 
 #|
 Gaussian histogram, with a fitted function
@@ -228,7 +218,6 @@ Gaussian histogram, with a fitted function
     (draw-node tikz  9.5 4.1 "left" "" (format nil "Fitted mean: ~5,1f" (aref parameters 1)))
     (draw-node tikz  9.5 3.7 "left" "" (format nil "Fitted sigma: ~5,1f" (aref parameters 2))))
   (draw-axis-rectangle tikz))
-
 
 (defun polynomial (x params) 
   "Polynomial of degree (- (length params) 1)"
@@ -256,21 +245,18 @@ Make some noisy datapoints from polynomial, fit and plot.
   (draw-axis-cross tikz :y-ticks-max 8 :y-ticks-min 4)
   (draw-legend-entry tikz 0.0 4.6 "$0.5x^3 - x^2 - 2x + 3$" :line-style "green!80!black")
   (draw-legend-entry tikz 0.0 4.2 "Noisy measurements" :line-style "draw=red,fill=red"
-		    :error-style "red" :error-height 0.2)
+		     :error-style "red" :error-height 0.2)
   (draw-legend-entry tikz 0.0 3.8 "Fitted polynomial" :line-style "blue"))
 
 #|
 Qubic splines, with different end conditions.
 |#
 (with-example-plot ("spline.tex" 4.0 6.0 4.0 7.0)
-  (let ((x #(4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
-	(y #(4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
-    (draw-node tikz 5 5.0 "" "" "Cubic splines")
+  (let ((x (list 4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
+	(y (list 4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
     (draw-datapoints tikz x y "draw=black!80,fill=black!80" (make-node-string "diamond" 3 3))
-    (let ((fun (spline:get-spline-fun x y)))
-      (draw-function tikz fun 100 "blue!80" 3.5d0 6.0d0))
-    (let ((fun (spline:get-spline-fun x y t)))
-      (draw-function tikz fun 100 "red!80" 3.5d0 6.0d0))
+    (draw-function tikz (spline:get-spline-fun x y) 100 "blue!80" 3.5d0 6.0d0)
+    (draw-function tikz (spline:get-spline-fun x y t) 100 "red!80" 3.5d0 6.0d0)
     (draw-axis-left-bottom tikz)
     (draw-legend-entry tikz 5.5 4.0 "Not-a-knot spline" :line-style "blue!80")
     (draw-legend-entry tikz 5.5 3.4 "Natural spline" :line-style "red!80")))
@@ -296,8 +282,9 @@ Horizontal histograms, side by side.
 	   (with-subfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
 	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
 	       (draw-histogram-horizontal tikz2 histo "fill=blue!20,draw=blue!20" t)
-	       (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
-				  mean sigma "red,fill=red,thick" (make-node-string "circle" 4 4))
+	       (transform (tikz2)
+		 (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
+				    mean sigma "red,fill=red,thick" (make-node-string "circle" 4 4)))
 	       (draw-axis-rectangle tikz2 :x-list nil :y-list nil)))))
     (draw-sub-histo 0.0 -2.0 2.2)
     (draw-sub-histo 2.0 -1.0 1.8)
@@ -383,7 +370,7 @@ filled rectangles with contour lines, contour plot
 (let* ((histo (make-2d-histo)))
   (with-example-plot ("histo-rect-cont.tex" -2.5 2.5 -2.5 2.5)
     (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 15 nil)
+    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil)
     (draw-axis-rectangle tikz)
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
@@ -395,16 +382,12 @@ filled rectangles with contour lines, contour plot
 
 (let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
        (tikz::*colors* (list "red" "white" "blue")))
-  (dotimes (i 100000)
+  (dotimes (i 220000)
     (multiple-value-bind (g1 g2) (tut:gaussian-random)
-      (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0))
+      (when (< i 160000) (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0)))
       (histo2d-incf histo (random 22.0) (+ (* g2 1.3) 8.0))))
   (with-example-plot ("histo-cont2.tex" 0 22 0 16)
     (draw-histo2d-contour tikz histo 0 (/ (histo2d-get-max histo) 2.6) 2 t)
     (draw-axis-popped-out tikz :x-list (list 0 6 7 9 10 22)
 			  :y-list (list 0 6 7 9 10 16))
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6))))
-
-;; (with-example-plot ("coffe1.tex" 0 10 0 1)
-;;   (slot-value
-

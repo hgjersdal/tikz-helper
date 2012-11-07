@@ -76,13 +76,6 @@
 			 ,x-scale ,y-scale))
 	   ,@body)))))
 
-(defmacro transform ((plottingarea) &body body)
-  `(if (transformedp ,plottingarea)
-       (progn ,@body)
-       (progn (setf (transformedp ,plottingarea) t)
-	      (transform-write (,plottingarea) ,@body)
-	      (setf (transformedp ,plottingarea) nil))))
-
 (defmacro transform-write ((plottingarea) &body body)
   "Perform transformationf from data coord system to plottingarea system. If this fails, try using transform-scale."
   (let ((x-scale (gensym))
@@ -103,55 +96,64 @@
 	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
 	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
 
+(defmacro transform ((plottingarea) &body body)
+  "Perform transformationf from data coord system to plottingarea system. If this fails, try using transform-scale. 
+If this is called within a transform scope of the same plottingarea, nothing is done."
+  `(if (transformedp ,plottingarea)
+       (progn ,@body)
+       (progn (setf (transformedp ,plottingarea) t)
+	      (transform-write (,plottingarea) ,@body)
+	      (setf (transformedp ,plottingarea) nil))))
+
 (defmacro clip-and-transform ((plottingarea) &body body)
   "First clip the plotting area, then perform transformations from data to plottingarea"
   `(clip (,plottingarea)
      (transform (,plottingarea)
        ,@body)))
 
-(defun path-move-to (tikz x y)
-  (format (ostream tikz) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
+(defun path-move-to (plottingarea x y)
+  (format (ostream plottingarea) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
 
-(defun path-line-to (tikz x y)
-  (format (ostream tikz) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
+(defun path-line-to (plottingarea x y)
+  (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
 
-(defun path-stroke (tikz &optional (stroke t) (fill nil) (clip nil))
+(defun path-stroke (plottingarea &optional (stroke t) (fill nil) (clip nil))
   "Stroke, fill and or clip the path"
   (let ((action (concatenate 'string
 			     (if stroke "stroke," "")
 			     (if fill " fill," "")
 			     (if clip " clip," ""))))
-    (format (ostream tikz) "\\pgfusepath{ ~a }~%" action)))
+    (format (ostream plottingarea) "\\pgfusepath{ ~a }~%" action)))
 
-(defun path-close (tikz)
+(defun path-close (plottingarea)
   "Close the path by connecting first and last point"
-  (format (ostream tikz) "\\pgfpathclose~%"))
+  (format (ostream plottingarea) "\\pgfpathclose~%"))
 
-(defun make-path (tikz x y)
+(defun make-path (plottingarea x y)
   "Connect data points with straight lines."
-  (path-move-to tikz (car x) (car y))
-  (mapc (lambda (x y) (path-line-to tikz x y)) (cdr x) (cdr y)))
+  (path-move-to plottingarea (car x) (car y))
+  (mapc (lambda (x y) (path-line-to plottingarea x y)) (cdr x) (cdr y)))
 
-(defun make-mixed-point (tikz x-data x-unit y-data y-unit)
+(defun make-mixed-point (plottingarea x-data x-unit y-data y-unit)
   "A point in the coord system of the current transformation (x-data, y-data), shifted by another point (x-unit,y-unit).
 The other point should be a string with cm, mm, pt or similar invariant unit."
-  (format (ostream tikz) "\\pgfpointadd{\\pgfpointxy {~f} {~f}} {\\pgfpoint{~a}{~a}}"
+  (format (ostream plottingarea) "\\pgfpointadd{\\pgfpointxy {~f} {~f}} {\\pgfpoint{~a}{~a}}"
 	  x-data y-data x-unit y-unit))
 
-(defun path-move-to-mixed (tikz x-data x-unit y-data y-unit)
+(defun path-move-to-mixed (plottingarea x-data x-unit y-data y-unit)
   "Move path to mixed point."
-  (format (ostream tikz) "\\pgfpathmoveto{ ~a }~%"
-	  (make-mixed-point tikz x-data x-unit y-data y-unit)))
+  (format (ostream plottingarea) "\\pgfpathmoveto{ ~a }~%"
+	  (make-mixed-point plottingarea x-data x-unit y-data y-unit)))
 
-(defun path-line-to-mixed (tikz x-data x-unit y-data y-unit)
+(defun path-line-to-mixed (plottingarea x-data x-unit y-data y-unit)
   "Extend path to mixed point."
-  (format (ostream tikz) "\\pgfpathlineto{ ~a }~%"
-	  (make-mixed-point tikz x-data x-unit y-data y-unit)))
+  (format (ostream plottingarea) "\\pgfpathlineto{ ~a }~%"
+	  (make-mixed-point plottingarea x-data x-unit y-data y-unit)))
 
-(defun make-path-mixed-units (tikz x-data x-units y-data y-units)
+(defun make-path-mixed-units (plottingarea x-data x-units y-data y-units)
   "Connect data points with straight lines. Data points are at x-data + x-units, y-data + y-units. Units can be cm,pt,mm, etc"
-  (path-move-to-mixed tikz (car x-data) (car x-units) (car y-data) (car y-units))
-  (mapc (lambda (x xx y yy) (path-line-to-mixed tikz x xx y yy)) (cdr x-data) (cdr x-units) (cdr y-data) (cdr y-units)))
+  (path-move-to-mixed plottingarea (car x-data) (car x-units) (car y-data) (car y-units))
+  (mapc (lambda (x xx y yy) (path-line-to-mixed plottingarea x xx y yy)) (cdr x-data) (cdr x-units) (cdr y-data) (cdr y-units)))
 
 (defun draw-path (plottingarea x y style &optional fill)
   "Make a path and draw it."
@@ -167,15 +169,15 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
   (path-line-to plottingarea x-min y-max)
   (path-close plottingarea))
 
-(defun apply-transform-x (tikz x)
+(defun apply-transform-x (plottingarea x)
   "Transfor a point to coordinate system of plottingarea"
-  (let ((scale (/ (- (plot-x-max tikz) (plot-x-min tikz)) (width tikz))))
-    (/ (- x (plot-x-min tikz)) scale)))
+  (let ((scale (/ (- (plot-x-max plottingarea) (plot-x-min plottingarea)) (width plottingarea))))
+    (/ (- x (plot-x-min plottingarea)) scale)))
 
-(defun apply-transform-y (tikz y)
+(defun apply-transform-y (plottingarea y)
   "Transfor a point to coordinate system of plottingarea"
-  (let ((scale (/ (- (plot-y-max tikz) (plot-y-min tikz)) (height tikz))))
-    (/ (- y (plot-y-min tikz)) scale)))
+  (let ((scale (/ (- (plot-y-max plottingarea) (plot-y-min plottingarea)) (height plottingarea))))
+    (/ (- y (plot-y-min plottingarea)) scale)))
 
 (defun draw-tick-mark (plottingarea numberp precision name style text-style x y xpt+ xpt- ypt+ ypt-)
   "Draw a tick mark on an axis."
@@ -302,7 +304,6 @@ text-style: style of text node."
     my-list))
 
 (defun make-node-string (shape width height &optional (inner-sep 0) (unit "pt"))
-  "Make a node string"
   (format nil "~a,inner sep=~f~a,minimum width =~f~a,minimum height=~f~a"
 	  shape inner-sep unit width unit height unit))
 
@@ -310,33 +311,22 @@ text-style: style of text node."
   "Generate tikz code to draw a line."
   (format (ostream plottingarea) "\\draw[~a] (~f,~f) -- (~f,~f);~%" style x-from y-from x-to y-to))
 
-(defun draw-node (tikz x y style node-string &optional (text ""))
-  "Draw a node at point."
-  (format (ostream tikz) "\\node at (~f,~f) [~a,~a] {~a};~%" x y style node-string text))
-
-(defun draw-circle (plottingarea x y style)
-  "Generate tikz code to draw a circle."
-  (draw-node plottingarea x y style (make-node-string "circle" 3 3)))
-
-(defun draw-rectangle (plottingarea x-from y-from x-to y-to style)
-  "Generate tikz code to draw a rectangle."
-  (format (ostream plottingarea) "\\draw[~a] (~f,~f) rectangle (~f,~f);~%"
-	  style x-from y-from x-to y-to))
+(defun draw-node (plottingarea x y style node-string &optional (text ""))
+  (format (ostream plottingarea) "\\node at (~f,~f) [~a,~a] {~a};~%" x y style node-string text))
 
 (defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
   "Draw a data-point with error bars in y direction"
-  ;;(draw-path plottingarea (list x x) (list (- y y-error) (+ y y-error)) style)
-  (transform (plottingarea)
-    (scope (plottingarea style)
-      (make-path-mixed-units plottingarea
-			     (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
-			     (list (+ y y-error) (+ y y-error) (+ y y-error)
-				   (- y y-error) (- y y-error) (- y y-error))
-			     (list 0 0 0 0 0 0))
-      (path-stroke plottingarea t)
-      (draw-node plottingarea x y style node-string))))
+  (scope (plottingarea style)
+    (make-path-mixed-units plottingarea
+			   (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
+			   (list (+ y y-error) (+ y y-error) (+ y y-error)
+				 (- y y-error) (- y y-error) (- y y-error))
+			   (list 0 0 0 0 0 0))
+    (path-stroke plottingarea t)
+    (draw-node plottingarea x y style node-string)))
 
 (defun draw-profilepoints (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
+  "Draw points with error bars in the y direction."
   (clip-and-transform (plottingarea)
     (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style node-string))
 	    x y y-error)))
@@ -351,15 +341,15 @@ text-style: style of text node."
 	 (x-pos (make-range (getf histo :min) (getf histo :bin-size) (+ 1 (length y-pos))))
 	 (path-x nil)
 	 (path-y nil))
-    (push (elt x-pos 0) path-x)
-    (push 0 path-y)
-    (dotimes (i (- (length x-pos) 1))
-      (push (elt x-pos i) path-x)
-      (push (elt y-pos i) path-y)
-      (push (elt x-pos (+ 1 i)) path-x)
-      (push (elt y-pos i) path-y))
-    (push (elt x-pos (- (length x-pos) 1)) path-x)
-    (push 0 path-y)
+    (flet ((add-point (x y) (push x path-x) (push y path-y)))
+      (add-point (car x-pos) 0)
+      (mapc (lambda (x-f y-f x-t)
+	      (add-point x-f y-f) (add-point x-t y-f))
+	    x-pos y-pos (cdr x-pos))
+      (add-point (elt x-pos (- (length x-pos) 1))
+		 (elt y-pos (- (length y-pos) 1)))
+
+      (add-point (elt x-pos (- (length x-pos) 1)) 0))
     (values path-x path-y)))
 
 (defun draw-histogram-horizontal (plottingarea histo style &optional (fill nil) (separate-bins nil))
@@ -408,7 +398,7 @@ text-style: style of text node."
     (when bottom-right
       (path-move-to top (apply-transform-x top (plot-x-max sub)) (apply-transform-y top (plot-y-min sub)))
       (path-line-to top (+ (x-offset sub) (width sub)) (+ (y-offset sub))))
-    (when (or bottom-right bottom-left top-right top-left)
+    (when (or bottom-right bottom-left top-right top-left) 
       (path-stroke top))))
 
 (defun draw-datapoints (plottingarea x y style &optional (node (make-node-string "circle" 3 3)))
@@ -422,32 +412,38 @@ text-style: style of text node."
     (draw-path plottingarea x y line-style)
     (draw-datapoints plottingarea x y mark-style node)))
 
-(defun draw-graph-spline (tikz x y line-style mark-style  &optional (node (make-node-string "circle" 3 3)))
+(defun draw-graph-spline (plottingarea x y line-style mark-style  &optional (node (make-node-string "circle" 3 3)))
   "Draw a graph, with a spline connecting datapoints"
-  (let ((n  (min (length x) (length y))))
-    (draw-function tikz (tikz-spline:get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
-  (draw-datapoints tikz x y mark-style node))
+  (clip-and-transform (plottingarea)
+    (let ((n  (min (length x) (length y))))
+      (draw-function plottingarea (tikz-spline:get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
+    (draw-datapoints plottingarea x y mark-style node)))
+
+(defun make-function-path (function samples x-min x-max)
+  "Make a path of y = f(x)"
+  (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) (+ 1 samples)))
+	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
+    (values x-vals y-vals)))
 
 (defun draw-function (plottingarea function samples line-style &optional (x-min nil) (x-max nil))
   "Draw a function y = f(x)"
-  (when (null x-min) (setf x-min (plot-x-min plottingarea)))
-  (when (null x-max) (setf x-max (plot-x-max plottingarea)))
-  (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) (+ 1 samples)))
-	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
+  (multiple-value-bind (x-vals y-vals) (make-function-path function samples 
+							   (if x-min x-min (plot-x-min plottingarea))
+							   (if x-max x-max (plot-x-max plottingarea)))
     (clip-and-transform (plottingarea)
       (draw-path plottingarea x-vals y-vals line-style))))
 
-(defun draw-legend-entry (tikz x y name &key (width 0.4) (line-style "") (mark-style "") 
+(defun draw-legend-entry (plottingarea x y name &key (width 0.4) (line-style "") (mark-style "") 
 					 (node-string (make-node-string "circle" 3 3))
 					 (name-style "") (error-style "") (error-height 0.1)
 					 (histogram-node-p nil))
   "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
 For graphs, functions, datapoints, most histograms"
-  (if (> (length line-style) 0) (draw-line tikz x y (+ x width) y line-style))
-  (if (> (length error-style) 0) (draw-profilepoint tikz (+ (* 0.5 width) x)
+  (if (> (length line-style) 0) (draw-line plottingarea x y (+ x width) y line-style))
+  (if (> (length error-style) 0) (draw-profilepoint plottingarea (+ (* 0.5 width) x)
 						    y error-height error-style))
-  (if (> (length mark-style) 0) (draw-node tikz (+ (* 0.5 width) x) y mark-style 
+  (if (> (length mark-style) 0) (draw-node plottingarea (+ (* 0.5 width) x) y mark-style 
 					   (if histogram-node-p 
 					       (make-node-string "rectangle" width 0.2 0 "cm")
 					       node-string)))
-  (draw-node tikz (+ x width) y (concatenate 'string "right," name-style) ""  name))
+  (draw-node plottingarea (+ x width) y (concatenate 'string "right," name-style) ""  name))

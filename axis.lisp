@@ -151,19 +151,19 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 
 (defparameter *colors* (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red"))
 
-(defun color-palette (tikz x-pos y-pos width height z-min z-max
+(defun color-palette (plottingarea x-pos y-pos width height z-min z-max
 		      &optional (cols *colors*))
   "Draw the colors of the z-axis with ticks and a black box around it."
   (let* ((nrect (1- (length cols)))
 	 (poses (make-range 0.0 (/ height nrect) (1+ nrect))))
-    (format (ostream tikz) "\\pgfdeclareverticalshading{myshadingD}~%{~acm}{" width)
-    (format (ostream tikz) "color(~acm)=(~a)" (car poses) (car cols))
+    (format (ostream plottingarea) "\\pgfdeclareverticalshading{myshadingD}~%{~acm}{" width)
+    (format (ostream plottingarea) "color(~acm)=(~a)" (car poses) (car cols))
     (mapc (lambda (pos col)
-	    (format (ostream tikz) "; color(~acm)=(~a)" pos col)) (cdr poses) (cdr cols))
-    (format (ostream tikz)
+	    (format (ostream plottingarea) "; color(~acm)=(~a)" pos col)) (cdr poses) (cdr cols))
+    (format (ostream plottingarea)
 	    "}~%\\pgftext[at=\\pgfpoint{~acm}{~acm}] {\\pgfuseshading{myshadingD}}" 
 	    (+ x-pos (* 0.5 width)) (+ y-pos (* 0.5 height)))
-    (with-subfigure (tikz t2 (+ x-pos width) y-pos (- width) height 0 1 z-min z-max)
+    (with-subfigure (plottingarea t2 (+ x-pos width) y-pos (- width) height 0 1 z-min z-max)
       (multiple-value-bind (ticks precision) (auto-ticks-y t2 t 4 10)
 	(draw-axis-rectangle t2 :x-list nil :y-list nil)
 	(draw-axis-ticks-y t2 ticks :text-style "right"
