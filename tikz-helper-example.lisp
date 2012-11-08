@@ -13,13 +13,17 @@
 
 (defparameter *plotting-dir* "/home/haavagj/src/tikz-helper/example/"
   "The plots produced in the code below will end up in this directory")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
 
-(defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) &body body)
+(eval-when (:compile-toplevel)
+  (defparameter *examples* nil "List of tex files and doc strings"))
+
+(defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max) docstring &body body)
   "A macro wrapping the with-tikz-plot macro for the example plots. It makes a plot with name in the 
 *plotting-dir* directory, with a width of 10cm, a height of 5 cm. If *compilep* is T, the produced file is
 compiled with pdflatex, the reults are viewed with *viewer*."
+  (push (cons name docstring) *examples*)
   (let ((fname (gensym)))
     `(let ((,fname 
 	    #+sbcl(sb-ext:native-namestring (make-pathname :name ,name :defaults (pathname *plotting-dir*)))
@@ -35,6 +39,9 @@ compiled with pdflatex, the reults are viewed with *viewer*."
     rands))
 
 (with-example-plot ("transform-and-clip.tex" -5 5 -3 2)
+    "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot, 
+and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
+within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area."
   (flet ((draw-stuff ()
 	   (make-path tikz (list -5 5) (list -2.5 2.5))
 	   (make-path tikz (list -5 5) (list 2.5 -2.5))
@@ -44,10 +51,10 @@ compiled with pdflatex, the reults are viewed with *viewer*."
     (clip-and-transform (tikz) (draw-stuff))
     (draw-axis-rectangle tikz)))
 
-#|
-Different styles of graphs
-|#
 (with-example-plot ("test-styles.tex" 0 10 0 12)
+    "Different styles of lines and data points. The styles are just normal tikz options. Most functions 
+dealing with sets of data points call the transform macro themselves, so calling it from top level is not 
+necessary."
   (let ((x-vals (make-range 0 1 11))
 	(y-vals (make-range 0 0.5 11)))
     ;;Function that translates y-vals, and draws datapoints connected with a line.
@@ -72,8 +79,21 @@ Different styles of graphs
     ;;Draw a rectangle and axes with ticks.
     (draw-axis-rectangle tikz)))
 
+(with-example-plot ("bubbles.tex" 0 10 0 10)
+    "Data points of varying sizes, shapes and colors. Draw node does not automatically transform, 
+since it can be useful in the default frame."
+  (let* ((x (make-range 0 0.1 100))
+	 (y (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
+	 (shapes (list "rectangle" "star" "circle"))
+	 (colors (list "red" "blue" "green"))
+	 (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (make-random-list 100))))
+    (clip-and-transform (tikz)
+      (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a,opacity=0.3" (elt colors (random 3)))
+					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size))
+    (draw-axis-popped-out tikz)))
+
 (defun make-gaussian-histogram (min bin-size nbins mean sigma ndraws)
-  "Generate a Gaussian histogram with ndraws Gaussian random numbers."
+  "Histograms made from Gaussian random numbers."
   (let ((data (make-array nbins)))
     (flet ((add (g1)
 	     (let ((bin (floor (- (+ mean (* sigma g1)) min) bin-size)))
@@ -83,13 +103,11 @@ Different styles of graphs
 	  (add g1) (add g2))))
     (make-histogram min bin-size (coerce data 'list))))
 
-#|
-Some Gaussian histograms
-|#
-(let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2500))
-      (histo2 (make-gaussian-histogram 0.0 0.25 40 5.0 1.8 1600))
-      (histo3 (make-gaussian-histogram 0.0 0.25 40 5.0 1.6 1000)))
-  (with-example-plot ("test-histo2.tex" 0 10 0 150)
+(with-example-plot ("test-histo2.tex" 0 10 0 150)
+    "Some Gaussian histograms with different styles. The legend entries are placed in the default cm frame."
+  (let ((histo1 (make-gaussian-histogram 0.0 0.25 40 5.0 2.0 2500))
+	(histo2 (make-gaussian-histogram 0.0 0.25 40 5.0 1.8 1600))
+	(histo3 (make-gaussian-histogram 0.0 0.25 40 5.0 1.6 1000)))
     ;;Draw the histograms with different styles
     (draw-histogram tikz histo1 "draw=gray,fill=blue!50" t)
     (draw-histogram tikz histo2 "red!80,thick" nil)
@@ -100,26 +118,9 @@ Some Gaussian histograms
     (draw-legend-entry tikz 0.5 4.1 "Histogram 2" :line-style "red!80,thick")
     (draw-legend-entry tikz 0.5 3.7 "Histogram 3" :mark-style "white,fill=green" :histogram-node-p t)))
 
-#|
-Datapoints of varying sizes,shapes and colors
-|#
-(let* ((x (make-range 0 0.1 100))
-       (y (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
-       (shapes (list "rectangle" "star" "circle"))
-       (colors (list "red" "blue" "green"))
-       (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (make-random-list 100))))
-  (with-example-plot ("bubbles.tex" 0 10 0 10)
-    ;; The clip-and-transform macro clips the plottingarea, and adds tikz code to transform data points within a scope
-    ;; Draw node does not autoimatically transform, since it is often needed in the cm frame.
-    (clip-and-transform (tikz)
-      (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a,opacity=0.3" (elt colors (random 3)))
-					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size))
-    (draw-axis-popped-out tikz)))
-
-#|
-Histogram with horizontal bins.
-|#
 (with-example-plot ("test-histo1.tex" 0 350 0 10)
+    "Histogram with bins extending in the horizontal direction. 
+The bins are named with the draw-axis-ticks function."
   (let ((histo (make-gaussian-histogram 0.0 1.0 10 5.0 2.0 1000)))
     ;;Filled horizontal histogram. Data is from a Gaussian histo, but the bins are sorted and incremented by 100.
     (draw-histogram-horizontal tikz (make-histogram (getf histo :min) (getf histo :bin-size)
@@ -131,13 +132,12 @@ Histogram with horizontal bins.
 		     :names (mapcar (lambda (x) (format nil "Thing ~a" (floor x))) (make-range 1 1 11))
 		     :numberp nil :start 0 :stop 0 :text-style "right")
   ;;Draw a line and som text
-  (draw-line tikz 7 -0.3 7 5.3 "gray")
-  (draw-node tikz 7 5.3 "above" "" "Threshold"))
+  (transform (tikz)
+    (draw-line tikz 250 -0.3 250 10.3 "gray")
+    (draw-node tikz 250 10.3 "above" "" "Threshold")))
 
-#|
-Plotting sin(x) and cos(x).
-|#
 (with-example-plot ("functions.tex" -7 7 -1.2 1.2)
+    "Plotting sin(x) and cos(x), with grid lines and tick names on the x-axis."
   ;;Names axis, so x-axis is not drawn automatically, but manually
   (draw-axis-cross tikz :x-list nil :y-list nil)
   ;;Grid lines ar specific values in the x-direction, automatic in the y-direct ion
@@ -152,12 +152,10 @@ Plotting sin(x) and cos(x).
   (draw-legend-entry tikz 0.5 5.2 "sin(x)" :line-style "red")
   (draw-legend-entry tikz 2.5 5.2 "cos(x)" :line-style "blue"))
 
-#|
-Gaussian function, with some clipping, filling and text boxes
-|#
 (with-example-plot ("gaussian-distribution.tex" -3.2 3.2 0 0.45)
+    "Gaussian function, made by drawing and filling function segments."
   (flet ((clip-draw (x-min x-max x-pos x-pos-height color text)
-	   (multiple-value-bind (x y) (tikz-helper::make-function-path
+	   (multiple-value-bind (x y) (get-function-points
 				       (lambda (x) (tut:gauss x #( 1.0 0.0 1.0))) 
 				       100 x-min x-max)
 	     (clip-and-transform (tikz)
@@ -174,22 +172,20 @@ Gaussian function, with some clipping, filling and text boxes
     (clip-draw    0  1   0.5  0.5 "fill=blue!40" "34.1\\%")
     (clip-draw    1  2   1.5  1.7 "fill=orange!60" "13.6\\%")
     (clip-draw    2  3.5 2.5  1.6 "fill=red!80" "2.2\\%"))
-  (draw-axis-ticks-x tikz (make-range -3 1 7) :numberp nil
-		     :names (list "$-3\\sigma$" "$-2\\sigma$" "$-\\sigma$" 
-				  "$\\mu$" "$\\sigma$" "$2\\sigma$" "$3\\sigma$"))
+  (draw-axis-ticks-x tikz (make-range -2 1 5) :numberp nil
+		     :names (list "$-2\\sigma$" "$-\\sigma$" "$\\mu$" "$\\sigma$" "$2\\sigma$"))
   (draw-line tikz 0 0 10 0 "thick,black"))
 
-#|
-Som Gauss smeared datapoints, with a fitted function
-|#
 (with-example-plot ("test-fitter.tex" 0 10 0 20)
+    "Some Gauss smeared data points, fitted with the Gaussian function. Fit parameters are ptinted in the plot. 
+A spline fit is also plotted."
   (let* ((x-poses (make-range 0 0.25d0 41))
 	 (y-poses (mapcar (lambda (x) (tut:gauss x #(90.0d0 5.0d0 2.0d0))) x-poses))
 	 (smeared-y (mapcar (lambda (x) (+ x (tut:gaussian-random))) y-poses))
 	 ;;Get the fit-parameters from the #'gauss function, with initial gueass #(10 0 1)
 	 (fit-params (levmar:levmar-optimize #'tut:gauss #(10.0d0 0.0d0 1.0d0) x-poses y-poses)))
     (draw-function tikz (spline:get-spline-fun (coerce x-poses 'vector) (coerce smeared-y 'vector))
-		   100 "green,thick" 0 10)
+		   400 "green,thick" 0 10)
     (draw-function tikz (lambda (x) (tut:gauss x fit-params)) 200 "thick,gray")
     (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue")
     (draw-axis-rectangle tikz)
@@ -200,10 +196,9 @@ Som Gauss smeared datapoints, with a fitted function
     (draw-node tikz 9.5 4.5 "left" "" (format nil "Fitted mean: ~5,2f" (aref fit-params 1)))
     (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)))))
 
-#|
-Gaussian histogram, with a fitted function
-|#
 (with-example-plot ("test-fitter2.tex" 0 10 0 300)
+    "Same as above, except the data points have errors. The error bars are calculated from bin content.
+Empty bins are discarded in the fit."
   (let* ((histo (make-gaussian-histogram 0 0.5 20 5.0 1.5 2000))
 	 (x-poses (make-range 0.25 0.5 21))
 	 (y-poses (getf histo :data))
@@ -215,8 +210,8 @@ Gaussian histogram, with a fitted function
     (draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red")
     (draw-legend-entry tikz 0.5 3.7 "Data" :mark-style "draw=blue!10,fill=blue!20" :histogram-node-p t)
     (draw-legend-entry tikz 0.5 4.1 "Gauss fit" :line-style "thick,red")
-    (draw-node tikz  9.5 4.1 "left" "" (format nil "Fitted mean: ~5,1f" (aref parameters 1)))
-    (draw-node tikz  9.5 3.7 "left" "" (format nil "Fitted sigma: ~5,1f" (aref parameters 2))))
+    (draw-node tikz 9.5 4.5 "left" "" (format nil "Fitted mean: ~5,2f" (aref parameters 1)))
+    (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted sigma: ~5,2f" (aref parameters 2))))
   (draw-axis-rectangle tikz))
 
 (defun polynomial (x params) 
@@ -225,10 +220,8 @@ Gaussian histogram, with a fitted function
 			     (* param (expt x degree))) params 
 			     (make-range (- (length params) 1) -1 (length params)))))
 
-#|
-Make some noisy datapoints from polynomial, fit and plot.
-|#
 (with-example-plot ("test-fitter3.tex" -7 7 -100 100)
+    "Noisy data points, with known errors, fitted with a polynomial of the third degree."
   (let* ((x-poses (make-range -10 0.5 41))
 	 (y-poses (mapcar (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
 	 (y-errors (mapcar (lambda (x) (+ 2.0  (sqrt (abs x)))) y-poses))
@@ -244,14 +237,12 @@ Make some noisy datapoints from polynomial, fit and plot.
 					       (coerce params 'list))))
   (draw-axis-cross tikz :y-ticks-max 8 :y-ticks-min 4)
   (draw-legend-entry tikz 0.0 4.6 "$0.5x^3 - x^2 - 2x + 3$" :line-style "green!80!black")
-  (draw-legend-entry tikz 0.0 4.2 "Noisy measurements" :line-style "draw=red,fill=red"
+  (draw-legend-entry tikz 0.0 4.2 "Noisy measurements" :mark-style "draw=red,fill=red"
 		     :error-style "red" :error-height 0.2)
   (draw-legend-entry tikz 0.0 3.8 "Fitted polynomial" :line-style "blue"))
 
-#|
-Qubic splines, with different end conditions.
-|#
 (with-example-plot ("spline.tex" 4.0 6.0 4.0 7.0)
+    "Cubic splines, with different end point conditions."
   (let ((x (list 4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y (list 4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
     (draw-datapoints tikz x y "draw=black!80,fill=black!80" (make-node-string "diamond" 3 3))
@@ -261,10 +252,10 @@ Qubic splines, with different end conditions.
     (draw-legend-entry tikz 5.5 4.0 "Not-a-knot spline" :line-style "blue!80")
     (draw-legend-entry tikz 5.5 3.4 "Natural spline" :line-style "red!80")))
 
-#|
-A function with a zoomed view of a region of interest.
-|#
 (with-example-plot ("sub-fig.tex" -3.0 3.0 -1.0 1.0)
+    "More than one plot can be plotted in the same figure by using sub figures.
+Sub figures are basically a new set of transformations, and do not affect the default cm frame at all.
+Here is a function with a zoomed view of a region of interest."
   (flet ((erf-gauss (x) (+ (tut:erf x) (tut:gauss x (vector 0.001 -0.15 0.01)))))
     (draw-axis-cross tikz :y-ticks-max 6)
     (draw-function tikz #'erf-gauss 400 "red")
@@ -274,10 +265,8 @@ A function with a zoomed view of a region of interest.
 			   :y-ticks-min 2 :y-ticks-max 4)
       (draw-function tikz2 #'erf-gauss 100 "red"))))
 
-#|
-Horizontal histograms, side by side.
-|#
 (with-example-plot ("sub-histo.tex" 0.0 10.0 0.0 5.0)
+    "Horizontal histograms, in sub figures side by side. The mean and $\\sigma$ are indicated in red."
   (flet ((draw-sub-histo (offset mean sigma)
 	   (with-subfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
 	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
@@ -299,10 +288,8 @@ Horizontal histograms, side by side.
 				      (make-range 1 2 5))
 		       :numberp nil)))
 
-#|
-Overlaying plots, different scales
-|#
 (with-example-plot ("bubbles2.tex" 0 10 0 10)
+    "Two data sets with different transformations are plotted on top of ech other."
   (let* ((x (make-range 0 0.1 101))
 	 (y1 (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
 	 (y2 (mapcar (lambda (x)  (* 100 (- 10 (+ x (tut:gaussian-random))))) x)))
@@ -324,10 +311,8 @@ Overlaying plots, different scales
     (draw-legend-entry tikz 2.5 5.3 "Blue data" :mark-style "fill=blue,draw=black"
 		       :node-string (make-node-string "circle" 4 4))))
 
-#|
-Draw plot with log axis, explicit transformation. Also sub-ticks.
-|#
 (with-example-plot ("log-scale.tex" 0 10 -0.5 2)
+    "Plot with log scale in the y direction. Explicit transformation."
   (flet ((expt-10 (x params) (+ (aref params 0) (expt 10 (* (aref params 1) x)))))
     (let* ((x (make-range 0.0 0.1 101))
 	   (err (mapcar (lambda (x) (+ (* (expt 10 (* 0.2 x)) 0.4 (tut:gaussian-random)))) x))
@@ -357,37 +342,61 @@ Draw plot with log axis, explicit transformation. Also sub-ticks.
 	(histo2d-incf histo (- (random 5.0) 2.5) (+ (* g2 0.3) 1.0))))
     histo))
 
-#|
-Tree ways of plotting 2D histograms, filled rectangles, 
-filled rectangles with contour lines, contour plot
-|#
-(let* ((histo (make-2d-histo)))
-  (with-example-plot ("histo-rect.tex" -2.5 2.5 -2.5 2.5)
+(with-example-plot ("histo-rect.tex" -2.5 2.5 -2.5 2.5)
+    "2D histogram drawn as filled rectangles. Takes a while to compile, 
+especially if the binning is fine."
+  (let* ((histo (make-2d-histo)))
     (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-    (draw-axis-rectangle tikz)
-    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
-
-(let* ((histo (make-2d-histo)))
-  (with-example-plot ("histo-rect-cont.tex" -2.5 2.5 -2.5 2.5)
-    (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil)
     (draw-axis-rectangle tikz)
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
 (with-example-plot ("histo-cont.tex" -2.5 2.5 -2.5 2.5)
+    "2D histogram drawn as filled contour regions. The points making up the contour lines 
+are just linear interpolation between neighbors on either side of the contour height."
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 t)
     (draw-axis-rectangle tikz)
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
-(let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
-       (tikz::*colors* (list "red" "white" "blue")))
-  (dotimes (i 220000)
-    (multiple-value-bind (g1 g2) (tut:gaussian-random)
-      (when (< i 160000) (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0)))
-      (histo2d-incf histo (random 22.0) (+ (* g2 1.3) 8.0))))
-  (with-example-plot ("histo-cont2.tex" 0 22 0 16)
+(with-example-plot ("histo-rect-cont.tex" -2.5 2.5 -2.5 2.5)
+    "2D histogram drawn as filled rectangles with contour lines."
+  (let* ((histo (make-2d-histo)))
+    (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
+    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil)
+    (draw-axis-rectangle tikz)
+    (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
+
+
+(with-example-plot ("histo-cont2.tex" 0 22 0 16)
+    "2D histogram drawn as filled contour regions, not using rainbow colors, and using
+non uniformly distributed tick marks."
+  (let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
+	 (tikz::*colors* (list "red" "white" "blue")))
+    (dotimes (i 220000)
+      (multiple-value-bind (g1 g2) (tut:gaussian-random)
+	(when (< i 160000) (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0)))
+	(histo2d-incf histo (random 22.0) (+ (* g2 1.3) 8.0))))
     (draw-histo2d-contour tikz histo 0 (/ (histo2d-get-max histo) 2.6) 2 t)
     (draw-axis-popped-out tikz :x-list (list 0 6 7 9 10 22)
 			  :y-list (list 0 6 7 9 10 16))
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6))))
+
+(defun make-example-tex ()
+  "Generate a tex file containing the example plots above. Make sure *examples* looks right before use."
+  (let ((fname 
+	 (sb-ext:native-namestring (make-pathname :name "example" :type "tex" :defaults (pathname *plotting-dir*)))))
+    (with-open-file (tex fname :direction :output :if-exists :supersede)
+      (format tex 
+	      "%%% AUTO GENERATED CODE
+\\documentclass{article}~%\\usepackage{standalone}~%\\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\\usepackage{tikz}~%\\usepackage{color}~%\\usepackage{siunitx}~%\\usepackage{float}~%\\usetikzlibrary{arrows,shapes}~%")
+      (tikz::latex-environ (tex "document")
+	(mapc (lambda (pair)
+		(tikz::latex-environ (tex "figure" "H")
+		  (format tex "\\centering~%")
+		  (format tex "\\input{~a}~%" (pathname-name (make-pathname :name (car pair) :defaults (pathname *plotting-dir*))))
+		  (format tex "\\caption{~a}~%" (cdr pair))))
+	      (remove-duplicates (reverse *examples*) :test #'equal))))
+    (pdflatex-compile-view fname "evince")))
+
+;;(make-example-tex)
