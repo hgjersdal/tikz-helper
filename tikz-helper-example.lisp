@@ -343,7 +343,7 @@ Here is a function with a zoomed view of a region of interest."
     histo))
 
 (with-example-plot ("histo-rect.tex" -2.5 2.5 -2.5 2.5)
-    "2D histogram drawn as filled rectangles. Takes a while to compile, 
+    "2D histogram drawn as filled rectangles. Takes a while to compile with pdflatex, 
 especially if the binning is fine."
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
@@ -365,7 +365,6 @@ are just linear interpolation between neighbors on either side of the contour he
     (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil)
     (draw-axis-rectangle tikz)
     (tikz::color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
-
 
 (with-example-plot ("histo-cont2.tex" 0 22 0 16)
     "2D histogram drawn as filled contour regions, not using rainbow colors, and using

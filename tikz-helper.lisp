@@ -237,7 +237,8 @@ text-style: style of text node."
       (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list))))
 
 (defparameter *tikz-preamble*
-"\\documentclass{standalone}
+"%%% AUTO GENERATED CODE
+\\documentclass{standalone}
 \\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi
 \\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \\usepackage{tikz}
