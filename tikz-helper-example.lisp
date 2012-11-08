@@ -32,12 +32,6 @@ compiled with pdflatex, the reults are viewed with *viewer*."
 	 ,@body)
        (when *compilep* (pdflatex-compile-view ,fname *viewer*)))))
 
-(defun make-random-list (size)
-  "returns a list of size gaussian random numbers"
-  (let ((rands nil))
-    (dotimes (i size) (push (tut:gaussian-random) rands))
-    rands))
-
 (with-example-plot ("transform-and-clip.tex" -5 5 -3 2)
     "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot, 
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
@@ -86,7 +80,7 @@ since it can be useful in the default frame."
 	 (y (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
 	 (shapes (list "rectangle" "star" "circle"))
 	 (colors (list "red" "blue" "green"))
-	 (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (make-random-list 100))))
+	 (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (tut:make-random-list 100))))
     (clip-and-transform (tikz)
       (mapc (lambda (x y size) (draw-node tikz x y (format nil "draw=black,fill=~a,opacity=0.3" (elt colors (random 3)))
 					  (make-node-string (elt shapes (random 3)) size size 0 "mm"))) x y size))

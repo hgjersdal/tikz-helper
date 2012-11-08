@@ -6,7 +6,8 @@
 \usepackage{color}
 \usepackage{siunitx}
 \usepackage{float}
-\usetikzlibrary{arrows,shapes}\begin{document}
+\usetikzlibrary{arrows,shapes}
+\begin{document}
 \begin{figure}[H]
 \centering
 \input{transform-and-clip.tex}
@@ -95,7 +96,7 @@ Here is a function with a zoomed view of a region of interest.}
 \begin{figure}[H]
 \centering
 \input{histo-rect.tex}
-\caption{2D histogram drawn as filled rectangles. Takes a while to compile, 
+\caption{2D histogram drawn as filled rectangles. Takes a while to compile with pdflatex, 
 especially if the binning is fine.}
 \end{figure}
 \begin{figure}[H]
@@ -112,6 +113,7 @@ are just linear interpolation between neighbors on either side of the contour he
 \begin{figure}[H]
 \centering
 \input{histo-cont2.tex}
-\caption{2D histogram drawn as filled contour regions, not using rainbow colors.}
+\caption{2D histogram drawn as filled contour regions, not using rainbow colors, and using
+non uniformly distributed tick marks.}
 \end{figure}
 \end{document}

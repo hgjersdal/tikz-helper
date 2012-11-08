@@ -18,6 +18,12 @@
 	 (pull (/ (- x mean) sigma)))
     (* (/ scale (* sigma (sqrt (* 2 pi)))) (exp (* -0.5 pull pull)))))
 
+(defun make-random-list (size)
+  "returns a list of size gaussian random numbers"
+  (let ((rands nil))
+    (dotimes (i size) (push (gaussian-random) rands))
+    rands))
+
 (defvar tcoeff
   (list 1.00000000000000000000  0.57721566490153286061 -0.65587807152025388108
 	-0.04200263503409523553  0.16653861138229148950 -0.04219773455554433675

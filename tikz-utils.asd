@@ -2,7 +2,7 @@
   (:use :cl)
   (:documentation "Some functions used in examples")
   (:nicknames :tut)
-  (:export :gamma :gaussian-random :gauss :erf))
+  (:export :gamma :gaussian-random :gauss :erf :make-random-list))
 
 (defsystem tikz-utils
   :name "tikz-utils"
