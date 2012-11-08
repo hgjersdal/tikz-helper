@@ -1,13 +1,13 @@
-;; Install and run using asdf:
-;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
-;; (asdf:operate 'asdf:load-op 'tikz-helper)
-;; (asdf:operate 'asdf:load-op 'tikz-levmar)
-;; (asdf:operate 'asdf:load-op 'tikz-utils)
-;; Or, if quicklisp is installed:
-;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
-;; (ql:quickload 'tikz-helper)
-;; (ql:quickload 'tikz-levmar)
-;; (ql:quickload 'tikz-utils)
+;;;; Install and run using asdf:
+;;;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
+;;;; (asdf:operate 'asdf:load-op 'tikz-helper)
+;;;; (asdf:operate 'asdf:load-op 'tikz-levmar)
+;;;; (asdf:operate 'asdf:load-op 'tikz-utils)
+;;;; Or, if quicklisp is installed:
+;;;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
+;;;; (ql:quickload 'tikz-helper)
+;;;; (ql:quickload 'tikz-levmar)
+;;;; (ql:quickload 'tikz-utils)
 
 (use-package :tikz-helper)
 
@@ -224,17 +224,15 @@ Empty bins are discarded in the fit."
 						x-poses y-smeared y-errors)))
     (draw-profilepoints tikz x-poses y-smeared y-errors "draw=red,fill=red")
     (draw-function tikz (lambda (x) (polynomial x params)) 200 "blue")
-    (draw-function tikz (lambda (x) (polynomial x #(0.5 -1 -2 3)))
-		   200 "green!80!black")
-    (draw-node tikz 5.1 1.4 "right" "" "Fitted parameters: ")
-    (draw-node tikz 5.1 1.0 "right" "" (format nil "~{$~3,1fx^3 ~3,1@fx^2 ~3,1@fx ~3,1@f$~}"
-					       (coerce params 'list))))
-  (draw-axis-cross tikz :y-ticks-max 8 :y-ticks-min 4)
-  (draw-legend-entry tikz 0.0 4.6 "$0.5x^3 - x^2 - 2x + 3$" :line-style "green!80!black")
-  (draw-legend-entry tikz 0.0 4.2 "Noisy measurements" :mark-style "draw=red,fill=red"
-		     :error-style "red" :error-height 0.2)
-  (draw-legend-entry tikz 0.0 3.8 "Fitted polynomial" :line-style "blue"))
-
+    (draw-legend-entry tikz 5.3 1.4 "Simulation parameters:" :mark-style "draw=red,fill=red" 
+		       :error-style "red" :error-height 0.15)
+    (draw-legend-entry tikz 0.0 4.6 "Fitted parameters:" :line-style "blue")
+    (flet ((print-params (params)
+	     (format nil "~{$~3,1fx^3 ~3,1@fx^2 ~3,1@fx ~3,1@f$~}" (coerce params 'list))))
+      (draw-node tikz 5.3 1.0 "right" "" (print-params #(0.5 -1.0 -2.0 3.0)))
+      (draw-node tikz 0.0 4.2 "right" "" (print-params params)))
+    (draw-axis-cross tikz :y-ticks-max 8 :y-ticks-min 4)))
+  
 (with-example-plot ("spline.tex" 4.0 6.0 4.0 7.0)
     "Cubic splines, with different end point conditions."
   (let ((x (list 4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
