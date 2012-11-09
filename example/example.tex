@@ -10,109 +10,109 @@
 \begin{document}
 \begin{figure}[H]
 \centering
-\input{transform-and-clip.tex}
+\input{/home/haavagj/src/tikz-helper/example/transform-and-clip.tex}
 \caption{By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot, 
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
 within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-styles.tex}
+\input{/home/haavagj/src/tikz-helper/example/test-styles.tex}
 \caption{Different styles of lines and data points. The styles are just normal tikz options. Most functions 
 dealing with sets of data points call the transform macro themselves, so calling it from top level is not 
 necessary.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{bubbles.tex}
+\input{/home/haavagj/src/tikz-helper/example/bubbles.tex}
 \caption{Data points of varying sizes, shapes and colors. Draw node does not automatically transform, 
 since it can be useful in the default frame.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-histo2.tex}
+\input{/home/haavagj/src/tikz-helper/example/test-histo2.tex}
 \caption{Some Gaussian histograms with different styles. The legend entries are placed in the default cm frame.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-histo1.tex}
+\input{/home/haavagj/src/tikz-helper/example/test-histo1.tex}
 \caption{Histogram with bins extending in the horizontal direction. 
 The bins are named with the draw-axis-ticks function.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{functions.tex}
+\input{/home/haavagj/src/tikz-helper/example/functions.tex}
 \caption{Plotting sin(x) and cos(x), with grid lines and tick names on the x-axis.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{gaussian-distribution.tex}
+\input{/home/haavagj/src/tikz-helper/example/gaussian-distribution.tex}
 \caption{Gaussian function, made by drawing and filling function segments.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-fitter.tex}
-\caption{Some Gauss smeared data points, fitted with the Gaussian function. Fit parameters are ptinted in the plot. 
+\input{/home/haavagj/src/tikz-helper/example/test-fitter.tex}
+\caption{Some Gauss smeared data points, fitted with the Gaussian function. Fit parameters are printed in the plot. 
 A spline fit is also plotted.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-fitter2.tex}
+\input{/home/haavagj/src/tikz-helper/example/test-fitter2.tex}
 \caption{Same as above, except the data points have errors. The error bars are calculated from bin content.
 Empty bins are discarded in the fit.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{test-fitter3.tex}
+\input{/home/haavagj/src/tikz-helper/example/test-fitter3.tex}
 \caption{Noisy data points, with known errors, fitted with a polynomial of the third degree.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{spline.tex}
+\input{/home/haavagj/src/tikz-helper/example/spline.tex}
 \caption{Cubic splines, with different end point conditions.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{sub-fig.tex}
+\input{/home/haavagj/src/tikz-helper/example/sub-fig.tex}
 \caption{More than one plot can be plotted in the same figure by using sub figures.
 Sub figures are basically a new set of transformations, and do not affect the default cm frame at all.
 Here is a function with a zoomed view of a region of interest.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{sub-histo.tex}
+\input{/home/haavagj/src/tikz-helper/example/sub-histo.tex}
 \caption{Horizontal histograms, in sub figures side by side. The mean and $\sigma$ are indicated in red.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{bubbles2.tex}
+\input{/home/haavagj/src/tikz-helper/example/bubbles2.tex}
 \caption{Two data sets with different transformations are plotted on top of ech other.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{log-scale.tex}
+\input{/home/haavagj/src/tikz-helper/example/log-scale.tex}
 \caption{Plot with log scale in the y direction. Explicit transformation.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{histo-rect.tex}
+\input{/home/haavagj/src/tikz-helper/example/histo-rect.tex}
 \caption{2D histogram drawn as filled rectangles. Takes a while to compile with pdflatex, 
 especially if the binning is fine.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{histo-cont.tex}
+\input{/home/haavagj/src/tikz-helper/example/histo-cont.tex}
 \caption{2D histogram drawn as filled contour regions. The points making up the contour lines 
 are just linear interpolation between neighbors on either side of the contour height.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{histo-rect-cont.tex}
+\input{/home/haavagj/src/tikz-helper/example/histo-rect-cont.tex}
 \caption{2D histogram drawn as filled rectangles with contour lines.}
 \end{figure}
 \begin{figure}[H]
 \centering
-\input{histo-cont2.tex}
+\input{/home/haavagj/src/tikz-helper/example/histo-cont2.tex}
 \caption{2D histogram drawn as filled contour regions, not using rainbow colors, and using
 non uniformly distributed tick marks.}
 \end{figure}

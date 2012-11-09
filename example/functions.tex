@@ -11,30 +11,13 @@
 \pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
 \begin{scope}[shift={(7.0,1.2)}]
-\begin{scope}[thick,black,fill=white]
-\pgfpathmoveto{ \pgfpointxy {-7.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {7.0} {0.0}}
-\pgfpathmoveto{ \pgfpointxy {0.0} {-1.2}}
-\pgfpathlineto{ \pgfpointxy {0.0} {1.2}}
-\pgfusepath{ stroke, }
-\end{scope}
-\begin{scope}[yshift=2.5cm]
-\end{scope}
-\begin{scope}[xshift=5.0cm]
-\end{scope}
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
-\begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[thin,gray]
 \pgfpathmoveto{ \pgfpointxy {-6.283185307179586} {-1.2}}
 \pgfpathlineto{ \pgfpointxy {-6.283185307179586} {1.2}}
 \pgfpathmoveto{ \pgfpointxy {-3.141592653589793} {-1.2}}
 \pgfpathlineto{ \pgfpointxy {-3.141592653589793} {1.2}}
+\pgfpathmoveto{ \pgfpointxy {0.0} {-1.2}}
+\pgfpathlineto{ \pgfpointxy {0.0} {1.2}}
 \pgfpathmoveto{ \pgfpointxy {3.141592653589793} {-1.2}}
 \pgfpathlineto{ \pgfpointxy {3.141592653589793} {1.2}}
 \pgfpathmoveto{ \pgfpointxy {6.283185307179586} {-1.2}}
@@ -60,21 +43,20 @@
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
 \begin{scope}[shift={(7.0,1.2)}]
 \begin{scope}[thick,black,fill=white]
-\pgfpathmoveto{ \pgfpointxy {-7.0} {-1.2}}
-\pgfpathlineto{ \pgfpointxy {7.0} {-1.2}}
-\pgfpathlineto{ \pgfpointxy {7.0} {1.2}}
-\pgfpathlineto{ \pgfpointxy {-7.0} {1.2}}
-\pgfpathclose
+\pgfpointadd{\pgfpointxy {-7.0} {-1.2}} {\pgfpoint{0}{-0.15cm}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {7.0} {-1.2}} {\pgfpoint{0}{-0.15cm}}\pgfpathlineto{ NIL }
+\pgfpointadd{\pgfpointxy {-7.0} {-1.2}} {\pgfpoint{-0.15cm}{0}}\pgfpathmoveto{ NIL }
+\pgfpointadd{\pgfpointxy {-7.0} {1.2}} {\pgfpoint{-0.15cm}{0}}\pgfpathlineto{ NIL }
 \pgfusepath{ stroke, }
 \end{scope}
-\begin{scope}[yshift=0cm]
+\begin{scope}[yshift=-0.15cm]
 \end{scope}
-\begin{scope}[xshift=0cm]
-\draw[] [shift={(-7.0,-1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[] [shift={(-7.0,-0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
-\draw[] [shift={(-7.0,0.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.0}}};
-\draw[] [shift={(-7.0,0.5)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
-\draw[] [shift={(-7.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
+\begin{scope}[xshift=-0.15cm]
+\draw[] [shift={(-7.0,-1.0)}] (0,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
+\draw[] [shift={(-7.0,-0.5)}] (0,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-0.5}}};
+\draw[] [shift={(-7.0,0.0)}] (0,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.0}}};
+\draw[] [shift={(-7.0,0.5)}] (0,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{0.5}}};
+\draw[] [shift={(-7.0,1.0)}] (0,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
@@ -84,12 +66,12 @@
 \pgfsetxvec{\pgfpoint{0.71428573cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.0833333cm}}
 \begin{scope}[shift={(7.0,1.2)}]
-\begin{scope}[yshift=0cm]
-\draw[black] [shift={(-6.283185307179586,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-2\pi$}};
-\draw[black] [shift={(-3.141592653589793,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$-\pi$}};
-\draw[black] [shift={(0.0,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{0.0}};
-\draw[black] [shift={(3.141592653589793,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$\pi$}};
-\draw[black] [shift={(6.283185307179586,-1.2)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{$2\pi$}};
+\begin{scope}[yshift=-0.15cm]
+\draw[black] [shift={(-6.283185307179586,-1.2)}] (0,0) -- (0,-2pt) node[below]{ \scriptsize{$-2\pi$}};
+\draw[black] [shift={(-3.141592653589793,-1.2)}] (0,0) -- (0,-2pt) node[below]{ \scriptsize{$-\pi$}};
+\draw[black] [shift={(0.0,-1.2)}] (0,0) -- (0,-2pt) node[below]{ \scriptsize{0.0}};
+\draw[black] [shift={(3.141592653589793,-1.2)}] (0,0) -- (0,-2pt) node[below]{ \scriptsize{$\pi$}};
+\draw[black] [shift={(6.283185307179586,-1.2)}] (0,0) -- (0,-2pt) node[below]{ \scriptsize{$2\pi$}};
 \end{scope}
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
