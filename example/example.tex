@@ -29,7 +29,8 @@ function.
 \input{/home/haavagj/src/tikz-helper/example/transform-and-clip.tex}
 \caption{By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot (plot-x-min,plot-y-min), 
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
-within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area.}
+within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area. Sizes with units like cm
+or pt are not scaled, only translated.}
 \end{figure}
 \section{Simple plots}
 \begin{figure}[H]

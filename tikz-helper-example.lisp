@@ -53,12 +53,13 @@ compiled with pdflatex, the results are viewed with *viewer*. Also adds the figu
 (with-example-plot ("transform-and-clip" -1.5 0.5 -2 1 :rectangle)
     "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot (plot-x-min,plot-y-min), 
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
-within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area."
+within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area. Sizes with units like cm
+or pt are not scaled, only translated."
   (flet ((draw-stuff ()
 	   ;;Stae path
-	   (draw-path tikz (list -2 0 -2 0 -1) (list -2 0 0 -2 1) "red" t) 
+	   (draw-path tikz (list -2 0 -2 0 -1 -2) (list -2 0 0 -2 1 -2) "draw=black,fill=yellow" t) 
 	   ;;star node, shape and size not transformed.
-	   (draw-node tikz 0 0.5 "draw=black,fill=yellow" (make-node-string "star" 1 1 0 "cm")))) 
+	   (draw-node tikz 0 0 "draw=black,fill=yellow" (make-node-string "star" 0.4 0.4 0 "cm")))) 
     (draw-stuff)
     (clip-and-transform (tikz)
       (draw-stuff))))
