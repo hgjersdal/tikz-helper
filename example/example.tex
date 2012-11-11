@@ -8,19 +8,36 @@
 \usepackage{float}
 \usetikzlibrary{arrows,shapes}
 \begin{document}
+\section{Introduction}
+tikz-helper is a set of common lisp functions and macros to make plots. This is done by 
+generating \LaTeX \ code using pgf and {Ti\textit{k}Z}.
+
+To generate a plot, the macro with-tikz-figure is called. The macro adds a preamble and a 
+tikzfigure environment to the file where the resulting \LaTeX \ code ends up, collects information needed to perform 
+transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
+linear and works so that plot-x-min is at 0cm in the default frame, and plot-x-max is at 0+width cm, 
+and similarly in the y-direction.
+
+The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
+Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so
+that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the 
+axis. If custom ticks are needed, or ticks with names, not numbers, use :none, and call the corresponding draw-axis-*
+function.
+
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/transform-and-clip.tex}
-\caption{By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot, 
+\caption{By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot (plot-x-min,plot-y-min), 
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
 within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area.}
 \end{figure}
+\section{Simple plots}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/test-styles.tex}
-\caption{Different styles of lines and data points. The styles are just normal tikz options. Most functions 
-dealing with sets of data points call the transform macro themselves, so calling it from top level is not 
-necessary.}
+\caption{Different styles of lines and nodes. The styles are just regular tikz options. Most functions 
+dealing with sets of data points call the clip-and-transform macro themselves, so calling it from 
+top level is not necessary.}
 \end{figure}
 \begin{figure}[H]
 \centering
@@ -31,7 +48,9 @@ since it can be useful in the default frame.}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/test-histo2.tex}
-\caption{Some Gaussian histograms with different styles. The legend entries are placed in the default cm frame.}
+\caption{Some Gaussian histograms with different styles and with legend entries. 
+The legend entries are placed in the default cm frame, unless draw-histogram 
+is called within (transform (tikz) ...}
 \end{figure}
 \begin{figure}[H]
 \centering
@@ -49,6 +68,7 @@ The bins are named with the draw-axis-ticks function.}
 \input{/home/haavagj/src/tikz-helper/example/gaussian-distribution.tex}
 \caption{Gaussian function, made by drawing and filling function segments.}
 \end{figure}
+\section{Fitting with levenberg marquart}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/test-fitter.tex}
@@ -64,13 +84,16 @@ Empty bins are discarded in the fit.}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/test-fitter3.tex}
-\caption{Noisy data points, with known errors, fitted with a polynomial of the third degree.}
+\caption{Noisy data points, with known errors, fitted with a polynomial of the third degree. 
+The ''Simulated parameter'' legend is placed in the default frame, the ''Fitted parameters'' 
+in the data frame.}
 \end{figure}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/spline.tex}
 \caption{Cubic splines, with different end point conditions.}
 \end{figure}
+\section{Sub figures}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/sub-fig.tex}
@@ -93,6 +116,7 @@ Here is a function with a zoomed view of a region of interest.}
 \input{/home/haavagj/src/tikz-helper/example/log-scale.tex}
 \caption{Plot with log scale in the y direction. Explicit transformation.}
 \end{figure}
+\section{2D histograms}
 \begin{figure}[H]
 \centering
 \input{/home/haavagj/src/tikz-helper/example/histo-rect.tex}

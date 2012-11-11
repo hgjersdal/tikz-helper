@@ -134,21 +134,21 @@ If this is called within a transform scope of the same plottingarea, nothing is 
   (path-move-to plottingarea (car x) (car y))
   (mapc (lambda (x y) (path-line-to plottingarea x y)) (cdr x) (cdr y)))
 
-(defun make-mixed-point (plottingarea x-data x-unit y-data y-unit)
+(defun make-mixed-point (x-data x-unit y-data y-unit)
   "A point in the coord system of the current transformation (x-data, y-data), shifted by another point (x-unit,y-unit).
 The other point should be a string with cm, mm, pt or similar invariant unit."
-  (format (ostream plottingarea) "\\pgfpointadd{\\pgfpointxy {~f} {~f}} {\\pgfpoint{~a}{~a}}"
+  (format nil "\\pgfpointadd{\\pgfpointxy {~f} {~f}} {\\pgfpoint{~a}{~a}}"
 	  x-data y-data x-unit y-unit))
 
 (defun path-move-to-mixed (plottingarea x-data x-unit y-data y-unit)
   "Move path to mixed point."
   (format (ostream plottingarea) "\\pgfpathmoveto{ ~a }~%"
-	  (make-mixed-point plottingarea x-data x-unit y-data y-unit)))
+	  (make-mixed-point x-data x-unit y-data y-unit)))
 
 (defun path-line-to-mixed (plottingarea x-data x-unit y-data y-unit)
   "Extend path to mixed point."
   (format (ostream plottingarea) "\\pgfpathlineto{ ~a }~%"
-	  (make-mixed-point plottingarea x-data x-unit y-data y-unit)))
+	  (make-mixed-point x-data x-unit y-data y-unit)))
 
 (defun make-path-mixed-units (plottingarea x-data x-units y-data y-units)
   "Connect data points with straight lines. Data points are at x-data + x-units, y-data + y-units. Units can be cm,pt,mm, etc"
@@ -254,7 +254,7 @@ text-style: style of text node."
    (sb-ext:run-program "pdflatex"
 		       (list
 			"-output-directory"
-			(sb-ext:native-namestring
+			(namestring
 			 (make-pathname :directory (pathname-directory tex-file)))
 			tex-file)
 		       :wait t :search t :output *standard-output*))
@@ -274,7 +274,8 @@ text-style: style of text node."
 
 (defmacro with-tikz-plot ((name filename width height
 				plot-x-min plot-x-max
-				plot-y-min plot-y-max) &body body)
+				plot-y-min plot-y-max
+				axis-style) &body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment."
   (let ((stream-name (gensym)))
     `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
@@ -284,7 +285,13 @@ text-style: style of text node."
 	 (format ,stream-name *tikz-preamble*)
 	 (latex-environ (,stream-name "document")
 	   (latex-environ (,stream-name "tikzpicture")
-	     ,@body))))))
+	     ,@body
+	     (ecase ,axis-style
+	       (:rectangle (draw-axis-rectangle ,name))
+	       (:cross (draw-axis-cross ,name))
+	       (:left-bottom (draw-axis-left-bottom ,name))
+	       (:popped-out (draw-axis-popped-out ,name))
+	       (:none nil))))))))
 
 (defmacro with-subfigure ((plottingarea name
 					x-offset y-offset width height
@@ -315,7 +322,7 @@ text-style: style of text node."
 (defun draw-node (plottingarea x y style node-string &optional (text ""))
   (format (ostream plottingarea) "\\node at (~f,~f) [~a,~a] {~a};~%" x y style node-string text))
 
-(defun draw-profilepoint (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
+(defun draw-profilepoint (plottingarea x y y-error style &key (node (make-node-string "circle" 3 3)))
   "Draw a data-point with error bars in y direction"
   (scope (plottingarea style)
     (make-path-mixed-units plottingarea
@@ -324,13 +331,7 @@ text-style: style of text node."
 				 (- y y-error) (- y y-error) (- y y-error))
 			   (list 0 0 0 0 0 0))
     (path-stroke plottingarea t)
-    (draw-node plottingarea x y style node-string)))
-
-(defun draw-profilepoints (plottingarea x y y-error style &optional (node-string (make-node-string "circle" 3 3)))
-  "Draw points with error bars in the y direction."
-  (clip-and-transform (plottingarea)
-    (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style node-string))
-	    x y y-error)))
+    (draw-node plottingarea x y style node)))
 
 (defun make-histogram (min bin-size data)
   "A histogram as a simple plist"
@@ -352,22 +353,6 @@ text-style: style of text node."
 
       (add-point (elt x-pos (- (length x-pos) 1)) 0))
     (values path-x path-y)))
-
-(defun draw-histogram-horizontal (plottingarea histo style &optional (fill nil) (separate-bins nil))
-  "Draw a histogram."
-  (multiple-value-bind (y x) (make-histogram-path-points histo)
-    (clip-and-transform (plottingarea)
-      (draw-path plottingarea x y style fill)
-      (when separate-bins
-	(mapcar (lambda (x y) (draw-path plottingarea (list 0 x) (list y y) style nil)) x y)))))
-  
-(defun draw-histogram (plottingarea histo style &optional (fill nil) (separate-bins nil))
-  "Draw a histogram."
-  (multiple-value-bind (x y) (make-histogram-path-points histo)
-    (clip-and-transform (plottingarea)
-      (draw-path plottingarea x y style fill)
-      (when separate-bins
-	(mapcar (lambda (x y) (draw-path plottingarea (list x x) (list y 0) style nil)) x y)))))
 
 (defun region-of-interest-zoom (top sub style &optional (top-left t) (top-right t) (bottom-left t) (bottom-right t))
   "Draw a rectangle around region of interest, and draw lines connecting it with a sub-figure."
@@ -402,23 +387,78 @@ text-style: style of text node."
     (when (or bottom-right bottom-left top-right top-left) 
       (path-stroke top))))
 
-(defun draw-datapoints (plottingarea x y style &optional (node (make-node-string "circle" 3 3)))
+(defun legend (x y name)
+  (list :x x :y y :name name))
+
+(defun draw-legend-entry (plottingarea legend &key (width 0.4) (line-style "") (mark-style "") 
+					 (node-string (make-node-string "circle" 3 3))
+					 (name-style "") (error-style "") (error-height 0.15)
+					 (filled nil))
+  "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
+For graphs, functions, datapoints, most histograms"
+  (let ((x (getf legend :x))
+	(y (getf legend :y))
+	(name (getf legend :name)))
+    (if (> (length line-style) 0) (draw-line plottingarea x y (+ x width) y line-style))
+    (if (> (length error-style) 0) (draw-profilepoint plottingarea (+ (* 0.5 width) x)
+						      y error-height error-style))
+    (if (> (length mark-style) 0) (draw-node plottingarea (+ (* 0.5 width) x) y mark-style 
+					     (if filled 
+						 (make-node-string "rectangle" width 0.2 0 "cm")
+						 node-string)))
+    (draw-node plottingarea (+ x width) y (concatenate 'string "right," name-style) ""  name)))
+
+(defun draw-profilepoints (plottingarea x y y-error style &key (node (make-node-string "circle" 3 3)) (legend nil))
+  "Draw points with error bars in the y direction."
+  (clip-and-transform (plottingarea)
+    (mapcar (lambda (xx yy err) (draw-profilepoint plottingarea xx yy err style :node node))
+	    x y y-error))
+  (when legend
+    (draw-legend-entry plottingarea legend :mark-style style :node-string node :error-style style)))
+
+(defun draw-histogram-horizontal (plottingarea histo style &key (fill nil) (separate-bins nil) (legend nil))
+  "Draw a histogram."
+  (multiple-value-bind (y x) (make-histogram-path-points histo)
+    (clip-and-transform (plottingarea)
+      (draw-path plottingarea x y style fill)
+      (when separate-bins
+	(mapcar (lambda (x y) (draw-path plottingarea (list 0 x) (list y y) style nil)) x y))))
+  (when legend
+    (draw-legend-entry plottingarea legend :line-style style :mark-style style :filled fill)))
+  
+(defun draw-histogram (plottingarea histo style &key (fill nil) (separate-bins nil) (legend nil))
+  "Draw a histogram."
+  (multiple-value-bind (x y) (make-histogram-path-points histo)
+    (clip-and-transform (plottingarea)
+      (draw-path plottingarea x y style fill)
+      (when separate-bins
+	(mapcar (lambda (x y) (draw-path plottingarea (list x x) (list y 0) style nil)) x y))))
+  (when legend
+    (draw-legend-entry plottingarea legend :line-style style :mark-style style :filled fill)))
+
+(defun draw-datapoints (plottingarea x y style &key (node (make-node-string "circle" 3 3)) (legend nil))
   "Draw a set of datapoints"
   (clip-and-transform (plottingarea)
-    (map 'nil (lambda (x y) (draw-node plottingarea x y style node)) x y)))
+    (map 'nil (lambda (x y) (draw-node plottingarea x y style node)) x y))
+  (when legend
+    (draw-legend-entry plottingarea legend  :mark-style style :node-string node)))
 
-(defun draw-graph (plottingarea x y line-style mark-style &optional (node (make-node-string "circle" 3 3)))
+(defun draw-graph (plottingarea x y line-style mark-style &key (node (make-node-string "circle" 3 3)) (legend nil))
   "Draw a graph, with a line connecting datapoints"
   (clip-and-transform (plottingarea)
     (draw-path plottingarea x y line-style)
-    (draw-datapoints plottingarea x y mark-style node)))
+    (draw-datapoints plottingarea x y mark-style :node node))
+  (when legend
+    (draw-legend-entry plottingarea legend :line-style line-style :mark-style mark-style :node-string node)))
 
-(defun draw-graph-spline (plottingarea x y line-style mark-style  &optional (node (make-node-string "circle" 3 3)))
+(defun draw-graph-spline (plottingarea x y line-style mark-style  &key (node (make-node-string "circle" 3 3)) (legend nil))
   "Draw a graph, with a spline connecting datapoints"
   (clip-and-transform (plottingarea)
     (let ((n  (min (length x) (length y))))
       (draw-function plottingarea (tikz-spline:get-spline-fun x y) 100 line-style (elt x 0) (elt x (- n 1))))
-    (draw-datapoints plottingarea x y mark-style node)))
+    (draw-datapoints plottingarea x y mark-style :node node))
+  (when legend
+    (draw-legend-entry plottingarea legend :line-style line-style :mark-style mark-style :node-string node)))
 
 (defun get-function-points (function samples x-min x-max)
   "Make a path of y = f(x)"
@@ -426,25 +466,13 @@ text-style: style of text node."
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
     (values x-vals y-vals)))
 
-(defun draw-function (plottingarea function samples line-style &optional (x-min nil) (x-max nil))
+(defun draw-function (plottingarea function samples line-style &key (x-min nil) (x-max nil) (legend nil))
   "Draw a function y = f(x)"
   (multiple-value-bind (x-vals y-vals) (get-function-points function samples 
 							    (if x-min x-min (plot-x-min plottingarea))
 							    (if x-max x-max (plot-x-max plottingarea)))
     (clip-and-transform (plottingarea)
-      (draw-path plottingarea x-vals y-vals line-style))))
+      (draw-path plottingarea x-vals y-vals line-style))
+    (when legend
+      (draw-legend-entry plottingarea legend :line-style line-style))))
 
-(defun draw-legend-entry (plottingarea x y name &key (width 0.4) (line-style "") (mark-style "") 
-					 (node-string (make-node-string "circle" 3 3))
-					 (name-style "") (error-style "") (error-height 0.1)
-					 (histogram-node-p nil))
-  "Draw a legent entry for a plot, with a line, and or marks with or without error bars.
-For graphs, functions, datapoints, most histograms"
-  (if (> (length line-style) 0) (draw-line plottingarea x y (+ x width) y line-style))
-  (if (> (length error-style) 0) (draw-profilepoint plottingarea (+ (* 0.5 width) x)
-						    y error-height error-style))
-  (if (> (length mark-style) 0) (draw-node plottingarea (+ (* 0.5 width) x) y mark-style 
-					   (if histogram-node-p 
-					       (make-node-string "rectangle" width 0.2 0 "cm")
-					       node-string)))
-  (draw-node plottingarea (+ x width) y (concatenate 'string "right," name-style) ""  name))
