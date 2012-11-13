@@ -42,7 +42,7 @@ axis. If custom ticks are needed, or ticks with names, not numbers, use :none, a
 function.")
 
 (defmacro with-example-plot ((name plot-x-min plot-x-max plot-y-min plot-y-max axis-style) caption &body body)
-  "A macro wrapping the with-tikz-plot macro for the example plots. It makes a plot with name in the 
+  "A macro wrapping the with-tikz-to-file macro for the example plots. It makes a plot with name in the 
 *plotting-dir* directory, with a width of 10cm, a height of 5 cm. If *compilep* is T, the produced file is
 compiled with pdflatex, the results are viewed with *viewer*. Also adds the figure to example.tex, with caption."
   (let ((fname (gensym)))
