@@ -188,8 +188,9 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
-\draw[red] (0.7,5.2) -- (1.1,5.2);
-\node at (1.1,5.2) [right,,] {sin(x)};
+\draw[red] (0.7,5.2999997) -- (1.1,5.2999997);
+\draw[opacity=0.0,white] (0.7,5.3999996) -- (0.7,5.2);
+\node at (1.1,5.2999997) [right,] {sin(x)};
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
 \pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
@@ -310,7 +311,8 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
-\draw[blue] (2.9,5.2) -- (3.3000002,5.2);
-\node at (3.3000002,5.2) [right,,] {cos(x)};
+\draw[blue] (2.9,5.2999997) -- (3.3000002,5.2999997);
+\draw[opacity=0.0,white] (2.9,5.3999996) -- (2.9,5.2);
+\node at (3.3000002,5.2999997) [right,] {cos(x)};
 \end{tikzpicture}
 \end{document}

@@ -9,30 +9,33 @@
 ;;;; (ql:quickload 'tikz-levmar)
 ;;;; (ql:quickload 'tikz-utils)
 
-(use-package :tikz-helper)
+(defpackage :tikz-helper-example
+  (:use :cl :tikz-helper))
+(in-package :tikz-helper-example)
 
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
+(defparameter *compilep* t "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
 
 ;;Stuff to generate the documentation file examples.tex
 (eval-when (:compile-toplevel)
   (defparameter *examples* nil "Stuff that makes up the example tex file."))
-(defmacro example-tex (type data)
+
+(defun comment (type data)
   "Adding stuff to documentation tex file."
-  `(eval-when (:compile-toplevel)
-     (push (list ,type ,data) *examples*)))
+  (push (list type data) *examples*))
   
-(example-tex :section "Introduction")
-(example-tex :text "tikz-helper is a set of common lisp functions and macros to make plots. This is done by 
+(comment :section "Introduction")
+(comment :text "tikz-helper is a set of common lisp functions and macros to make plots. This is done by 
 generating \\LaTeX \\ code using pgf and {Ti\\textit{k}Z}.")
-(example-tex :text "To generate a plot, the macro with-tikz-figure is called. The macro adds a preamble and a 
-tikzfigure environment to the file where the resulting \\LaTeX \\ code ends up, collects information needed to perform 
+(comment :text "To generate a plot, one of the macros with-tikz-to-file, with-tikz-to-string or with-tikz-to-stream is called.
+with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
+The macros set up the latex environment needed by the figures, collects information needed to perform 
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
-linear and works so that plot-x-min is at 0cm in the default frame, and plot-x-max is at 0+width cm, 
-and similarly in the y-direction.")
-(example-tex :text "The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
+linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and 
+(plot-x-max,plot-x-min) is at (width cm, height cm)")
+(comment :text "The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
 Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so
 that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the 
 axis. If custom ticks are needed, or ticks with names, not numbers, use :none, and call the corresponding draw-axis-*
@@ -42,34 +45,52 @@ function.")
   "A macro wrapping the with-tikz-plot macro for the example plots. It makes a plot with name in the 
 *plotting-dir* directory, with a width of 10cm, a height of 5 cm. If *compilep* is T, the produced file is
 compiled with pdflatex, the results are viewed with *viewer*. Also adds the figure to example.tex, with caption."
-  (push (list :figure name caption) *examples*)
   (let ((fname (gensym)))
     `(let ((,fname (namestring (merge-pathnames (make-pathname :name ,name :type "tex") *plotting-dir*))))
-       (with-tikz-plot (tikz ,fname 10 5 ,plot-x-min ,plot-x-max ,plot-y-min ,plot-y-max ,axis-style)
+       (with-tikz-to-file (tikz ,fname 10 5 ,plot-x-min ,plot-x-max ,plot-y-min ,plot-y-max ,axis-style)
 	 ,@body)
-       (when *compilep* (pdflatex-compile-view ,fname *viewer*)))))
-
+       (when *compilep* (pdflatex-compile-view ,fname *viewer*))
+       (push (list :figure ,fname ,caption) *examples*))))
 
 (with-example-plot ("transform-and-clip" -1.5 0.5 -2 1 :rectangle)
-    "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot (plot-x-min,plot-y-min), 
+    "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot,
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
-within the scope are drawn in the plot frame. The clip-and-transform macro also clips the plotting area. Sizes with units like cm
-or pt are not scaled, only translated."
-  (flet ((draw-stuff ()
-	   ;;Stae path
-	   (draw-path tikz (list -2 0 -2 0 -1 -2) (list -2 0 0 -2 1 -2) "draw=black,fill=yellow" t) 
-	   ;;star node, shape and size not transformed.
-	   (draw-node tikz 0 0 "draw=black,fill=yellow" (make-node-string "star" 0.4 0.4 0 "cm")))) 
+within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
+ The clip-and-transform macro also clips the plotting area. Sizes with units like cm or pt are not scaled, 
+only translated."
+  (labels ((draw-star (x x-cm y y-cm style)
+	     (scope (tikz style)
+	       (make-path-mixed-units tikz x (mapcar (lambda (x) (format nil "~acm" x)) x-cm)
+				      y (mapcar (lambda (x) (format nil "~acm" x)) y-cm))
+	       (path-stroke tikz)))
+	   (draw-stuff ()
+	     (let ((star-x (list -2 0 -2 0 -1 -2))
+		   (star-y (list -2 0 0 -2 1 -2))
+		   (no-offset (list 0 0 0 0 0 0))
+		   (offset (list 0.1 0.1 0.1 0.1 0.1 0.1)))
+	       ;;Black star, fully transformed
+	       (draw-star star-x no-offset star-y no-offset "black") 
+	       ;;Red star drawn from 0.1,0.1 in the current framed, but not scaled.
+	       (draw-star offset star-x offset star-y "red")
+	       ;;star node, shape and size not transformed.
+	       (draw-node tikz 0 0 "draw=green,fill=yellow" (make-node-string "star" 0.4 0.4 0 "cm")))))
     (draw-stuff)
     (clip-and-transform (tikz)
       (draw-stuff))))
 
-(example-tex :section "Simple plots")
+(comment :section "Simple plots")
 
-(with-example-plot ("test-styles" 0 10 0 12 :rectangle)
-    "Different styles of lines and nodes. The styles are just regular tikz options. Most functions 
+(with-example-plot ("plots" -1.5 1.5 0 2 :rectangle)
+    "A histogram, a function and some datapoints. Most functions 
 dealing with sets of data points call the clip-and-transform macro themselves, so calling it from 
 top level is not necessary."
+  (draw-histogram tikz (make-histogram -1.5 0.25 (make-range 0.0 0.1 12)) "draw=gray,fill=blue!50" 
+		  :fill t :legend (legend 6.0 4.5 "Histogram"))
+  (draw-function tikz (lambda (x) (* x x)) 100 "red" :legend (legend 6.0 4.1 "Function"))
+  (draw-datapoints tikz (make-range -1.5 0.25 12) (make-range 2.0 -0.15 12) "fill=orange" :legend (legend 6.0 3.7 "Data points")))
+
+(with-example-plot ("test-styles" 0 10 0 12 :rectangle)
+    "Different styles of lines and nodes. The styles are just regular tikz options."
   (let ((x-vals (make-range 0 1 11)))
     ;;Function that translates y-vals, and draws datapoints connected with a line.
     (flet ((draw-translate (shift line-style mark-style node-name size-x size-y)
@@ -82,7 +103,7 @@ top level is not necessary."
       (draw-translate 3.0 "green!80!black" "draw=green!80!black,fill=green" "rectangle" 3 3)
       (draw-translate 4.0 "orange!80!black" "draw=orange!80!black,fill=orange" "diamond" 3 3)
       (draw-translate 5.0 "black,thick" "draw=black,fill=black!20" "ellipse" 2 4)
-      (draw-translate 6.0 "purple!80!black,thick" "draw=purple!80!black,fill=purple!20" 
+      (draw-translate 6.0 "purple!80!black,thick" "draw=purple!80!black,fill=purple!20"
 		      "regular polygon,regular polygon sides=5" 4 4)
       ;;Data points with error bars
       (let ((y-vals (make-range 7 0.5 11)))
@@ -100,7 +121,7 @@ since it can be useful in the default frame."
 	 (y (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
 	 (size (mapcar (lambda (x) (max 0.1 (+ 5.0 (* x 2.0)))) (tut:make-random-list 100))))
     (clip-and-transform (tikz)
-      (mapc (lambda (x y size) 
+      (mapc (lambda (x y size)
 	      (draw-node tikz x y (format nil "draw=black,fill=~a,fill opacity=0.3"
 					  (pick-one (list "red" "blue" "green")))
 			 (make-node-string (pick-one (list "rectangle" "star" "circle")) size size 0 "mm")))
@@ -115,25 +136,39 @@ since it can be useful in the default frame."
       (dotimes (i (floor ndraws 2))
 	(multiple-value-bind (g1 g2) (tut:gaussian-random)
 	  (add g1) (add g2))))
-    (make-histogram min bin-size (coerce data 'list))))
+    (make-histogram min bin-size data)))
 
-(with-example-plot ("test-histo2" 0 10 0 150 :rectangle)
-    "Some Gaussian histograms with different styles and with legend entries. 
+(comment :text "It's possible to draw nodes in captions. 
+\\begin{verbatim}
+%The preamble needs:
+\\usepackage[singlelinecheck=off]{caption}
+%Inside the figure environment
+\\captionsetup{singlelinecheck=off}
+\\caption[foo bar]\{\\node at (0,0) ...}
+\\end{verbatim}")
+
+(flet ((c-legend (style fill)
+	 (with-tikz-to-string (tikz 0 0 0 0 0 0 :none)
+	   (tikz::legend-histo tikz (legend 0 0 "") style fill))))
+  (with-example-plot ("test-histo2" 0 10 0 150 :rectangle)
+      (format nil "Some Gaussian histograms with different styles and with legend entries. 
 The legend entries are placed in the default cm frame, unless draw-histogram 
-is called within (transform (tikz) ..."
-  (flet ((draw-histo (sigma ndraws style fill sep legend-y-pos number)
-	   (draw-histogram tikz (make-gaussian-histogram 0.0 0.25 49 5.0 sigma ndraws)
-			   style :fill fill :fill sep
-			   :legend (legend 0.5 legend-y-pos (format nil "Histogram ~a" number)))))
-    (draw-histo 2.0 2500 "draw=gray,fill=blue!50" t nil 4.5 1)
-    (draw-histo 1.8 1600 "red!80,thick" nil nil 4.1 2)
-    (draw-histo 1.6 1000 "draw=blue!50,fill=green, thick"  t t 3.7 3)))
-
+is called within (transform (tikz) ...). With some trickery it is also possible to get 
+legends in captions: ~a Histogram 1, ~a Hisogram 2, ~a Hisogram 3."
+	      (c-legend "draw=gray,fill=blue!50" t) (c-legend "red!80,thick" nil) (c-legend "fill=green" t))
+    (flet ((draw-histo (sigma ndraws style fill sep legend-y-pos number)
+	     (draw-histogram tikz (make-gaussian-histogram 0.0 0.25 49 5.0 sigma ndraws)
+			     style :fill fill :separate-bins sep
+			     :legend (legend 0.5 legend-y-pos (format nil "Histogram ~a" number)))))
+      (draw-histo 2.0 2500 "draw=gray,fill=blue!50" t nil 4.5 1)
+      (draw-histo 1.8 1600 "red!80,thick" nil nil 4.1 2)
+      (draw-histo 1.6 1000 "draw=blue!70,thick,fill=green" t t 3.7 3))))
+  
 (with-example-plot ("test-histo1" 0 350 0 10 :none)
     "Histogram with bins extending in the horizontal direction. 
 The bins are named with the draw-axis-ticks function."
   (let* ((histo (make-gaussian-histogram 0.0 1.0 10 5.0 2.0 1000))
-	 (data (mapcar (lambda (x) (+ 100 x)) (sort (getf histo :data) #'<))))
+	 (data (map 'list (lambda (x) (+ 100 x)) (sort (getf histo :data) #'<))))
     ;; Data is from a Gaussian histo, but the bins are sorted and incremented by 100.
     (draw-histogram-horizontal tikz (make-histogram (getf histo :min) (getf histo :bin-size) data)
 			       "draw=white,fill=blue!20" :fill t :separate-bins t))
@@ -147,11 +182,11 @@ The bins are named with the draw-axis-ticks function."
 
 (with-example-plot ("functions" -7 7 -1.2 1.2 :none)
     "Plotting sin(x) and cos(x), with grid lines and tick names on the x-axis."
-    ;;Grid lines ar specific values in the x-direction, automatic in the y-direct ion
-    (draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) 0.0 pi (* 2 pi)))
-    ;;Draw a rectangle around the plorringarea, with no axes.
-    (draw-axis-popped-out tikz :x-list (list (* -2 pi) (* -1 pi) 0 pi (* 2 pi))
-			  :x-names (list "$-2\\pi$" "$-\\pi$" "0.0" "$\\pi$" "$2\\pi$"))
+  ;;Grid lines ar specific values in the x-direction, automatic in the y-direct ion
+  (draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) 0.0 pi (* 2 pi)))
+  ;;Draw a rectangle around the plorringarea, with no axes.
+  (draw-axis-popped-out tikz :x-list (list (* -2 pi) (* -1 pi) 0 pi (* 2 pi))
+			:x-names (list "$-2\\pi$" "$-\\pi$" "0.0" "$\\pi$" "$2\\pi$"))
   (draw-function tikz #'sin 100 "red" :legend (legend 0.7 5.2 "sin(x)"))
   (draw-function tikz #'cos 100 "blue" :legend (legend 2.9 5.2 "cos(x)")))
 
@@ -177,7 +212,10 @@ The bins are named with the draw-axis-ticks function."
   (draw-axis-ticks-x tikz (make-range -2 1 5) :numberp nil
 		     :names (list "$-2\\sigma$" "$-\\sigma$" "$\\mu$" "$\\sigma$" "$2\\sigma$")))
 
-(example-tex :section "Fitting with levenberg marquart")
+(comment :section "Fitting with levenberg marquart")
+(comment :text "The Levenberg-Marquart algorithm minimizes the squared distance in the y-direction
+between a function and a set of datapoints by manipulating function parameters. 
+If errors are supplied the $\\chi^2$, or the normalized differences, is minimized.")
 
 (with-example-plot ("test-fitter" 0 10 0 20 :popped-out)
     "Some Gauss smeared data points, fitted with the Gaussian function. Fit parameters are printed in the plot. 
@@ -185,15 +223,13 @@ A spline fit is also plotted."
   (let* ((x-poses (make-range 0 0.25d0 41))
 	 (y-poses (mapcar (lambda (x) (tut:gauss x #(90.0d0 5.0d0 2.0d0))) x-poses))
 	 (smeared-y (mapcar (lambda (x) (+ x (tut:gaussian-random))) y-poses))
-	 ;;Get the fit-parameters from the #'gauss function, with initial gueass #(10 0 1)
 	 (fit-params (levmar:levmar-optimize #'tut:gauss #(10.0d0 0.0d0 1.0d0) x-poses y-poses)))
-    (draw-function tikz (spline:get-spline-fun (coerce x-poses 'vector) (coerce smeared-y 'vector))
+    (draw-function tikz (spline:get-spline-fun x-poses smeared-y)
 		   400 "green,thick" :legend (legend 0.5 4.1 "Spline fit"))
     (draw-function tikz (lambda (x) (tut:gauss x fit-params)) 200 "thick,gray" 
 		   :legend (legend 0.5 3.7 "Gauss fit"))
     (draw-datapoints tikz x-poses smeared-y "draw=blue,fill=blue"
 		     :legend (legend 0.5 4.5 "Noisy data"))
-    ;;Print the fit parameters to the plot, in the cm frame
     (draw-node tikz 9.5 4.5 "left" "" (format nil "Fitted mean: ~5,2f" (aref fit-params 1)))
     (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted sigma: ~5,2f" (aref fit-params 2)))))
 
@@ -207,10 +243,10 @@ Empty bins are discarded in the fit."
 	 (parameters (levmar:levmar-optimize-errors #'tut:gauss #(300.0d0 3.0d0 1.0d0)
 						    x-poses y-poses y-errors t)))
     (draw-histogram tikz histo "draw=blue!10,fill=blue!20" :fill t :separate-bins t
-		    :legend (legend 0.5 4.1 "Data"))
-    (draw-profilepoints tikz x-poses y-poses (coerce y-errors 'list) "draw=gray,fill=gray" 
-			:node (make-node-string "rectangle" 3 0))
-    (draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red" 
+		    :legend (legend 0.5 4.5 "Data"))
+    (draw-profilepoints tikz x-poses y-poses y-errors "draw=gray,fill=gray" 
+			:node (make-node-string "rectangle" 3 0) :legend (legend 0.5 4.1 "Bin uncertainty"))
+    (draw-function tikz (lambda (x) (tut:gauss x parameters)) 200 "thick,red"
 		   :legend (legend 0.5 3.7 "Gauss fit"))
     (draw-node tikz 9.5 4.5 "left" "" (format nil "Fitted mean: ~5,2f" (aref parameters 1)))
     (draw-node tikz 9.5 4.1 "left" "" (format nil "Fitted sigma: ~5,2f" (aref parameters 2)))))
@@ -227,13 +263,13 @@ The ''Simulated parameter'' legend is placed in the default frame, the ''Fitted 
 in the data frame."
   (let* ((x-poses (make-range -10 0.5 41))
 	 (y-poses (mapcar (lambda (x) (polynomial x #(0.5 -1.0d0 -2.0d0 3.0d0))) x-poses))
-	 (y-errors (mapcar (lambda (x) (+ 2.0  (sqrt (abs x)))) y-poses))
+	 (y-errors (mapcar (lambda (x) (+ 4.0  (sqrt (abs x)))) y-poses))
 	 (y-smeared (mapcar (lambda (x err) (+ x (* err (tut:gaussian-random)))) y-poses y-errors))
 	 (params (levmar:levmar-optimize-errors #'polynomial #(1.0d0 1.0d0 1.0d0 1.0d0)
 						x-poses y-smeared y-errors)))
     (flet ((print-params (params)
 	     (format nil "~{$~3,1fx^3 ~3,1@fx^2 ~3,1@fx ~3,1@f$~}" (coerce params 'list))))
-      (draw-profilepoints tikz x-poses y-smeared y-errors "draw=red,fill=red" 
+      (draw-profilepoints tikz x-poses y-smeared y-errors "draw=red,fill=red"
 			  :legend (legend 5.3 1.4 "Simulated parameters:"))
       (draw-node tikz 5.3 1.0 "right" "" (print-params #(0.5 -1.0 -2.0 3.0))) 
       (transform (tikz) ;;The legend/text node is placed in the data frame.
@@ -246,13 +282,10 @@ in the data frame."
     "Cubic splines, with different end point conditions."
   (let ((x (list 4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y (list 4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
-    (draw-datapoints tikz x y "draw=black!80,fill=black!80" :node (make-node-string "diamond" 3 3))
-    (draw-function tikz (spline:get-spline-fun x y) 100 "blue!80" 
-		   :legend (legend 5.5 4.0 "Not-a-knot spline"))
-    (draw-function tikz (spline:get-spline-fun x y t) 100 "red!80" 
-		   :legend (legend 5.5 3.4 "Natural spline"))))
+    (draw-graph-spline tikz x y "red" "fill=black,draw=black" :legend (legend 5.5 4.0 "Not-a-know splint"))
+    (draw-graph-spline tikz x y "blue" "fill=black,draw=black" :legend (legend 5.5 3.6 "Natural spline") :natural t)))
 
-(example-tex :section "Sub figures")
+(comment :section "Sub figures")
 
 (with-example-plot ("sub-fig" -3.0 3.0 -1.0 1.0 :none)
     "More than one plot can be plotted in the same figure by using sub figures.
@@ -298,12 +331,12 @@ Here is a function with a zoomed view of a region of interest."
 	(draw-datapoints tikz2 x y2 "draw=black,fill=red" :node (make-node-string "rectangle" 4 4)
 			 :legend (legend 5.5 5.3 "Red data"))
 	(draw-axis-rectangle tikz2 :y-list nil)
-	(draw-node tikz2 11 2.5 "rotate=-90,red" ""  "Red axis") 
+	(draw-node tikz2 11 2.5 "rotate=-90,red" ""  "Red axis")
 	(draw-axis tikz2 "10cm" "right,red" "2pt" "-2pt"))
-      (draw-node tikz -0.7 2.5 "rotate=90,blue" ""  "Blue axis") 
+      (draw-node tikz -0.7 2.5 "rotate=90,blue" ""  "Blue axis")
       (draw-axis tikz "0cm" "blue,left" "-2pt" "2pt")
       (draw-line tikz 0 5 10 5 "thick,black"))))
-  
+
 (with-example-plot ("log-scale" 0 10 -0.5 2 :none)
     "Plot with log scale in the y direction. Explicit transformation."
   (let* ((x (make-range 0.0 0.1 101))
@@ -316,11 +349,11 @@ Here is a function with a zoomed view of a region of interest."
 		       :x-shift "-0.15cm" :numberp nil :stop 0
 		       :names (mapcar (lambda (x) (format nil "$10^{~a}$" x)) (list 0 1 2)))
     (draw-function tikz (lambda (x) (log (* (expt 10 (* 0.2 x))) 10)) 100 "blue,thick" 
-		   :legend (legend 0.5 5.3 "$10^{0.20 x}$"))
+		   :legend (legend 0.5 5.3 "$10^{0.2 x}$"))
     (draw-datapoints tikz x (mapcar (lambda (x) (log x 10)) y) "fill=red,draw=red!20!black" 
 		     :node (make-node-string "circle" 4 4))))
 
-(example-tex :section "2D histograms")
+(comment :section "2D histograms")
 
 (defun make-2d-histo ()
   "Make and fill a histogram"
@@ -375,22 +408,20 @@ Make sure *examples* looks right before use, or just C-c C-k."
   (let ((fname (namestring (merge-pathnames 
 			    (make-pathname :name "example" :type "tex") *plotting-dir*))))
     (with-open-file (tex fname :direction :output :if-exists :supersede)
-      (format tex "%%% AUTO GENERATED CODE
-\\documentclass{article}~%\\usepackage{standalone}~%\\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-\\usepackage{tikz}~%\\usepackage{color}~%\\usepackage{siunitx}~%\\usepackage{float}~%\\usetikzlibrary{arrows,shapes}~%")
-      (tikz::latex-environ (tex "document")
+      (tikz::print-preamble tex :documentclass "article" :use-standalone t)
+      (tikz::latex-command tex "usepackage" nil "float")
+      (tikz::latex-command tex "usepackage" "singlelinecheck=off" "caption")
+      (tikz::latex-environs (tex "document")
 	(mapc (lambda (entry)
 		(case (first entry)
-		  (:figure
-		   (tikz::latex-environ (tex "figure" "H")
-		     (format tex "\\centering~%")
-		     (format tex "\\input{~a}~%" (namestring (merge-pathnames 
-							      (make-pathname :name (second entry) :type "tex")
-							      *plotting-dir*)))
-		     (format tex "\\caption{~a}~%" (third entry))))
+		  (:figure (tikz::latex-environ-with-arg (tex "figure" "H")
+			     (tikz::latex-command tex "centering")
+			     (tikz::latex-command tex "input" nil (second entry))
+			     (tikz::latex-command tex "captionsetup" nil "singlelinecheck=off")
+			     (tikz::latex-command tex "caption" "asdf" (third entry)))) ;;caption needs a [argument] for some reason
 		  (:section  (format tex "\\section{~a}~%" (second entry)))
 		  (:text (format tex "~a~%~%" (second entry)))))
 	      (remove-duplicates (reverse *examples*) :test #'equal))))
     (pdflatex-compile-view fname "evince")))
 
-;;(make-example-tex)
+(make-example-tex)

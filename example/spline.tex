@@ -19,29 +19,14 @@
 \pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
 \begin{scope}[shift={(-4.0,-4.0)}]
-\node at (4.0,4.19) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\node at (4.35,5.77) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\node at (4.57,6.57) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\node at (4.76,6.23) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\node at (5.26,4.9) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\node at (5.88,4.77) [draw=black!80,fill=black!80,diamond,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
-\begin{scope}[shift={(-4.0,-4.0)}]
-\begin{scope}[blue!80]
+\begin{scope}[red]
 \pgfpathmoveto{ \pgfpointxy {4.0} {4.19}}
 \pgfpathlineto{ \pgfpointxy {4.02} {4.228893275331402}}
 \pgfpathlineto{ \pgfpointxy {4.04} {4.277869922290504}}
@@ -146,12 +131,30 @@
 \pgfusepath{ stroke, }
 \end{scope}
 \end{scope}
+\begin{scope}[]
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathclose
+\pgfusepath{  clip, }
+\node at (4.0,4.19) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.35,5.77) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.57,6.57) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.76,6.23) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.26,4.9) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.88,4.77) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
-\draw[blue!80] (5.5,4.0) -- (5.9,4.0);
-\node at (5.9,4.0) [right,,] {Not-a-knot spline};
+\draw[red] (5.5,4.1) -- (5.9,4.1);
+\draw[opacity=0.0,white] (5.5,4.2) -- (5.5,4.0);
+\node at (5.9,4.1) [right,] {Not-a-know splint};
+\node at (5.7,4.1) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.9,4.1) [right,] {Not-a-know splint};
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
 \pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
@@ -163,7 +166,14 @@
 \pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}
 \begin{scope}[shift={(-4.0,-4.0)}]
-\begin{scope}[red!80]
+\begin{scope}[]
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[blue]
 \pgfpathmoveto{ \pgfpointxy {4.0} {4.19}}
 \pgfpathlineto{ \pgfpointxy {4.02} {4.276592107817406}}
 \pgfpathlineto{ \pgfpointxy {4.04} {4.363256815404781}}
@@ -268,12 +278,30 @@
 \pgfusepath{ stroke, }
 \end{scope}
 \end{scope}
+\begin{scope}[]
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {4.0} {4.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathclose
+\pgfusepath{  clip, }
+\node at (4.0,4.19) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.35,5.77) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.57,6.57) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (4.76,6.23) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.26,4.9) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.88,4.77) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
-\draw[red!80] (5.5,3.4) -- (5.9,3.4);
-\node at (5.9,3.4) [right,,] {Natural spline};
+\draw[blue] (5.5,3.6999998) -- (5.9,3.6999998);
+\draw[opacity=0.0,white] (5.5,3.8) -- (5.5,3.6);
+\node at (5.9,3.6999998) [right,] {Natural spline};
+\node at (5.7,3.6999998) [fill=black,draw=black,circle,inner sep=0.0pt,minimum width =3.0pt,minimum height=3.0pt] {};
+\node at (5.9,3.6999998) [right,] {Natural spline};
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{5.0cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1.6666666cm}}

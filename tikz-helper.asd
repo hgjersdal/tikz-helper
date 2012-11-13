@@ -2,7 +2,7 @@
   (:use :cl)
   (:nicknames :tikz)
   (:documentation "A package for making tikz drawings")
-  (:export :plottingarea :with-tikz-plot :with-subfigure
+  (:export :plottingarea :with-tikz-to-file :with-tikz-to-stream :with-tikz-to-string :with-subfigure
 	   :scope :clip :transform :clip-and-transform
 	   :make-range :make-transformation :make-histogram
 	   :make-node-string :draw-histogram :draw-histogram-horizontal
