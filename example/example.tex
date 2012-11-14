@@ -18,8 +18,7 @@ To generate a plot, one of the macros with-tikz-to-file, with-tikz-to-string or 
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
 The macros set up the latex environment needed by the figures, collects information needed to perform 
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
-linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and 
-(plot-x-max,plot-x-min) is at (width cm, height cm)
+linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width cm, height cm)
 
 The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
 Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so

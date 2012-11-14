@@ -441,17 +441,6 @@ text-style: style of text node."
 		       (* 0.5 height) style :node node-string))
   (legend-name plottingarea legend))
 
-(defun draw-profilepoint (plottingarea x y y-error style &key (node (make-node-string "circle" 3 3)))
-  "Draw a data-point with error bars in y direction"
-  (scope (plottingarea style)
-    (make-path-mixed-units plottingarea
-			   (list x x x x x x) (list "-2pt" "2pt" "0pt" "0pt" "-2pt" "2pt")
-			   (list (+ y y-error) (+ y y-error) (+ y y-error)
-				 (- y y-error) (- y y-error) (- y y-error))
-			   (list 0 0 0 0 0 0))
-    (path-stroke plottingarea t)
-    (draw-node plottingarea x y style node)))
-
 (defun legend-histo (plottingarea legend style fill)
   (if fill 
       (legend-node plottingarea legend 

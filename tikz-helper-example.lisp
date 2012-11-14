@@ -16,7 +16,7 @@
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
 
 ;;Stuff to generate the documentation file examples.tex
 (eval-when (:compile-toplevel)
@@ -33,8 +33,7 @@ generating \\LaTeX \\ code using pgf and {Ti\\textit{k}Z}.")
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
 The macros set up the latex environment needed by the figures, collects information needed to perform 
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
-linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and 
-(plot-x-max,plot-x-min) is at (width cm, height cm)")
+linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width cm, height cm)")
 (comment :text "The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
 Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so
 that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the 
