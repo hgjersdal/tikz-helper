@@ -33,7 +33,7 @@ generating \\LaTeX \\ code using pgf and {Ti\\textit{k}Z}.")
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
 The macros set up the latex environment needed by the figures, collects information needed to perform 
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
-linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width cm, height cm)")
+linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width in cm, height in cm)")
 (comment :text "The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
 Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so
 that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the 
@@ -56,8 +56,9 @@ compiled with pdflatex, the results are viewed with *viewer*. Also adds the figu
     "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot,
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
 within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
- The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are scaled, 
-but all poits are translated."
+ The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are not scaled, 
+but all poits are translated. The black star path is here drawn in the current frame, the red one 
+is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
   (labels ((draw-star (x x-cm y y-cm style)
 	     (scope (tikz style)
 	       (make-path-mixed-units tikz x (mapcar (lambda (x) (format nil "~acm" x)) x-cm)
@@ -80,7 +81,7 @@ but all poits are translated."
 
 (comment :section "Simple plots")
 
-(with-example-plot ("plots" -1.5 1.5 0 2 :rectangle)
+(with-example-plot ("plots" -1.5 1.5 0 2 :left-bottom)
     "A histogram, a function and some datapoints. Most functions 
 dealing with sets of data points call the clip-and-transform macro themselves, so calling it from 
 top level is not necessary."
@@ -140,14 +141,19 @@ since it can be useful in the default frame."
 	  (add g1) (add g2))))
     (make-histogram min bin-size data)))
 
-(comment :text "It's possible to draw nodes in captions. 
+(comment 
+ :text 
+ (format nil 
+	 "The with-tikz-to-string macro is nice for mixing text and drawings(like so ~a). It's possible to draw stuff in captions
+by including the following:.
 \\begin{verbatim}
 %The preamble needs:
 \\usepackage[singlelinecheck=off]{caption}
 %Inside the figure environment
 \\captionsetup{singlelinecheck=off}
 \\caption[foo bar]\{\\node at (0,0) ...}
-\\end{verbatim}")
+\\end{verbatim}" 
+	 (with-tikz-to-string (tikz 1 1 0 0 0 0 :none) (draw-node tikz 0 0 "draw=black,fill=gray" (make-node-string "star" 0.3 0.3 0 "cm")))))
 
 (flet ((c-legend (style fill)
 	 (with-tikz-to-string (tikz 0 0 0 0 0 0 :none)
@@ -191,7 +197,7 @@ legends in captions: ~a Histogram 1, ~a Hisogram 2, ~a Hisogram 3."
 
 (with-example-plot ("test-histo3" 0 10 0 350 :none :tikz-arg "rotate=-90" :width 5 :height 10)
     "Histogram with bins extending in the horizontal direction. 
-This is just a tikzpicture with the transformation rotate=-90. The text is not rotated, so acis ticks
+This is just a tikzpicture with the transformation rotate=-90. The text is not rotated, so axis ticks
 require extra care, and text in legend entries will not be properly aligned.
 The bins are named with the draw-axis-ticks function."
   (let* ((histo (make-gaussian-histogram 0.0 1.0 10 5.0 2.0 1000))
@@ -358,10 +364,10 @@ Here is a function with a zoomed view of a region of interest."
 	   (y1 (mapcar (lambda (x)  (+ x (tut:gaussian-random))) x))
 	   (y2 (mapcar (lambda (x)  (* 100 (- 10 (+ x (tut:gaussian-random))))) x)))
       (draw-datapoints tikz x y1 "draw=black,fill=blue" :node (make-node-string "circle" 4 4)
-		       :legend (legend 2.5 4.8 "Blue data"))
+		       :legend (legend 2.5 5.1 "Blue data"))
       (with-subfigure (tikz tikz2 0 0 10 5 0 10 0 1000)
 	(draw-datapoints tikz2 x y2 "draw=black,fill=red" :node (make-node-string "rectangle" 4 4)
-			 :legend (legend 5.5 4.8 "Red data"))
+			 :legend (legend 5.5 5.1 "Red data"))
 	(draw-axis-left-bottom tikz2 :y-list nil)
 	(draw-node tikz2 11 2.5 "rotate=-90,red" ""  "Red axis")
 	(draw-axis tikz2 "10cm" "right,red" "2pt" "-2pt"))

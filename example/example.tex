@@ -22,7 +22,7 @@ To generate a plot, one of the macros with-tikz-to-file, with-tikz-to-string or 
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
 The macros set up the latex environment needed by the figures, collects information needed to perform 
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
-linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width cm, height cm)
+linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width in cm, height in cm)
 
 
 
@@ -39,8 +39,9 @@ function.
 \caption[asdf]{By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot,
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
 within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
- The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are scaled, 
-but all poits are translated.}
+ The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are not scaled, 
+but all poits are translated. The black star path is here drawn in the current frame, the red one 
+is shifted by (0.1,0.1) in the current frame, then drawn in units of cm.}
 \end{figure}
 \section{Simple plots}
 \begin{figure}[H]
@@ -66,7 +67,11 @@ since it can be useful in the default frame.}
 \end{figure}
 
 
-It's possible to draw nodes in captions. 
+The with-tikz-to-string macro is nice for mixing text and drawings(like so \begin{tikzpicture}[]
+\node at (0.0,0.0) [draw=black,fill=gray,star,inner sep=0.0cm,minimum width =0.3cm,minimum height=0.3cm] {};
+\end{tikzpicture}
+). It's possible to draw stuff in captions
+by including the following:.
 \begin{verbatim}
 %The preamble needs:
 \usepackage[singlelinecheck=off]{caption}
@@ -125,122 +130,122 @@ Simple sparkline: \begin{tikzpicture}[]
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfpathmoveto{ \pgfpointxy {0.024999999} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.225} {0.0}}
-\pgfpathlineto{ \pgfpointxy {0.225} {3.0}}
-\pgfpathlineto{ \pgfpointxy {0.024999999} {3.0}}
+\pgfpathlineto{ \pgfpointxy {0.225} {4.0}}
+\pgfpathlineto{ \pgfpointxy {0.024999999} {4.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {0.275} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.475} {0.0}}
-\pgfpathlineto{ \pgfpointxy {0.475} {5.0}}
-\pgfpathlineto{ \pgfpointxy {0.275} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.475} {3.0}}
+\pgfpathlineto{ \pgfpointxy {0.275} {3.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {0.525} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.725} {0.0}}
-\pgfpathlineto{ \pgfpointxy {0.725} {3.0}}
-\pgfpathlineto{ \pgfpointxy {0.525} {3.0}}
+\pgfpathlineto{ \pgfpointxy {0.725} {5.0}}
+\pgfpathlineto{ \pgfpointxy {0.525} {5.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {0.775} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.975} {0.0}}
-\pgfpathlineto{ \pgfpointxy {0.975} {13.0}}
-\pgfpathlineto{ \pgfpointxy {0.775} {13.0}}
+\pgfpathlineto{ \pgfpointxy {0.975} {10.0}}
+\pgfpathlineto{ \pgfpointxy {0.775} {10.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {1.025} {0.0}}
 \pgfpathlineto{ \pgfpointxy {1.225} {0.0}}
-\pgfpathlineto{ \pgfpointxy {1.225} {14.0}}
-\pgfpathlineto{ \pgfpointxy {1.025} {14.0}}
+\pgfpathlineto{ \pgfpointxy {1.225} {19.0}}
+\pgfpathlineto{ \pgfpointxy {1.025} {19.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {1.275} {0.0}}
 \pgfpathlineto{ \pgfpointxy {1.475} {0.0}}
-\pgfpathlineto{ \pgfpointxy {1.475} {16.0}}
-\pgfpathlineto{ \pgfpointxy {1.275} {16.0}}
+\pgfpathlineto{ \pgfpointxy {1.475} {13.0}}
+\pgfpathlineto{ \pgfpointxy {1.275} {13.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {1.525} {0.0}}
 \pgfpathlineto{ \pgfpointxy {1.725} {0.0}}
-\pgfpathlineto{ \pgfpointxy {1.725} {15.0}}
-\pgfpathlineto{ \pgfpointxy {1.525} {15.0}}
+\pgfpathlineto{ \pgfpointxy {1.725} {28.0}}
+\pgfpathlineto{ \pgfpointxy {1.525} {28.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {1.775} {0.0}}
 \pgfpathlineto{ \pgfpointxy {1.975} {0.0}}
-\pgfpathlineto{ \pgfpointxy {1.975} {17.0}}
-\pgfpathlineto{ \pgfpointxy {1.775} {17.0}}
+\pgfpathlineto{ \pgfpointxy {1.975} {20.0}}
+\pgfpathlineto{ \pgfpointxy {1.775} {20.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {2.025} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.225} {0.0}}
-\pgfpathlineto{ \pgfpointxy {2.225} {21.0}}
-\pgfpathlineto{ \pgfpointxy {2.025} {21.0}}
+\pgfpathlineto{ \pgfpointxy {2.225} {30.0}}
+\pgfpathlineto{ \pgfpointxy {2.025} {30.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {2.275} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.475} {0.0}}
-\pgfpathlineto{ \pgfpointxy {2.475} {27.0}}
-\pgfpathlineto{ \pgfpointxy {2.275} {27.0}}
+\pgfpathlineto{ \pgfpointxy {2.475} {22.0}}
+\pgfpathlineto{ \pgfpointxy {2.275} {22.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {2.525} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.725} {0.0}}
-\pgfpathlineto{ \pgfpointxy {2.725} {34.0}}
-\pgfpathlineto{ \pgfpointxy {2.525} {34.0}}
+\pgfpathlineto{ \pgfpointxy {2.725} {31.0}}
+\pgfpathlineto{ \pgfpointxy {2.525} {31.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {2.775} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.975} {0.0}}
-\pgfpathlineto{ \pgfpointxy {2.975} {26.0}}
-\pgfpathlineto{ \pgfpointxy {2.775} {26.0}}
+\pgfpathlineto{ \pgfpointxy {2.975} {28.0}}
+\pgfpathlineto{ \pgfpointxy {2.775} {28.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {3.025} {0.0}}
 \pgfpathlineto{ \pgfpointxy {3.225} {0.0}}
-\pgfpathlineto{ \pgfpointxy {3.225} {36.0}}
-\pgfpathlineto{ \pgfpointxy {3.025} {36.0}}
+\pgfpathlineto{ \pgfpointxy {3.225} {37.0}}
+\pgfpathlineto{ \pgfpointxy {3.025} {37.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {3.275} {0.0}}
 \pgfpathlineto{ \pgfpointxy {3.475} {0.0}}
-\pgfpathlineto{ \pgfpointxy {3.475} {39.0}}
-\pgfpathlineto{ \pgfpointxy {3.275} {39.0}}
+\pgfpathlineto{ \pgfpointxy {3.475} {52.0}}
+\pgfpathlineto{ \pgfpointxy {3.275} {52.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {3.525} {0.0}}
 \pgfpathlineto{ \pgfpointxy {3.725} {0.0}}
-\pgfpathlineto{ \pgfpointxy {3.725} {50.0}}
-\pgfpathlineto{ \pgfpointxy {3.525} {50.0}}
+\pgfpathlineto{ \pgfpointxy {3.725} {47.0}}
+\pgfpathlineto{ \pgfpointxy {3.525} {47.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {3.775} {0.0}}
 \pgfpathlineto{ \pgfpointxy {3.975} {0.0}}
-\pgfpathlineto{ \pgfpointxy {3.975} {54.0}}
-\pgfpathlineto{ \pgfpointxy {3.775} {54.0}}
+\pgfpathlineto{ \pgfpointxy {3.975} {40.0}}
+\pgfpathlineto{ \pgfpointxy {3.775} {40.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {4.025} {0.0}}
 \pgfpathlineto{ \pgfpointxy {4.225} {0.0}}
-\pgfpathlineto{ \pgfpointxy {4.225} {39.0}}
-\pgfpathlineto{ \pgfpointxy {4.025} {39.0}}
+\pgfpathlineto{ \pgfpointxy {4.225} {57.0}}
+\pgfpathlineto{ \pgfpointxy {4.025} {57.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {4.275} {0.0}}
 \pgfpathlineto{ \pgfpointxy {4.475} {0.0}}
-\pgfpathlineto{ \pgfpointxy {4.475} {47.0}}
-\pgfpathlineto{ \pgfpointxy {4.275} {47.0}}
+\pgfpathlineto{ \pgfpointxy {4.475} {44.0}}
+\pgfpathlineto{ \pgfpointxy {4.275} {44.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {4.525} {0.0}}
 \pgfpathlineto{ \pgfpointxy {4.725} {0.0}}
-\pgfpathlineto{ \pgfpointxy {4.725} {48.0}}
-\pgfpathlineto{ \pgfpointxy {4.525} {48.0}}
+\pgfpathlineto{ \pgfpointxy {4.725} {51.0}}
+\pgfpathlineto{ \pgfpointxy {4.525} {51.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \pgfpathmoveto{ \pgfpointxy {4.775} {0.0}}
 \pgfpathlineto{ \pgfpointxy {4.975} {0.0}}
-\pgfpathlineto{ \pgfpointxy {4.975} {53.0}}
-\pgfpathlineto{ \pgfpointxy {4.775} {53.0}}
+\pgfpathlineto{ \pgfpointxy {4.975} {47.0}}
+\pgfpathlineto{ \pgfpointxy {4.775} {47.0}}
 \pgfpathclose
 \pgfusepath{ stroke, fill, }
 \end{scope}
@@ -292,47 +297,47 @@ More complex sparkline: \begin{tikzpicture}[]
 \begin{scope}[shift={(-0.1,3.0)}]
 \begin{scope}[black]
 \pgfpathmoveto{ \pgfpointxy {10.0} {0.0}}
-\pgfpathlineto{ \pgfpointxy {10.0} {1.4024143190097826}}
-\pgfpathlineto{ \pgfpointxy {10.0} {1.4024143190097826}}
-\pgfpathlineto{ \pgfpointxy {9.5} {1.4024143190097826}}
-\pgfpathlineto{ \pgfpointxy {9.5} {-0.7145205322434418}}
-\pgfpathlineto{ \pgfpointxy {9.0} {-0.7145205322434418}}
-\pgfpathlineto{ \pgfpointxy {9.0} {-0.22079224158410146}}
-\pgfpathlineto{ \pgfpointxy {8.5} {-0.22079224158410146}}
-\pgfpathlineto{ \pgfpointxy {8.5} {-1.5433732465673367}}
-\pgfpathlineto{ \pgfpointxy {8.0} {-1.5433732465673367}}
-\pgfpathlineto{ \pgfpointxy {8.0} {0.9368299116967889}}
-\pgfpathlineto{ \pgfpointxy {7.5} {0.9368299116967889}}
-\pgfpathlineto{ \pgfpointxy {7.5} {-0.7671074651340952}}
-\pgfpathlineto{ \pgfpointxy {7.0} {-0.7671074651340952}}
-\pgfpathlineto{ \pgfpointxy {7.0} {-1.5031804081330193}}
-\pgfpathlineto{ \pgfpointxy {6.5} {-1.5031804081330193}}
-\pgfpathlineto{ \pgfpointxy {6.5} {-0.4125383100259087}}
-\pgfpathlineto{ \pgfpointxy {6.0} {-0.4125383100259087}}
-\pgfpathlineto{ \pgfpointxy {6.0} {0.1061080002661948}}
-\pgfpathlineto{ \pgfpointxy {5.5} {0.1061080002661948}}
-\pgfpathlineto{ \pgfpointxy {5.5} {-0.2039582507857528}}
-\pgfpathlineto{ \pgfpointxy {5.0} {-0.2039582507857528}}
-\pgfpathlineto{ \pgfpointxy {5.0} {-0.2955325282797435}}
-\pgfpathlineto{ \pgfpointxy {4.5} {-0.2955325282797435}}
-\pgfpathlineto{ \pgfpointxy {4.5} {-0.8570386322767398}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-0.8570386322767398}}
-\pgfpathlineto{ \pgfpointxy {4.0} {-1.1376735317388902}}
-\pgfpathlineto{ \pgfpointxy {3.5} {-1.1376735317388902}}
-\pgfpathlineto{ \pgfpointxy {3.5} {-0.32012331809955286}}
-\pgfpathlineto{ \pgfpointxy {3.0} {-0.32012331809955286}}
-\pgfpathlineto{ \pgfpointxy {3.0} {1.4578534360937885}}
-\pgfpathlineto{ \pgfpointxy {2.5} {1.4578534360937885}}
-\pgfpathlineto{ \pgfpointxy {2.5} {-1.182686621859892}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-1.182686621859892}}
-\pgfpathlineto{ \pgfpointxy {2.0} {-0.024496432877749358}}
-\pgfpathlineto{ \pgfpointxy {1.5} {-0.024496432877749358}}
-\pgfpathlineto{ \pgfpointxy {1.5} {-1.956491667155555}}
-\pgfpathlineto{ \pgfpointxy {1.0} {-1.956491667155555}}
-\pgfpathlineto{ \pgfpointxy {1.0} {0.9613428045857672}}
-\pgfpathlineto{ \pgfpointxy {0.5} {0.9613428045857672}}
-\pgfpathlineto{ \pgfpointxy {0.5} {-2.392514216668555}}
-\pgfpathlineto{ \pgfpointxy {0.0} {-2.392514216668555}}
+\pgfpathlineto{ \pgfpointxy {10.0} {-1.0373303361352317}}
+\pgfpathlineto{ \pgfpointxy {10.0} {-1.0373303361352317}}
+\pgfpathlineto{ \pgfpointxy {9.5} {-1.0373303361352317}}
+\pgfpathlineto{ \pgfpointxy {9.5} {0.4333196598134855}}
+\pgfpathlineto{ \pgfpointxy {9.0} {0.4333196598134855}}
+\pgfpathlineto{ \pgfpointxy {9.0} {0.4522980067162821}}
+\pgfpathlineto{ \pgfpointxy {8.5} {0.4522980067162821}}
+\pgfpathlineto{ \pgfpointxy {8.5} {-0.8141376255874815}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-0.8141376255874815}}
+\pgfpathlineto{ \pgfpointxy {8.0} {-0.7438171477617833}}
+\pgfpathlineto{ \pgfpointxy {7.5} {-0.7438171477617833}}
+\pgfpathlineto{ \pgfpointxy {7.5} {-2.1497982236194453}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-2.1497982236194453}}
+\pgfpathlineto{ \pgfpointxy {7.0} {-0.6909165406834747}}
+\pgfpathlineto{ \pgfpointxy {6.5} {-0.6909165406834747}}
+\pgfpathlineto{ \pgfpointxy {6.5} {0.5715317006267747}}
+\pgfpathlineto{ \pgfpointxy {6.0} {0.5715317006267747}}
+\pgfpathlineto{ \pgfpointxy {6.0} {0.19319062768226228}}
+\pgfpathlineto{ \pgfpointxy {5.5} {0.19319062768226228}}
+\pgfpathlineto{ \pgfpointxy {5.5} {-2.236519499307188}}
+\pgfpathlineto{ \pgfpointxy {5.0} {-2.236519499307188}}
+\pgfpathlineto{ \pgfpointxy {5.0} {-1.3386791523362174}}
+\pgfpathlineto{ \pgfpointxy {4.5} {-1.3386791523362174}}
+\pgfpathlineto{ \pgfpointxy {4.5} {0.03689000187646722}}
+\pgfpathlineto{ \pgfpointxy {4.0} {0.03689000187646722}}
+\pgfpathlineto{ \pgfpointxy {4.0} {-0.5481374007174933}}
+\pgfpathlineto{ \pgfpointxy {3.5} {-0.5481374007174933}}
+\pgfpathlineto{ \pgfpointxy {3.5} {-0.17794528974666865}}
+\pgfpathlineto{ \pgfpointxy {3.0} {-0.17794528974666865}}
+\pgfpathlineto{ \pgfpointxy {3.0} {3.586268323470165}}
+\pgfpathlineto{ \pgfpointxy {2.5} {3.586268323470165}}
+\pgfpathlineto{ \pgfpointxy {2.5} {-0.27241369458567716}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-0.27241369458567716}}
+\pgfpathlineto{ \pgfpointxy {2.0} {-0.03630517775711264}}
+\pgfpathlineto{ \pgfpointxy {1.5} {-0.03630517775711264}}
+\pgfpathlineto{ \pgfpointxy {1.5} {1.123216505879414}}
+\pgfpathlineto{ \pgfpointxy {1.0} {1.123216505879414}}
+\pgfpathlineto{ \pgfpointxy {1.0} {-2.2645973657342306}}
+\pgfpathlineto{ \pgfpointxy {0.5} {-2.2645973657342306}}
+\pgfpathlineto{ \pgfpointxy {0.5} {0.08660568727987673}}
+\pgfpathlineto{ \pgfpointxy {0.0} {0.08660568727987673}}
 \pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
 \pgfusepath{ stroke, }
 \end{scope}
@@ -345,13 +350,13 @@ More complex sparkline: \begin{tikzpicture}[]
 \pgfsetxvec{\pgfpoint{0.3030303cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{0.06666667cm}}
 \begin{scope}[shift={(-0.1,3.0)}]
-\node at (10.0,1.4024143190097826) [red,fill=red,rectangle,inner sep=0.0pt,minimum width =2.0pt,minimum height=2.0pt] {};
+\node at (10.0,-1.0373303361352317) [red,fill=red,rectangle,inner sep=0.0pt,minimum width =2.0pt,minimum height=2.0pt] {};
 \end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{tikzpicture}
- \textcolor{red}{ 1.4}, \begin{tikzpicture}[]
+ \textcolor{red}{-1.0}, \begin{tikzpicture}[]
 \begin{scope}[draw=gray!30,fill=gray!30]
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.4} {0.0}}
@@ -368,7 +373,7 @@ More complex sparkline: \begin{tikzpicture}[]
 \input{/home/haavagj/src/tikz-helper/example/test-histo3.tex}
 \captionsetup{singlelinecheck=off}
 \caption[asdf]{Histogram with bins extending in the horizontal direction. 
-This is just a tikzpicture with the transformation rotate=-90. The text is not rotated, so acis ticks
+This is just a tikzpicture with the transformation rotate=-90. The text is not rotated, so axis ticks
 require extra care, and text in legend entries will not be properly aligned.
 The bins are named with the draw-axis-ticks function.}
 \end{figure}
