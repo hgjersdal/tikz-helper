@@ -46,7 +46,7 @@
 		   (make-rectangle-path plottingarea x-pos y-pos
 					(+ x-pos (getf histo :x-bin-size))
 					(+ y-pos (getf histo :y-bin-size)))
-		   (path-stroke plottingarea t t nil)))
+		   (path-use plottingarea t t nil)))
 	       (draw-row (y-bin y-pos)
 		 (map nil (lambda (x-bin x-pos) (draw-bin x-pos y-pos x-bin y-bin)) x-bins x-poses)))
 	(map nil #'draw-row y-bins y-poses)))))
@@ -178,4 +178,41 @@
 	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
 	  (scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height cols)))
 	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	    (path-stroke plottingarea t fillp)))))))
+	    (path-use plottingarea t fillp)))))))
+
+(defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
+			     &optional (cols *colors*))
+  "Draw possibly filled contour lines."
+  (clip-and-transform (plottingarea)
+    (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
+	  (data (getf histo :data))
+	  (xbins (make-range 0 1 (getf histo :x-nbin)))
+	  (ybins (make-range 0 1 (getf histo :y-nbin))))
+      (dotimes (i (+ nlines 1))
+	(let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
+	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
+	  (scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height cols)))
+	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
+	    (path-use plottingarea t fillp)))))))
+
+(defun val-to-size (val z-min z-max)
+  (cond ((< val z-min) 0.0)
+	((> val z-max) 1.0)
+	(t (/ (- val z-min) (- z-max z-min)))))
+
+(defun draw-histo2d-nodes (plottingarea histo z-min z-max shape style)
+  (let* ((dim (array-dimensions (getf histo :data)))
+	 (x-max (/ (width plottingarea) (first dim)))
+	 (y-max (/ (height plottingarea) (second dim)))
+	 (xbins (make-range 0 1 (getf histo :x-nbin)))
+	 (ybins (make-range 0 1 (getf histo :y-nbin))))
+    (clip-and-transform (plottingarea)
+      (mapc (lambda (x) (mapc (lambda (y) 
+				(let ((size (val-to-size (aref (getf histo :data) x y) z-min z-max)))
+				  (draw-node plottingarea
+					     (+ (getf histo :x-min)  (* (+ 0.5 x) (getf histo :x-bin-size)))
+					     (+ (getf histo :y-min) (* (+ 0.5 y) (getf histo :y-bin-size)))
+					     style (make-node-string shape (* x-max size) (* y-max size) 0 "cm"))))
+			      ybins)) xbins))))
+  
+    

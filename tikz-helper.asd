@@ -5,7 +5,7 @@
   (:export :plottingarea :with-tikz-to-file :with-tikz-to-stream :with-tikz-to-string :with-subfigure
 	   :scope :clip :transform :clip-and-transform
 	   :make-range :make-transformation :make-histogram
-	   :make-node-string :draw-histogram :draw-histogram-horizontal
+	   :make-node-string :draw-histogram :draw-histogram-columns
 	   :make-path :make-rectangle-path :make-path-mixed-units
 	   :path-close :path-stroke :draw-path :draw-graph :draw-graph-error
 	   :draw-graph-spline :get-function-points :draw-function :draw-profilepoint :draw-profilepoints
@@ -13,9 +13,9 @@
 	   :draw-axis-subticks-x :draw-axis-subticks-y 
 	   :draw-axis-rectangle :draw-axis-cross :draw-axis-popped-out :draw-grid-lines :draw-axis-left-bottom
 	   :draw-line :draw-node :draw-datapoints :path-move-to
-	   :path-stroke-to :path-stroke :region-of-interest-zoom :pdflatex-compile 
-	   :pdflatex-compile-view
-	   :histo2d-incf :histo2d-get-max :draw-histo2d-rectangles :draw-histo2d-contour :make-histogram2d))
+	   :path-stroke-to :path-use :region-of-interest-zoom :pdflatex-compile 
+	   :pdflatex-compile-view :color-palette :*colors*
+	   :histo2d-incf :histo2d-get-max :draw-histo2d-rectangles :draw-histo2d-contour :draw-histo2d-nodes :make-histogram2d))
 
 (defsystem tikz-helper
   :name "tikz-helper"

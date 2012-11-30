@@ -66,7 +66,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (make-rectangle-path plottingarea
 			   (plot-x-min plottingarea) (plot-y-min plottingarea)
 			   (plot-x-max plottingarea) (plot-y-max plottingarea))
-      (path-stroke plottingarea t fill))
+      (path-use plottingarea t fill))
     (lazy-ticks (() () nil))))
 
 (defun draw-axis-cross (plottingarea
@@ -85,7 +85,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (path-line-to plottingarea (plot-x-max plottingarea) 0)
       (path-move-to plottingarea 0 (plot-y-min plottingarea))
       (path-line-to plottingarea 0 (plot-y-max plottingarea))
-      (path-stroke plottingarea))
+      (path-use plottingarea))
     (lazy-ticks ((:y-shift (format nil "~acm" (apply-transform-y plottingarea 0.0)))
 		     (:x-shift (format nil "~acm" (apply-transform-x plottingarea 0.0))) t))))
 
@@ -106,7 +106,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (path-line-to-mixed plottingarea (plot-x-max plottingarea) 0 (plot-y-min plottingarea) y-shift)
       (path-move-to-mixed plottingarea (plot-x-min plottingarea) x-shift (plot-y-min plottingarea) 0)
       (path-line-to-mixed plottingarea (plot-x-min plottingarea) x-shift (plot-y-max plottingarea) 0)
-      (path-stroke plottingarea))
+      (path-use plottingarea))
     (lazy-ticks ((:y-shift y-shift :stop 0)
 		     (:x-shift x-shift :stop 0) nil))))
 
@@ -144,7 +144,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (scope (plottingarea line-style)
 	(mapcar #'y-lines (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max))
 	(mapcar #'x-lines (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max))
-	(path-stroke plottingarea)))))
+	(path-use plottingarea)))))
 
 (defparameter *colors* (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red"))
 

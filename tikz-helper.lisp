@@ -61,7 +61,7 @@
        (path-line-to-mixed ,plottingarea xmin (cm (x-offset ,plottingarea))
 			   ymin (cm (+ (height ,plottingarea) (y-offset ,plottingarea)))))
      (path-close ,plottingarea)
-     (path-stroke ,plottingarea nil nil t)
+     (path-use ,plottingarea nil nil t)
      ,@body))
 
 (defmacro transform-scale ((plottingarea) &body body)
@@ -122,7 +122,7 @@ If this is called within a transform scope of the same plottingarea, nothing is 
 (defun path-line-to (plottingarea x y)
   (format (ostream plottingarea) "\\pgfpathlineto{ \\pgfpointxy {~f} {~f}}~%" x y))
 
-(defun path-stroke (plottingarea &optional (stroke t) (fill nil) (clip nil))
+(defun path-use (plottingarea &optional (stroke t) (fill nil) (clip nil))
   "Stroke, fill and or clip the path"
   (let ((action (concatenate 'string
 			     (if stroke "stroke," "")
@@ -166,7 +166,7 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
   "Make a path and draw it."
   (scope (plottingarea style)
     (make-path plottingarea x y)
-    (path-stroke plottingarea t fill)))
+    (path-use plottingarea t fill)))
 
 (defun make-rectangle-path (plottingarea x-min y-min x-max y-max)
   "Make a rectangle path."
@@ -291,7 +291,7 @@ text-style: style of text node."
 
 (defmacro with-tikz-to-stream ((name stream width height
 				     plot-x-min plot-x-max plot-y-min plot-y-max
-				     axis-style &key (environments (list "document" "tikzpicture")) 
+				     axis-style &key (environments (list "document")) (tikz-arg "")
 				     (preamble t))&body body)
   "Macro that opens a file, makes a plotting area and opens and closes tikzpicture environment."
   `(let ((,name (make-instance 'plottingarea :stream ,stream :width ,width :height ,height
@@ -299,32 +299,33 @@ text-style: style of text node."
 			       :plot-y-min ,plot-y-min :plot-y-max ,plot-y-max)))
      (when ,preamble (print-preamble ,stream))
      (latex-environs (,stream ,@environments)
-       ,@body
-       (ecase ,axis-style
-	 (:rectangle (draw-axis-rectangle ,name))
-	 (:cross (draw-axis-cross ,name))
-	 (:left-bottom (draw-axis-left-bottom ,name))
-	 (:popped-out (draw-axis-popped-out ,name))
-	 (:none nil)))))
-
+       (latex-environ-with-arg (,stream "tikzpicture" ,tikz-arg)
+	 ,@body
+	 (ecase ,axis-style
+	   (:rectangle (draw-axis-rectangle ,name))
+	   (:cross (draw-axis-cross ,name))
+	   (:left-bottom (draw-axis-left-bottom ,name))
+	   (:popped-out (draw-axis-popped-out ,name))
+	   (:none nil))))))
+  
 (defmacro with-tikz-to-file ((name filename width height
 				   plot-x-min plot-x-max plot-y-min plot-y-max
-				   axis-style) &body body)
+				   axis-style &key (tikz-arg "")) &body body)
   (let ((stream-name (gensym)))
     `(with-open-file (,stream-name ,filename :direction :output :if-exists :supersede)
        (with-tikz-to-stream (,name ,stream-name ,width ,height ,plot-x-min ,plot-x-max
 				   ,plot-y-min ,plot-y-max ,axis-style 
-				   :environments ("document" "tikzpicture") :preamble t)
+				   :environments ("document") :tikz-arg ,tikz-arg :preamble t)
 	 ,@body))))
 
 (defmacro with-tikz-to-string ((name width height
 				     plot-x-min plot-x-max plot-y-min plot-y-max
-				     axis-style) &body body)
+				     axis-style &key (tikz-arg "")) &body body)
   (let ((string-name (gensym)))
     `(with-open-stream (,string-name (make-string-output-stream))
        (with-tikz-to-stream (,name ,string-name ,width ,height ,plot-x-min ,plot-x-max
 				   ,plot-y-min ,plot-y-max ,axis-style 
-				   :environments ("tikzpicture") :preamble nil)
+				   :environments () :tikz-arg ,tikz-arg :preamble nil)
 	 ,@body)
        (get-output-stream-string ,string-name))))
 
@@ -367,7 +368,7 @@ text-style: style of text node."
 			   (list (+ y y-error) (+ y y-error) (+ y y-error)
 				 (- y y-error) (- y y-error) (- y y-error))
 			   (list 0 0 0 0 0 0))
-    (path-stroke plottingarea t)
+    (path-use plottingarea t)
     (draw-node plottingarea x y style node)))
 
 (defun make-histogram (min bin-size data)
@@ -386,8 +387,8 @@ text-style: style of text node."
       (mapc (lambda (x-from y-from x-to)
 	      (add-point x-from y-from) (add-point x-to y-from))
 	    x-pos y-pos (cdr x-pos))
-      (add-point (last x-pos) (last y-pos))
-      (add-point (last x-pos) 0))
+      (add-point (first (last x-pos)) (first (last y-pos)))
+      (add-point (first (last x-pos)) 0))
     (values path-x path-y)))
 
 (defun region-of-interest-zoom (top sub style &optional (top-left t) (top-right t) (bottom-left t) (bottom-right t))
@@ -395,7 +396,7 @@ text-style: style of text node."
  (scope (top style)
     ;;Region of interest
     (transform (top) (make-rectangle-path top (plot-x-min sub) (plot-y-min sub) (plot-x-max sub) (plot-y-max sub)))
-    (path-stroke top)
+    (path-use top)
     (format (ostream top) "\\pgfseteorule~%")
     ;;Clipping area, inverted clip of the region of interest and the sub plottingarea
     (transform (sub) (make-rectangle-path sub (plot-x-min sub) (plot-y-min sub) (plot-x-max sub) (plot-y-max sub)))
@@ -403,7 +404,7 @@ text-style: style of text node."
     (make-rectangle-path top
 		  (min 0 (+ (x-offset sub))) (min 0 (+ (y-offset sub)))
 		  (max (width top) (+ (x-offset sub) (width sub))) (max (height top) (+ (y-offset sub) (height sub))))
-    (path-stroke top nil nil t)
+    (path-use top nil nil t)
     ;;Draw lines to connect the region of interest and the sub plotting area
     (flet ((line (x-f y-f x-t y-t)
 	     (path-move-to top (apply-transform-x top x-f) (apply-transform-y top y-f))
@@ -413,24 +414,23 @@ text-style: style of text node."
     (when top-right (line (plot-x-max sub) (plot-y-max sub) (+ (x-offset sub) (width sub)) (+ (y-offset sub) (height sub))))
     (when bottom-right (line (plot-x-max sub) (plot-y-min sub) (+ (x-offset sub) (width sub)) (+ (y-offset sub))))
     (when (or bottom-right bottom-left top-right top-left) 
-      (path-stroke top)))))
+      (path-use top)))))
 
 (defun legend (x y name &key (width 0.4) (height 0.2) (text-pos "right"))
   (list :x x :y y :name name :width width :height height :text-pos text-pos))
 
-(defun as-keyword (sym) (intern (string sym) :keyword))
-
 (defmacro expand-legend ((legend) &body body)
   (let ((symbols '(x y name width height text-pos)))
-    `(let ,(mapcar (lambda (sym) `(,sym (getf ,legend ,(as-keyword sym)))) symbols)
-       (declare (ignorable ,@symbols))
-       ,@body)))
+    (flet ((as-keyword (sym) (intern (string sym) :keyword)))
+      `(let ,(mapcar (lambda (sym) `(,sym (getf ,legend ,(as-keyword sym)))) symbols)
+	 (declare (ignorable ,@symbols))
+	 ,@body))))
 
 (defun legend-name (plottingarea legend)
   (expand-legend (legend)
     (unless (string= "" name)
-      (draw-node plottingarea (+ x width) (+ y (* 0.5 height)) "right" "" name))))
-  
+      (draw-node plottingarea (+ x width) (+ y (* 0.5 height)) text-pos "" name))))
+
 (defun legend-graph (plottingarea legend node-string line-style mark-style)
   (legend-line plottingarea legend line-style)
   (legend-node plottingarea legend node-string mark-style))
@@ -442,18 +442,24 @@ text-style: style of text node."
   (legend-name plottingarea legend))
 
 (defun legend-histo (plottingarea legend style fill)
+  "Legend entries for histograms."
   (if fill 
-      (legend-node plottingarea legend 
-		   (make-node-string "rectangle" (getf legend :width) (getf legend :height) 0 "cm") style)
+      (expand-legend (legend)
+	(scope (plottingarea style)
+	  (make-rectangle-path plottingarea x y (+ x width) (+ y height))
+	  (path-use plottingarea t t))
+	(legend-name plottingarea legend))
       (legend-line plottingarea legend style)))
 
 (defun legend-node (plottingarea legend node-string style)
+  "Legend entry for plots drawn as nodes."
   (expand-legend (legend)
     (draw-node plottingarea (+ x (* 0.5 width))
 	       (+ y (* 0.5 height))  style node-string))
   (legend-name plottingarea legend))
 
 (defun legend-line (plottingarea legend style)
+  "Legend entry for plots represented as lines."
   (expand-legend (legend)
     (draw-line plottingarea x (+ y (* 0.5 height)) (+ x width) (+ y (* 0.5 height)) style)
     ;;Draw a transparent line to make it align with no text.
@@ -468,15 +474,6 @@ text-style: style of text node."
 	      x y y-error))
     (when legend (legend-profile plottingarea legend node style))))
 
-(defun draw-histogram-horizontal (plottingarea histo style &key (fill nil) (separate-bins nil) (legend nil))
-  "Draw a histogram."
-  (multiple-value-bind (y x) (make-histogram-path-points histo)
-    (clip-and-transform (plottingarea)
-      (draw-path plottingarea x y style fill)
-      (when separate-bins
-	(mapcar (lambda (x y) (draw-path plottingarea (list 0 x) (list y y) style nil)) x y))))
-  (when legend (legend-histo plottingarea legend style fill)))
-
 (defun draw-histogram (plottingarea histo style &key (fill nil) (separate-bins nil) (legend nil))
   "Draw a histogram."
   (multiple-value-bind (x y) (make-histogram-path-points histo)
@@ -486,6 +483,20 @@ text-style: style of text node."
 	(mapcar (lambda (x y) (draw-path plottingarea (list x x) (list y 0) style nil)) x y))))
   (when legend (legend-histo plottingarea legend style fill)))
 
+(defun draw-histogram-columns (plottingarea histo style width &key (legend nil))
+  (let* ((bin-size (getf histo :bin-size))
+	 (y-pos (coerce (getf histo :data) 'list))
+	 (x-pos (make-range (+ (getf histo :min) (* 0.5 bin-size))
+			    bin-size (+ 1 (length y-pos)))))
+    (scope (plottingarea style)
+      (clip-and-transform (plottingarea)
+	(mapcar (lambda (x y)
+		  (make-rectangle-path plottingarea (- x (* 0.5 width)) 0
+				       (+ x (* 0.5 width)) y)
+		  (path-use plottingarea t t)) 
+		x-pos y-pos))))
+  (when legend (legend-histo plottingarea legend style t)))
+  
 (defun draw-datapoints (plottingarea x y style &key (node (make-node-string "circle" 3 3)) (legend nil))
   "Draw a set of datapoints"
   (clip-and-transform (plottingarea)
@@ -507,18 +518,25 @@ text-style: style of text node."
     (draw-datapoints plottingarea x y mark-style :node node))
   (when legend (legend-graph plottingarea legend node line-style mark-style)))
 
-(defun get-function-points (function samples x-min x-max)
+(defun get-function-points (function samples x-min x-max &optional (close nil))
   "Make a path of y = f(x)"
   (let* ((x-vals (make-range x-min (/ (- x-max x-min) samples) (+ 1 samples)))
 	 (y-vals (mapcar (lambda (x) (funcall function x)) x-vals)))
-    (values x-vals y-vals)))
+    (if close
+	(values (append (list x-max x-max x-min) x-vals)
+		(append (list (first (last y-vals)) 0 0) y-vals))
+	(values x-vals y-vals))))
 
-(defun draw-function (plottingarea function samples line-style &key (x-min nil) (x-max nil) (legend nil))
-  "Draw a function y = f(x)"
+(defun draw-function (plottingarea function samples line-style 
+		      &key (x-min nil) (x-max nil) (legend nil) (fill nil) (close nil))
+  "Draw a function y = f(x). If x-min and x-max are not supplied, it is drawn from plot-x-min
+to plot-x-max. If close is t, the function path is closed by adding points (x-min,0) and (x-max,0). If 
+fill is t, the path is also filled, should probably be used tohether with fill."
   (multiple-value-bind (x-vals y-vals) (get-function-points function samples
 							    (if x-min x-min (plot-x-min plottingarea))
-							    (if x-max x-max (plot-x-max plottingarea)))
+							    (if x-max x-max (plot-x-max plottingarea))
+							    close)
     (clip-and-transform (plottingarea)
-      (draw-path plottingarea x-vals y-vals line-style))
+      (draw-path plottingarea x-vals y-vals line-style fill))
     (when legend (legend-line plottingarea legend line-style))))
 

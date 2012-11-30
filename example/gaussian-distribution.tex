@@ -7,7 +7,7 @@
 \usepackage{siunitx}
 \usetikzlibrary{arrows,shapes}
 \begin{document}
-\begin{tikzpicture}
+\begin{tikzpicture}[]
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
 \pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
@@ -19,8 +19,17 @@
 \pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
 \begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=blue!40]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\begin{scope}[]
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathclose
+\pgfusepath{  clip, }
+\begin{scope}[draw=black,thick,fill=blue!40]
+\pgfpathmoveto{ \pgfpointxy {-1.0} {0.24197072716759546}}
+\pgfpathlineto{ \pgfpointxy {-1.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {0.3989422804014327}}
 \pgfpathlineto{ \pgfpointxy {-0.01} {0.3989223299774019}}
 \pgfpathlineto{ \pgfpointxy {-0.02} {0.3988625024841223}}
@@ -122,28 +131,21 @@
 \pgfpathlineto{ \pgfpointxy {-0.98} {0.24680947780649096}}
 \pgfpathlineto{ \pgfpointxy {-0.99} {0.2443903402751723}}
 \pgfpathlineto{ \pgfpointxy {-1.0} {0.24197072716759546}}
-\pgfpathlineto{ \pgfpointxy {-1.0} {0.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
+\end{scope}
 \node at (-0.5,0.17603266155126776) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {34.1\%};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
-\begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=orange!60]
-\pgfpathmoveto{ \pgfpointxy {-1.0} {0.0}}
+\begin{scope}[draw=black,thick,fill=orange!60]
+\pgfpathmoveto{ \pgfpointxy {-2.0} {0.05399096581690089}}
+\pgfpathlineto{ \pgfpointxy {-2.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {-1.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {-1.0} {0.24197072716759546}}
 \pgfpathlineto{ \pgfpointxy {-1.01} {0.23955109028120572}}
 \pgfpathlineto{ \pgfpointxy {-1.02} {0.23713195274988708}}
@@ -245,28 +247,21 @@
 \pgfpathlineto{ \pgfpointxy {-1.98} {0.05618314052370434}}
 \pgfpathlineto{ \pgfpointxy {-1.99} {0.0550789059545296}}
 \pgfpathlineto{ \pgfpointxy {-2.0} {0.05399096581690089}}
-\pgfpathlineto{ \pgfpointxy {-2.0} {0.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
+\end{scope}
 \node at (-1.5,0.04702453752886658) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {12.6\%};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
-\begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=red!80]
-\pgfpathmoveto{ \pgfpointxy {-2.0} {0.0}}
+\begin{scope}[draw=black,thick,fill=red!80]
+\pgfpathmoveto{ \pgfpointxy {-3.5} {0.0008726827124260324}}
+\pgfpathlineto{ \pgfpointxy {-3.5} {0.0}}
+\pgfpathlineto{ \pgfpointxy {-2.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {-2.0} {0.05399096581690089}}
 \pgfpathlineto{ \pgfpointxy {-2.015} {0.052389385486323534}}
 \pgfpathlineto{ \pgfpointxy {-2.03} {0.05082390733844558}}
@@ -368,28 +363,21 @@
 \pgfpathlineto{ \pgfpointxy {-3.4699998} {0.0009688626232564939}}
 \pgfpathlineto{ \pgfpointxy {-3.4850001} {0.0009196188380992387}}
 \pgfpathlineto{ \pgfpointxy {-3.5} {0.0008726827124260324}}
-\pgfpathlineto{ \pgfpointxy {-3.5} {0.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
+\end{scope}
 \node at (-2.75,0.05546041322884499) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {2.2\%};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
-\begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=blue!40]
-\pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
+\begin{scope}[draw=black,thick,fill=blue!40]
+\pgfpathmoveto{ \pgfpointxy {1.0} {0.24197072716759546}}
+\pgfpathlineto{ \pgfpointxy {1.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {0.3989422804014327}}
 \pgfpathlineto{ \pgfpointxy {0.01} {0.3989223299774019}}
 \pgfpathlineto{ \pgfpointxy {0.02} {0.3988625024841223}}
@@ -491,28 +479,21 @@
 \pgfpathlineto{ \pgfpointxy {0.98} {0.24680947780649096}}
 \pgfpathlineto{ \pgfpointxy {0.99} {0.2443903402751723}}
 \pgfpathlineto{ \pgfpointxy {1.0} {0.24197072716759546}}
-\pgfpathlineto{ \pgfpointxy {1.0} {0.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
+\end{scope}
 \node at (0.5,0.17603266155126776) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {34.1\%};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
-\begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=orange!60]
-\pgfpathmoveto{ \pgfpointxy {1.0} {0.0}}
+\begin{scope}[draw=black,thick,fill=orange!60]
+\pgfpathmoveto{ \pgfpointxy {2.0} {0.05399096581690089}}
+\pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
+\pgfpathlineto{ \pgfpointxy {1.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {1.0} {0.24197072716759546}}
 \pgfpathlineto{ \pgfpointxy {1.01} {0.23955109028120572}}
 \pgfpathlineto{ \pgfpointxy {1.02} {0.23713195274988708}}
@@ -614,28 +595,21 @@
 \pgfpathlineto{ \pgfpointxy {1.98} {0.05618314052370434}}
 \pgfpathlineto{ \pgfpointxy {1.99} {0.0550789059545296}}
 \pgfpathlineto{ \pgfpointxy {2.0} {0.05399096581690089}}
-\pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
 \pgfusepath{ stroke, fill, }
 \end{scope}
+\end{scope}
 \node at (1.5,0.04702453752886658) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {12.6\%};
-\end{scope}
-\pgfsetxvec{\pgfpoint{1cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
-\end{scope}
 \begin{scope}[]
-\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{5cm}} }
-\pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{5cm}} }
+\pgfpathmoveto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{0cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{10cm}{5cm}} }
+\pgfpathlineto{ \pgfpointadd{\pgfpointxy {-3.2} {0.0}} {\pgfpoint{0cm}{5cm}} }
 \pgfpathclose
 \pgfusepath{  clip, }
-\begin{scope}[shift={(0.0,0.0)}]
-\pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
-\pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
-\begin{scope}[shift={(3.2,0.0)}]
-\begin{scope}[fill=red!80]
-\pgfpathmoveto{ \pgfpointxy {2.0} {0.0}}
+\begin{scope}[draw=black,thick,fill=red!80]
+\pgfpathmoveto{ \pgfpointxy {3.5} {0.0008726827124260324}}
+\pgfpathlineto{ \pgfpointxy {3.5} {0.0}}
+\pgfpathlineto{ \pgfpointxy {2.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {2.0} {0.05399096581690089}}
 \pgfpathlineto{ \pgfpointxy {2.015} {0.052389385486323534}}
 \pgfpathlineto{ \pgfpointxy {2.03} {0.05082390733844558}}
@@ -737,8 +711,8 @@
 \pgfpathlineto{ \pgfpointxy {3.4699998} {0.0009688626232564939}}
 \pgfpathlineto{ \pgfpointxy {3.4850001} {0.0009196188380992387}}
 \pgfpathlineto{ \pgfpointxy {3.5} {0.0008726827124260324}}
-\pgfpathlineto{ \pgfpointxy {3.5} {0.0}}
 \pgfusepath{ stroke, fill, }
+\end{scope}
 \end{scope}
 \node at (2.75,0.05546041322884499) [draw=black,fill=white,fill opacity=0.3,text opacity=1.0,rectangle,rounded corners,inner sep=2.0pt,minimum width =2.0pt,minimum height=2.0pt] {2.2\%};
 \end{scope}
@@ -746,7 +720,6 @@
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
 \end{scope}
 \end{scope}
-\draw[thick,black] (0.0,0.0) -- (10.0,0.0);
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.5625cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{11.111112cm}}
