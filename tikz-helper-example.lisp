@@ -15,8 +15,8 @@
 
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
-(defparameter *viewer* "emacsclient" "A program to view the resulting pdf file.")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path when compiled from toplevel, and viewed with *viewer*")
+(defparameter *viewer* "evince" "A program to view the resulting pdf file.")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Stuff to generate the documentation file examples.tex
 (eval-when (:compile-toplevel)
@@ -57,7 +57,7 @@ compiled with pdflatex, the results are viewed with *viewer*. Also adds the figu
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
 within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
  The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are not scaled, 
-but all poits are translated. The black star path is here drawn in the current frame, the red one 
+but all points are translated. The black star path is here drawn in the current frame, the red one 
 is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
   (labels ((draw-star (x x-cm y y-cm style)
 	     (scope (tikz style)
@@ -82,7 +82,7 @@ is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
 (comment :section "Simple plots")
 
 (with-example-plot ("plots" -1.5 1.5 0 2 :left-bottom)
-    "A histogram, a function and some datapoints. Most functions 
+    "A histogram, a function and some data points. Most functions 
 dealing with sets of data points call the clip-and-transform macro themselves, so calling it from 
 top level is not necessary."
   (draw-histogram tikz (make-histogram -1.5 0.25 (make-range 0.0 0.1 12)) "draw=gray,fill=blue!50" 
@@ -162,7 +162,7 @@ by including the following:.
       (format nil "Some Gaussian histograms with different styles and with legend entries. 
 The legend entries are placed in the default cm frame, unless draw-histogram 
 is called within (transform (tikz) ...). With some trickery it is also possible to get 
-legends in captions: ~a Histogram 1, ~a Hisogram 2, ~a Hisogram 3."
+legends in captions: ~a Histogram 1, ~a Histogram 2, ~a Histogram 3."
 	      (c-legend "draw=gray,fill=blue!50" t) (c-legend "red!80,thick" nil) (c-legend "draw=black,fill=green" t))
     (flet ((draw-histo (sigma ndraws style fill sep legend-y-pos number)
 	     (draw-histogram tikz (make-gaussian-histogram 0.0 0.25 49 5.0 sigma ndraws)
@@ -215,9 +215,9 @@ The bins are named with the draw-axis-ticks function."
 
 (with-example-plot ("functions" -7 7 -1.2 1.2 :none)
     "Plotting sin(x) and cos(x), with grid lines and tick names on the x-axis."
-  ;;Grid lines ar specific values in the x-direction, automatic in the y-direct ion
+  ;;Grid lines are specific values in the x-direction, automatic in the y-direct ion
   (draw-grid-lines tikz :x-list (list (* -2 pi) (* -1 pi) 0.0 pi (* 2 pi)))
-  ;;Draw a rectangle around the plorringarea, with no axes.
+  ;;Draw a rectangle around the plottingarea, with no axes.
   (draw-axis-popped-out tikz :x-list (list (* -2 pi) (* -1 pi) 0 pi (* 2 pi))
 			:x-names (list "$-2\\pi$" "$-\\pi$" "0.0" "$\\pi$" "$2\\pi$"))
   (draw-function tikz #'sin 100 "red" :legend (legend 0.7 5.2 "sin(x)"))
@@ -243,9 +243,9 @@ The bins are named with the draw-axis-ticks function."
   (draw-axis-ticks-x tikz (make-range -2 1 5) :numberp nil
 		     :names (list "$-2\\sigma$" "$-\\sigma$" "$\\mu$" "$\\sigma$" "$2\\sigma$")))
 
-(comment :section "Fitting with levenberg marquart")
+(comment :section "Fitting with Levenberg-Mmarquart")
 (comment :text "The Levenberg-Marquart algorithm minimizes the squared distance in the y-direction
-between a function and a set of datapoints by manipulating function parameters. 
+between a function and a set of data points by changing function parameters. 
 If errors are supplied the $\\chi^2$, or the squared normalized differences, is minimized.")
 
 (with-example-plot ("test-fitter" 0 10 0 20 :popped-out)
@@ -445,6 +445,13 @@ non uniformly distributed tick marks."
 			  :y-list (list 0 6 7 9 10 16))
     (color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6))))
 
+(with-example-plot ("vectorfield" -3 3 -3 3 :popped-out :width 7 :height 7) 
+    "Vector field of f(x,y) = sin(y),sin(x)"
+  (let ((vectorfield (make-vectorfield2d -3 0.5 13 -3 0.5 13
+					 :function (lambda (x y) (vector (sin y) (sin x))))))
+    (scope (tikz "draw=blue,thick")
+      (draw-vectorfield2d tikz vectorfield :scale 0.3))))
+	
 (defun make-example-tex ()
   "Generate a tex file containing all the example plots above. 
 Make sure *examples* looks right before use, or just C-c C-k."
@@ -468,3 +475,4 @@ Make sure *examples* looks right before use, or just C-c C-k."
     (pdflatex-compile-view fname "evince")))
 
 (make-example-tex)
+

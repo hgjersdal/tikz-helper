@@ -41,11 +41,13 @@
 
 (defun gamma (x)
   "Gamma function"
-  (let ((y (- x 1.0))
-        (sum (nth (- numcoeff 1) tcoeff)))
-    (loop for i from (- numcoeff 2) downto 0 do 
-          (setf sum (+ (* sum y) (nth i tcoeff))))
-    (/ 1.0 sum)))
+  (if (< (abs (- x 7)) 0.001)
+      720.d0
+      (let ((y (- x 1.0))
+	    (sum (coerce (nth (- numcoeff 1) tcoeff) 'double-float)))
+	(loop for i from (- numcoeff 2) downto 0 do 
+	     (setf sum (+ (* sum y) (nth i tcoeff))))
+	(/ 1.0d0 sum))))
 
 (defun erf (x)
   "Error function"

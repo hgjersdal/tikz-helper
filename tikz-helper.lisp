@@ -116,6 +116,9 @@ If this is called within a transform scope of the same plottingarea, nothing is 
      (transform (,plottingarea)
        ,@body)))
 
+(defun tikz-style (plottingarea name style)
+  (format (ostream plottingarea) "\\tikzstyle{~a}=[~a]~%" name style))
+
 (defun path-move-to (plottingarea x y)
   (format (ostream plottingarea) "\\pgfpathmoveto{ \\pgfpointxy {~f} {~f}}~%" x y))
 
@@ -193,7 +196,7 @@ The other point should be a string with cm, mm, pt or similar invariant unit."
 	  style x y xpt+ ypt+ xpt- ypt- text-style)
   (if numberp
       (format (ostream plottingarea)
-	      "\\num[round-mode=places,round-precision=~a]{~a}}};~%"
+	      "\\num[round-mode=places,round-precision=~a]{~f}}};~%"
 	      precision (if (= 0 precision) (floor name) name))
       (format (ostream plottingarea) "~a}};~%" name)))
 
@@ -210,7 +213,7 @@ stop: The tick line will stop at y-shift + stop.
 style: style of line
 text-style: style of text node."
   (transform (plottingarea)
-    (scope (plottingarea (format nil "yshift=~a" y-shift))
+    (scope (plottingarea (format nil "yshift=~f" y-shift))
       (map nil (lambda (x name)
 		 (draw-tick-mark plottingarea numberp precision name style text-style x (plot-y-min plottingarea) 0 0 stop start))
 	   x-list (if (null names) x-list names)))))
@@ -220,7 +223,7 @@ text-style: style of text node."
 						(style "black") (text-style "left"))
   "Draw axis tick marks. See draw-axis-tizks-x for details."
   (transform (plottingarea)
-    (scope (plottingarea (format nil "xshift=~a" x-shift))
+    (scope (plottingarea (format nil "xshift=~f" x-shift))
       (map nil (lambda (y name)
 		 (draw-tick-mark plottingarea numberp precision name style text-style (plot-x-min plottingarea) y stop start 0 0))
 	   y-list (if (null names) y-list names)))))
@@ -234,13 +237,13 @@ text-style: style of text node."
 (defun draw-axis-subticks-x (plottingarea x-list &key (y-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
   "Draw ticks with no text."
   (transform (plottingarea)
-    (scope (plottingarea (format nil "yshift=~a" y-shift))
+    (scope (plottingarea (format nil "yshift=~f" y-shift))
       (mapc (lambda (x) (draw-subtick-mark plottingarea style x (plot-y-min plottingarea) 0 0 stop start)) x-list))))
 
 (defun draw-axis-subticks-y (plottingarea y-list &key (x-shift "0cm") (start "-1pt") (stop "1pt") (style "black"))
   "Draw ticks with no text"
   (transform (plottingarea)
-    (scope (plottingarea (format nil "xshift=~a" x-shift))
+    (scope (plottingarea (format nil "xshift=~f" x-shift))
       (mapc (lambda (y) (draw-subtick-mark plottingarea style (plot-x-min plottingarea) y stop start 0 0)) y-list))))
 
 (defun latex-command (stream command &optional ([args] nil) ({args} nil))

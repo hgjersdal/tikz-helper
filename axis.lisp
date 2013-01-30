@@ -146,7 +146,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 	(mapcar #'x-lines (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max))
 	(path-use plottingarea)))))
 
-(defparameter *colors* (list "violet" "Indigo" "blue" "green" "yellow" "orange" "red"))
+(defparameter *colors* (list "DarkBlue" "blue" "green" "yellow" "orange" "red"))
 
 (defun color-palette (plottingarea x-pos y-pos width height z-min z-max
 		      &optional (cols *colors*))
