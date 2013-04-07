@@ -20,23 +20,35 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	  (minus-h (step-and-call (* -1 step))))
       (map 'vector (lambda (x y) (/ (- x y) (* 2 step))) plus-h minus-h))))
 
+
+;; (defun get-J (function parameters nparameters nmeas)
+;;   "Get jacobian and its transverse."
+;;   (let ((J  (lla:make-matrix 'lla:dense nmeas nparameters :element-type 'double-float))
+;; 	(JT (lla:make-matrix 'lla:dense nparameters nmeas :element-type 'double-float)))
+;;     (dotimes (i nparameters)
+;;       (let ((diffs (get-diff-vector function parameters (max (abs (* (aref parameters i) 0.001)) 0.000001) i)))
+;; 	(dotimes (m nmeas)
+;; 	  (setf (lla:mref J m i) (aref diffs m)
+;; 		(lla:mref JT i m) (aref diffs m)))))
+;;     (values J JT)))
+
 (defun get-J (function parameters nparameters nmeas)
   "Get jacobian and its transverse."
-  (let ((J  (lla:make-matrix 'lla:dense nmeas nparameters :element-type 'double-float))
-	(JT (lla:make-matrix 'lla:dense nparameters nmeas :element-type 'double-float)))
+  (let ((J  (make-array (list nmeas nparameters) :element-type 'double-float))
+	(JT (make-array (list nparameters nmeas) :element-type 'double-float)))
     (dotimes (i nparameters)
       (let ((diffs (get-diff-vector function parameters (max (abs (* (aref parameters i) 0.001)) 0.000001) i)))
 	(dotimes (m nmeas)
-	  (setf (lla:mref J m i) (aref diffs m)
-		(lla:mref JT i m) (aref diffs m)))))
+	  (setf (aref J m i) (aref diffs m)
+		(aref JT i m) (aref diffs m)))))
     (values J JT)))
 
 (defun get-g (function parameters JT nmeas)
   "g = J^T f"
-  (let ((g (lla:make-matrix 'lla:dense nmeas 1 :element-type 'double-float))
+  (let ((g (make-array (list nmeas 1) :element-type 'double-float))
 	(funres (funcall function parameters)))
     (dotimes (i nmeas)
-      (setf (lla:mref g i 0) (aref funres i)))
+      (setf (aref g i 0) (aref funres i)))
     (lla:mm JT g)))
 
 (defun get-vector-abs (vec)
@@ -45,19 +57,19 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 
 (defun L0-Lhm (h g mu)
   "L(0) - L(H_m)"
-  (let ((ht (lla:make-matrix 'lla:dense 1 4))
-	(hg (lla:make-matrix 'lla:dense 4 1)))
+  (let ((ht (make-array (list 1 4)))
+	(hg (make-array (list 4 1))))
     (dotimes (i (length h))
-      (setf (lla:mref ht 0 i) (aref h i))
-      (setf (lla:mref hg i 0) (- (* mu (aref h i)) (lla:mref g i 0))))
+      (setf (aref ht 0 i) (aref h i))
+      (setf (aref hg i 0) (- (* mu (aref h i)) (aref g i 0))))
     (aref (lla:mm ht hg) 0 0)))
 
 (defun add-mu (A mu dim)
-  (let ((Amu (lla:make-matrix 'lla:dense dim dim :element-type 'double-float)))
+  (let ((Amu (make-array (list dim dim) :element-type 'double-float)))
     (dotimes (i dim)
       (dotimes (j dim)
-	(setf (lla:mref Amu i j) (lla:mref A i j)))
-      (setf (lla:mref Amu i i) (+ (lla:mref Amu i i) mu)))
+	(setf (aref Amu i j) (aref A i j)))
+      (setf (aref Amu i i) (+ (aref Amu i i) mu)))
     Amu))
 
 (defun levmar-update (function iteration mu nu params nparams nmeas)
@@ -68,8 +80,8 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
 	(setf mu 0.d0)
 	(dotimes (i nparams)
 	  (dotimes (j nparams)
-	    (when (> (lla:mref A i j) mu)
-	      (setf mu (lla:mref A i j)))))
+	    (when (> (aref A i j) mu)
+	      (setf mu (aref A i j)))))
 	(setf mu (* *tau* mu)))
       (levmar-iterate function params iteration A (get-g function params JT nmeas)
 			    mu nu nparams nmeas))))
@@ -78,13 +90,13 @@ http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf
   "Get array from matrix vector"
   (let ((array (make-array nparams :element-type 'double-float)))
     (dotimes (i nparams)
-      (setf (aref array i) (lla:mref matrix i 0)))
+      (setf (aref array i) (aref matrix i 0)))
     array))
 
 (defun scale-matrix (matrix nparams scale)
-  (let ((matrix2 (lla:make-matrix 'lla:dense nparams 1 :element-type 'double-float)))
+  (let ((matrix2 (make-array (list nparams 1) :element-type 'double-float)))
     (dotimes (i nparams)
-      (setf (lla:mref matrix2 i 0) (* scale (lla:mref matrix i 0))))
+      (setf (aref matrix2 i 0) (* scale (aref matrix i 0))))
     matrix2))
 
 (defun levmar-iterate (function parameters iteration A g mu nu nparam nmeas)

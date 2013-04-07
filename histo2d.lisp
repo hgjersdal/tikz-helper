@@ -185,7 +185,9 @@
 	    (path-use plottingarea t fillp)))))))
 
 (defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
-			     &key (cols *colors*) (color-lines nil))
+			     &key 
+			       (cols *colors*) (color-lines nil) 
+			       (opacity-gradient nil))
   "Draw possibly filled contour lines."
   (clip-and-transform (plottingarea)
     (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
@@ -193,13 +195,15 @@
 	  (xbins (make-range 0 1 (getf histo :x-nbin)))
 	  (ybins (make-range 0 1 (getf histo :y-nbin))))
       (dotimes (i (+ nlines 1))
-	(let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
+	(let* ((height (+ z-min (* i (/ (- z-max z-min) nlines))))
+	       (color (make-color-combo z-min z-max height cols)))
 	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
-	  (scope (plottingarea (if color-lines 
-				   (format nil  "~a" (make-color-combo z-min z-max height cols))
-				   (format nil  "draw=black,fill=~a" (make-color-combo z-min z-max height cols))))
+	  (scope (plottingarea 
+		  (cond (opacity-gradient (format nil "~a,opacity=~a" color height))
+			(color-lines (format nil  "~a" color))
+			(t (format nil  "draw=black,fill=~a" color))))
 	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	    (path-use plottingarea t fillp)))))))
+	    (path-use plottingarea (if opacity-gradient nil t)t fillp)))))))
 
 (defun val-to-size (val z-min z-max)
   (cond ((< val z-min) 0.0)

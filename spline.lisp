@@ -16,38 +16,38 @@ by John Stockie
   (loop 
      for i from 1 below (- n 1)
      do
-       (setf (lla:mref matrix i (- i 1)) (aref h (- i 1)))
-       (setf (lla:mref matrix i i)       (* 2 (+ (aref h i) (aref h (- i 1)))))
-       (setf (lla:mref matrix i (+ i 1)) (aref h i)))
+       (setf (aref matrix i (- i 1)) (aref h (- i 1)))
+       (setf (aref matrix i i)       (* 2 (+ (aref h i) (aref h (- i 1)))))
+       (setf (aref matrix i (+ i 1)) (aref h i)))
   matrix)
 
 (defun make-not-a-know-matrix (h n)
   "Make a matrix describing the not a knot system of equations"
-  (let ((matrix (lla:make-matrix 'lla:dense n n :initial-element 0.0d0 :element-type 'double-float)))
+  (let ((matrix (make-array (list n n) :initial-element 0.0d0 :element-type 'double-float)))
     ;;top row
-    (setf (lla:mref matrix 0 0) -1.0d0)
-    (setf (lla:mref matrix 0 1)  2.0d0)
-    (setf (lla:mref matrix 0 2) -1.0d0)
+    (setf (aref matrix 0 0) -1.0d0)
+    (setf (aref matrix 0 1)  2.0d0)
+    (setf (aref matrix 0 2) -1.0d0)
     ;;bottom row
-    (setf (lla:mref matrix (- n 1) (- n 3)) -1.0d0)
-    (setf (lla:mref matrix (- n 1) (- n 2))  2.0d0)
-    (setf (lla:mref matrix (- n 1) (- n 1)) -1.0d0)
+    (setf (aref matrix (- n 1) (- n 3)) -1.0d0)
+    (setf (aref matrix (- n 1) (- n 2))  2.0d0)
+    (setf (aref matrix (- n 1) (- n 1)) -1.0d0)
     (fill-matrix h n matrix)))
 
 (defun make-natural-spline-matrix (h n)
   "Make a matrix describing the natural spline system of equations"
-  (let ((matrix (lla:make-matrix 'lla:dense n n :initial-element 0.0d0 :element-type 'double-float)))
-    (setf (lla:mref matrix 0 0) 1.0d0)
-    (setf (lla:mref matrix (- n 1) (- n 1)) 1.0d0)
+  (let ((matrix (make-array (list n n) :initial-element 0.0d0 :element-type 'double-float)))
+    (setf (aref matrix 0 0) 1.0d0)
+    (setf (aref matrix (- n 1) (- n 1)) 1.0d0)
     (fill-matrix h n matrix)))
 
 (defun make-right-hand-side (y h n)
   "Right hand side for the system of spline equations."
-  (let ((rhs (lla:make-matrix 'lla:dense n 1 :element-type 'double-float :initial-element 0.0d0)))
-    (setf (lla:mref rhs 0 0) 0.0d0)
-    (setf (lla:mref rhs (- n 1) 0) 0.0d0)
+  (let ((rhs (make-array (list n 1) :element-type 'double-float :initial-element 0.0d0)))
+    (setf (aref rhs 0 0) 0.0d0)
+    (setf (aref rhs (- n 1) 0) 0.0d0)
     (loop for i from 1 below (- n 1) do
-	 (setf (lla:mref rhs i 0) (* 6.0d0 (- (/ (- (aref y (+ i 1)) (aref y i)) (aref h i))
+	 (setf (aref rhs i 0) (* 6.0d0 (- (/ (- (aref y (+ i 1)) (aref y i)) (aref h i))
 					      (/ (- (aref y i) (aref y (- i 1))) (aref h (- i 1)))))))
     rhs))
 
@@ -60,10 +60,10 @@ by John Stockie
     (loop for i from 0 below (- n 1) do
 	 (setf (aref a i) (aref y i))
 	 (setf (aref b i) (+ (/ (- (aref y (+ i 1)) (aref y i)) (aref h i))
-			     (- (/ (* (aref h i) (lla:mref m i 0)) 2.0d0))
-			     (- (/ (* (aref h i) (- (lla:mref m (+ i 1) 0) (lla:mref m i 0))) 6.0d0))))
-	 (setf (aref c i) (/ (lla:mref m i 0) 2.0d0))
-	 (setf (aref d i) (/ (- (lla:mref m (+ i 1) 0) (lla:mref m i 0)) (* 6.0d0 (aref h i)))))
+			     (- (/ (* (aref h i) (aref m i 0)) 2.0d0))
+			     (- (/ (* (aref h i) (- (aref m (+ i 1) 0) (aref m i 0))) 6.0d0))))
+	 (setf (aref c i) (/ (aref m i 0) 2.0d0))
+	 (setf (aref d i) (/ (- (aref m (+ i 1) 0) (aref m i 0)) (* 6.0d0 (aref h i)))))
     (values a b c d)))
 
 (defun select-region (x xx n)

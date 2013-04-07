@@ -16,7 +16,7 @@
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "evince" "A program to view the resulting pdf file.")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Stuff to generate the documentation file examples.tex
 (eval-when (:compile-toplevel)
@@ -85,7 +85,7 @@ is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
     "A histogram, a function and some data points. Most functions 
 dealing with sets of data points call the clip-and-transform macro themselves, so calling it from 
 top level is not necessary."
-  (draw-histogram tikz (make-histogram -1.5 0.25 (make-range 0.0 0.1 12)) "draw=gray,fill=blue!50" 
+  (draw-histogram tikz (make-histogram -1.5 0.25 (make-range 0.0 0.1 12)) "draw=gray,fill=blue!30" 
 		  :fill t :legend (legend 6.0 4.5 "Histogram"))
   (draw-function tikz (lambda (x) (* x x)) 100 "red" :legend (legend 6.0 4.1 "Function"))
   (draw-datapoints tikz (make-range -1.5 0.25 12) (make-range 2.0 -0.15 12) "fill=orange" :legend (legend 6.0 3.7 "Data points")))
@@ -222,7 +222,7 @@ The bins are named with the draw-axis-ticks function."
 			:x-names (list "$-2\\pi$" "$-\\pi$" "0.0" "$\\pi$" "$2\\pi$"))
   (draw-function tikz #'sin 100 "red" :legend (legend 0.7 5.2 "sin(x)"))
   (draw-function tikz #'cos 100 "blue" :legend (legend 2.9 5.2 "cos(x)")))
-
+  
 (with-example-plot ("gaussian-distribution" -3.2 3.2 0 0.45 :none)
     "Gaussian function, made by closing, drawing and filling function segments."
   (flet ((clip-draw (x-min x-max x-pos-height color text)
