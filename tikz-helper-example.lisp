@@ -423,7 +423,7 @@ are just linear interpolation between neighbors on either side of the contour he
     "2D histogram drawn as filled rectangles with contour lines."
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil)
+    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil :color-lines t)
     (color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)

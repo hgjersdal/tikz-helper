@@ -203,7 +203,7 @@
 			(color-lines (format nil  "~a" color))
 			(t (format nil  "draw=black,fill=~a" color))))
 	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	    (path-use plottingarea (if opacity-gradient nil t)t fillp)))))))
+	    (path-use plottingarea (if opacity-gradient nil t) fillp)))))))
 
 (defun val-to-size (val z-min z-max)
   (cond ((< val z-min) 0.0)
