@@ -41,15 +41,15 @@
 are deined, in other words in the draw-axis* functions below."
   `(multiple-value-bind (tx prx) (auto-ticks-x plottingarea x-list x-ticks-min x-ticks-max)
      (multiple-value-bind (ty pry) (auto-ticks-y plottingarea y-list y-ticks-min y-ticks-max)
-       (let ((prec (max pry prx)))
-	 (draw-axis-ticks-x plottingarea (if ,remove-0 (remove 0.0 tx) tx)
-			    :style tick-style :precision prec 
-			    :numberp (not (or (listp x-list) x-names)) :names x-names
-			    ,@argsx)
-	 (draw-axis-ticks-y plottingarea (if ,remove-0 (remove 0.0 ty) ty)
-			    :style tick-style :precision prec 
-			    :numberp (not (or (listp y-list) y-names)) :names y-names
-			    ,@argsy)))))
+       ;;(let ((prec (max pry prx)))
+       (draw-axis-ticks-x plottingarea (if ,remove-0 (remove 0.0 tx) tx)
+			  :style tick-style :precision prx 
+			  :numberp (not (or (listp x-list) x-names)) :names x-names
+			  ,@argsx)
+       (draw-axis-ticks-y plottingarea (if ,remove-0 (remove 0.0 ty) ty)
+			  :style tick-style :precision pry 
+			  :numberp (not (or (listp y-list) y-names)) :names y-names
+			  ,@argsy))))
 
 (defun draw-axis-rectangle (plottingarea 
 			    &key (fill nil) (rectangle-style "thick,black,fill=white")
@@ -83,6 +83,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (scope (plottingarea line-style)
       (path-move-to plottingarea (plot-x-min plottingarea) 0)
       (path-line-to plottingarea (plot-x-max plottingarea) 0)
+      (path-use plottingarea)
       (path-move-to plottingarea 0 (plot-y-min plottingarea))
       (path-line-to plottingarea 0 (plot-y-max plottingarea))
       (path-use plottingarea))
@@ -127,7 +128,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
     (lazy-ticks (()() nil))))
 
 (defun draw-grid-lines (plottingarea
-			&key (line-style "thin,gray")
+			&key (line-style "thin,gray!20!white")
 			  (x-ticks-max 10) (x-ticks-min 4) (y-ticks-max 10) (y-ticks-min 4)
 			  (x-list t) (y-list t))
   "Draw grid lines.

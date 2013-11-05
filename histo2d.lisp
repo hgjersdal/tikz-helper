@@ -1,13 +1,26 @@
 (in-package :tikz-helper)
 
-(defun make-histogram2d (x-min x-bin-size x-nbin y-min y-bin-size y-nbin)
-  "Alloacte a histogram"
-  (let ((data (make-array (list x-nbin y-nbin) :element-type 'double-float)))
-    (list :x-min x-min :x-bin-size x-bin-size :x-nbin x-nbin :y-min y-min :y-bin-size y-bin-size :y-nbin y-nbin :data data)))
+(defun histo2d-fill-from-function (vectorfield function)
+  "Fill a 2d histo from a function. Function must accept 2 arguments, and return a 'double-float"
+  (let ((x-poses (make-range (getf vectorfield :x-min) (getf vectorfield :x-bin-size) (getf vectorfield :x-nbin)))
+	(y-poses (make-range (getf vectorfield :y-min) (getf vectorfield :y-bin-size) (getf vectorfield :y-nbin)))
+	(x-bins (make-range 0 1 (getf vectorfield :x-nbin)))
+	(y-bins (make-range 0 1 (getf vectorfield :y-nbin))))
+    (mapcar (lambda (x-bin x-pos)
+	      (mapcar (lambda (y-bin y-pos)
+			(setf (aref (getf vectorfield :data) x-bin y-bin) (funcall function x-pos y-pos)))
+		      y-bins y-poses))
+	    x-bins x-poses)))
 
-(defun make-vectorfield2d (x-min x-bin-size x-nbin y-min y-bin-size y-nbin)
-  (let ((data (make-array (list x-nbin y-nbin) :element-type '(simple-vector 2))))
-    (list :x-min x-min :x-bin-size x-bin-size :x-nbin x-nbin :y-min y-min :y-bin-size y-bin-size :y-nbin y-nbin :data data)))
+
+(defun make-histogram2d (x-min x-bin-size x-nbin y-min y-bin-size y-nbin &key (function nil))
+  "Create a 2D histogram, with allocated array for data. If a function that accepts 2 arguments, and returns a double is
+supplied, the histogram can be automatically filled."
+  (let* ((data (make-array (list x-nbin y-nbin) :element-type 'double-float))
+	 (histo (list :x-min x-min :x-bin-size x-bin-size :x-nbin x-nbin :y-min y-min :y-bin-size y-bin-size :y-nbin y-nbin :data data)))
+    (when (functionp function)
+      (histo2d-fill-from-function histo function))
+    histo))
 
 (defun histo2d-incf (histo x y &optional (val 1.0d0))
   "Increment the histogram bin at x y"
@@ -25,7 +38,7 @@
 				 :displaced-to (getf histo :data)))))
 
 (defun make-color-combo (z-min z-max val cols)
-  ;; "Make a color somehwere between first and last in color, with gradients in between"
+  "Make a color somehwere between first and last in color, with gradients in between"
   (let* ((ncol (length cols))
 	 (nbins (- ncol 1))
 	 (z% (/ (* 100 nbins (- val z-min)) (- z-max z-min))))
@@ -37,7 +50,7 @@
 
 (defun draw-histo2d-rectangles (plottingarea histo z-min z-max
 				&optional (cols *colors*))
-  "Draw a rectangle for each bin. Colors go from cold to hot"
+  "Draw a rectangle for each bin. Colors go from cold to hot, unless otherwise is specified."
   (clip-and-transform (plottingarea)
     (let ((x-poses (make-range (getf histo :x-min) (getf histo :x-bin-size) (getf histo :x-nbin)))
 	  (y-poses (make-range (getf histo :y-min) (getf histo :y-bin-size) (getf histo :y-nbin)))
@@ -77,20 +90,25 @@
     (mapc (lambda (x) (mapc (lambda (y) (check-neighbour x y z-val data cmap)) ybins)) xbins)))
 
 (defun dir-to-num (dir)
+  "Translate a keyword direction to a number"
   (case dir (:left 0) (:up 1) (:right 2) (:down 3)))
 
 (defun num-to-dir (num)
+  "Translate a number to a  keyword direction."
   (elt (list :left :up :right :down) num))
 
 (defun oposite-dir (dir)
+  "Get the opposite direction."
   (let ((num (dir-to-num dir)))
     (num-to-dir (if (> num 1) (- num 2) (+ 2 num)))))
 
 (defun turn-left (dir)
+  "Turn left, or counter-clockwise."
   (let ((num (dir-to-num dir)))
     (num-to-dir (if (= num 0) 3 (- num 1)))))
 
 (defun turn-right (dir)
+  "Turn right, or clockwise."
   (let ((num (dir-to-num dir)))
     (num-to-dir (if (= num 3) 0 (+ num 1)))))
 
@@ -115,7 +133,7 @@
 	  ((aref (aref cmap (first xy) (second  xy)) (dir-to-num borderdir)) t))))
 
 (defun border-correction (max-bin min-bin val)
-  "Linear interpolation"
+  "Linear interpolation to figure out where to place a point."
   (if (= max-bin min-bin) 0.0
       (- (/ (- val min-bin) (- max-bin min-bin))  0.5d0)))
 
@@ -169,20 +187,9 @@
 	(path-close plottingarea)
 	(list x y)))))
 
-(defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
-			     &optional (cols *colors*))
-  "Draw possibly filled contour lines."
-  (clip-and-transform (plottingarea)
-    (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
-	  (data (getf histo :data))
-	  (xbins (make-range 0 1 (getf histo :x-nbin)))
-	  (ybins (make-range 0 1 (getf histo :y-nbin))))
-      (dotimes (i (+ nlines 1))
-	(let ((height (+ z-min (* i (/ (- z-max z-min) nlines)))))
-	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
-	  (scope (plottingarea (format nil "draw=black,fill=~a" (make-color-combo z-min z-max height cols)))
-	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	    (path-use plottingarea t fillp)))))))
+(defun make-color (&key draw fill opacity)
+  (format nil "~@[fill = ~a, ~]~@[draw = ~a, ~]~@[opacity = ~a, ~]"
+	  fill draw opacity))
 
 (defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
 			     &key 
@@ -197,13 +204,15 @@
       (dotimes (i (+ nlines 1))
 	(let* ((height (+ z-min (* i (/ (- z-max z-min) nlines))))
 	       (color (make-color-combo z-min z-max height cols)))
+	  (format t "color1~a~%" color)
 	  (mapcar (lambda (x) (mapcar (lambda (y) (check-neighbour x y height data cmap)) ybins)) xbins)
+	  (format t "color2~a~%" color)
 	  (scope (plottingarea 
-		  (cond (opacity-gradient (format nil "~a,opacity=~a" color height))
-			(color-lines (format nil  "~a" color))
-			(t (format nil  "draw=black,fill=~a" color))))
+		  (make-color :fill (if fillp color)
+			      :draw (if color-lines color "black")
+			      :opacity (if opacity-gradient height 1.0)))
 	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
-	    (path-use plottingarea (if opacity-gradient nil t) fillp)))))))
+	    (path-use plottingarea t fillp)))))))
 
 (defun val-to-size (val z-min z-max)
   (cond ((< val z-min) 0.0)
@@ -211,6 +220,7 @@
 	(t (/ (- val z-min) (- z-max z-min)))))
 
 (defun draw-histo2d-nodes (plottingarea histo z-min z-max shape style)
+  "Draw a histogram as nodes of varying sizes. shape should be a node shape that tikz understands."
   (let* ((dim (array-dimensions (getf histo :data)))
 	 (x-max (/ (width plottingarea) (first dim)))
 	 (y-max (/ (height plottingarea) (second dim)))
@@ -229,5 +239,13 @@
 					       (format nil "minimum height=~4,2fcm,minimum width=~4,2fcm" (* y-max size) (* x-max size))))))
 			      ;;(make-node-string shape (* x-max size) (* y-max size) 0 "cm")))))
 			      ybins)) xbins))))
-  
-    
+
+(defun draw-parameter-path (tikz fun parameter-from parameter-to parameter-steps line-style)
+  "Draw a path from fun. Fun should accept a single argument, the parameter, and return a vector #(x y). Example of use "
+  (let* ((par (make-range parameter-from (/ (- parameter-to parameter-from) parameter-steps) (+ parameter-steps 1)))
+	 (pairs (map 'vector fun par)))
+    (scope (tikz line-style)
+      (path-move-to tikz (aref (aref pairs 0) 0) (aref (aref pairs 0) 1))
+      (map nil (lambda (pair) (path-line-to tikz (aref pair 0) (aref pair 1))) pairs)
+      (path-use tikz t))))
+		  

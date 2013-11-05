@@ -97,9 +97,9 @@
 		 (format nil "shift={(~f,~f)}"
 			 (- (plot-x-min ,plottingarea))
 			 (- (plot-y-min ,plottingarea))))
-	   ,@body)
-	 (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
-	 (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%")))))
+	   ,@body))
+       (format (ostream ,plottingarea) "\\pgfsetxvec{\\pgfpoint{1cm}{0cm}}~&")
+       (format (ostream ,plottingarea) "\\pgfsetyvec{\\pgfpoint{0cm}{1cm}}~%"))))
 
 (defmacro transform ((plottingarea) &body body)
   "Perform transformationf from data coord system to plottingarea system. If this fails, try using transform-scale. 
@@ -270,6 +270,8 @@ text-style: style of text node."
 \\usepackage{color}
 \\usepackage{siunitx}
 \\usetikzlibrary{arrows,shapes}
+\\usepackage{helvet}
+\\renewcommand*{\\familydefault}{\\sfdefault}
 ")
 
 (defun pdflatex-compile (tex-file)

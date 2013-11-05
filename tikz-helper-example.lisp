@@ -16,7 +16,7 @@
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "evince" "A program to view the resulting pdf file.")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Stuff to generate the documentation file examples.tex
 (eval-when (:compile-toplevel)
@@ -31,12 +31,12 @@
 generating \\LaTeX \\ code using pgf and {Ti\\textit{k}Z}.")
 (comment :text "To generate a plot, one of the macros with-tikz-to-file, with-tikz-to-string or with-tikz-to-stream is called.
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
-The macros set up the latex environment needed by the figures, collects information needed to perform 
+The macros set up the latex environment needed by the figures, collects information needed to perform
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
 linear and works so that (plot-x-min,plot-y-min) is at (0cm,0cm) in the default frame, and  (plot-x-max,plot-x-min) is at (width in cm, height in cm)")
 (comment :text "The axis-style should be one of :rectangle :cross :left-bottom :popped-out or :none.
 Examples of all the different axis styles are below. Axis ticks are added to the axis. The position of the ticks is so
-that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the 
+that they are placed with a spacing of 1,2 or 5 times 10 to a power such that you get between 4 and 10 ticks on the
 axis. If custom ticks are needed, or ticks with names, not numbers, use :none, and call the corresponding draw-axis-*
 function.")
 
@@ -171,7 +171,7 @@ legends in captions: ~a Histogram 1, ~a Histogram 2, ~a Histogram 3."
       (draw-histo 2.0 2500 "draw=gray,fill=blue!50" t nil 4.5 1)
       (draw-histo 1.8 1600 "red!80,thick" nil nil 4.1 2)
       (draw-histogram-columns tikz (make-gaussian-histogram 0.0 0.25 49 5.0 1.6 1000)
-				    "draw=black,fill=green" 0.15 :legend (legend 0.5 3.7 "Histo3")))))
+				    "draw=black,fill=green" 0.15 :legend (legend 0.5 3.7 "Histogram 3")))))
   
 (comment :text 
 	 (format nil "Simple sparkline: ~a"
@@ -347,7 +347,8 @@ Here is a function with a zoomed view of a region of interest."
 		 (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
 				    mean sigma "red,fill=red,thick" :node (make-node-string "circle" 4 4)))))))
     (mapc #'draw-sub-histo (list 0 2 4 6 8) (list -2.0 -1 0.5 0.2 0.0) (list 2.2 1.8 1.6 1.4 1.2))
-    (draw-axis-ticks-y tikz (make-range -6.0 2.0 7) :precision 1 :stop "10cm" :style "gray")
+    (draw-grid-lines tikz :x-list nil :y-list (make-range -6.0 2.0 7) :line-style "thin,black,draw opacity=0.1")
+    ;;(draw-axis-ticks-y tikz (make-range -6.0 2.0 7) :precision 1 :stop "10cm" :style "gray")
     (draw-axis-ticks-x tikz (make-range 0.5 2.0 5) :numberp nil
 		       :stop 0 :start 0
 		       :names (mapcar (lambda (x) (format nil "Step ~a" x)) (make-range 1 1 5)))))
@@ -450,7 +451,27 @@ non uniformly distributed tick marks."
   (let ((vectorfield (make-vectorfield2d -3 0.5 13 -3 0.5 13
 					 :function (lambda (x y) (vector (sin y) (sin x))))))
     (scope (tikz "draw=blue,thick")
-      (draw-vectorfield2d tikz vectorfield :scale 0.3))))
+      (draw-vectorfield2d tikz vectorfield 0.1 :scale 0.3))))
+
+(defun get-v (r x)
+  (cond ((>= (* x x) (* r r)) 0.0)
+	(t (* 1 (sqrt (- (* r r) (* x x)))))))
+
+(with-example-plot ("velocity-field2" -3 3 0 1 :popped-out :width 7 :height 7)
+    "Velocity field with streamlines as a parametrized function."
+  (let ((vectorfield (make-vectorfield2d -3 0.5 13 0.0 0.1 10
+					 :function (lambda (x z) (vector (get-v 3 x) z)))))
+    (draw-node tikz -1.0 3.5 "" "" "$z$")
+    (draw-node tikz 3.5 -1 "" "" "$x$")
+    (clip (tikz)
+      (scope (tikz "draw=blue,thick")
+	(draw-vectorfield2d tikz vectorfield 0.1 :scale 0.1))
+      (transform (tikz)
+	(map nil (lambda (z0)
+		   (tikz::draw-parameter-path tikz (lambda (theta) (vector (* 3 (cos theta))
+									   (* z0 (exp theta))))
+					      pi (* 2 pi) 25 "red,thick"))
+	     (make-range 0.0 0.001 25))))))
 	
 (defun make-example-tex ()
   "Generate a tex file containing all the example plots above. 
@@ -475,4 +496,3 @@ Make sure *examples* looks right before use, or just C-c C-k."
     (pdflatex-compile-view fname "evince")))
 
 (make-example-tex)
-

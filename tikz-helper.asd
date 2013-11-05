@@ -9,7 +9,7 @@
 	   :make-path :make-rectangle-path :make-path-mixed-units
 	   :path-close :path-stroke :draw-path :draw-graph :draw-graph-error :draw-graph-spline
 	   :draw-graph-spline :get-function-points :draw-function :draw-profilepoint :draw-profilepoints
-	   :draw-legend-entry :legend :draw-axis-ticks-x :draw-axis-ticks-y
+	   :legend :draw-axis-ticks-x :draw-axis-ticks-y
 	   :draw-axis-subticks-x :draw-axis-subticks-y 
 	   :draw-axis-rectangle :draw-axis-cross :draw-axis-popped-out :draw-grid-lines :draw-axis-left-bottom
 	   :draw-line :draw-node :draw-datapoints :path-move-to
