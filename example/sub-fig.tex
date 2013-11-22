@@ -15,17 +15,18 @@
 \begin{scope}[thick,black,fill=white]
 \pgfpathmoveto{ \pgfpointxy {-3.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {3.0} {0.0}}
+\pgfusepath{ stroke, }
 \pgfpathmoveto{ \pgfpointxy {0.0} {-1.0}}
 \pgfpathlineto{ \pgfpointxy {0.0} {1.0}}
 \pgfusepath{ stroke, }
 \end{scope}
 \begin{scope}[yshift=2.5cm]
-\draw[] [shift={(-3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-3.0}}};
-\draw[] [shift={(-2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-2.0}}};
-\draw[] [shift={(-1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
-\draw[] [shift={(1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
-\draw[] [shift={(2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{2.0}}};
-\draw[] [shift={(3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=1]{3.0}}};
+\draw[] [shift={(-3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{-3.0}}};
+\draw[] [shift={(-2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{-2.0}}};
+\draw[] [shift={(-1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{-1.0}}};
+\draw[] [shift={(1.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{1.0}}};
+\draw[] [shift={(2.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{2.0}}};
+\draw[] [shift={(3.0,-1.0)}] (0,2pt) -- (0,-2pt) node[below]{ \scriptsize{\num[round-mode=places,round-precision=0]{3.0}}};
 \end{scope}
 \begin{scope}[xshift=5.0cm]
 \draw[] [shift={(-3.0,-1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{-1.0}}};
@@ -34,9 +35,9 @@
 \draw[] [shift={(-3.0,1.0)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=1]{1.0}}};
 \end{scope}
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{0cm}{0cm}} }
 \pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10cm}{0cm}} }
@@ -453,9 +454,9 @@
 \pgfusepath{ stroke, }
 \end{scope}
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \end{scope}
 \begin{scope}[gray]
 \begin{scope}[shift={(0.0,0.0)}]
@@ -468,9 +469,9 @@
 \pgfpathlineto{ \pgfpointxy {-0.2} {-0.1}}
 \pgfpathclose
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \pgfusepath{ stroke, }
 \pgfseteorule
 \begin{scope}[shift={(7.5,0.1)}]
@@ -483,9 +484,9 @@
 \pgfpathlineto{ \pgfpointxy {-0.2} {-0.1}}
 \pgfpathclose
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \begin{scope}[shift={(0.0,0.0)}]
 \pgfsetxvec{\pgfpoint{1.6666666666666667cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{2.5cm}}
@@ -496,9 +497,9 @@
 \pgfpathlineto{ \pgfpointxy {-0.2} {-0.1}}
 \pgfpathclose
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \pgfpathmoveto{ \pgfpointxy {0.0} {0.0}}
 \pgfpathlineto{ \pgfpointxy {10.5} {0.0}}
 \pgfpathlineto{ \pgfpointxy {10.5} {5.0}}
@@ -535,9 +536,9 @@
 \draw[] [shift={(-0.2,-0.1)}] (2pt,0) -- (-2pt,0) node[left]{ \scriptsize{\num[round-mode=places,round-precision=2]{-0.1}}};
 \end{scope}
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \begin{scope}[]
 \pgfpathmoveto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{7.5cm}{0.1cm}} }
 \pgfpathlineto{ \pgfpointadd{\pgfpointxy {0.0} {0.0}} {\pgfpoint{10.5cm}{0.1cm}} }
@@ -654,9 +655,9 @@
 \pgfusepath{ stroke, }
 \end{scope}
 \end{scope}
+\end{scope}
 \pgfsetxvec{\pgfpoint{1cm}{0cm}}
 \pgfsetyvec{\pgfpoint{0cm}{1cm}}
-\end{scope}
 \end{scope}
 \end{tikzpicture}
 \end{document}
