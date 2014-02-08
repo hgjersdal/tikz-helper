@@ -167,3 +167,24 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 	(draw-axis-rectangle t2 :x-list nil :y-list nil)
 	(draw-axis-ticks-y t2 ticks :text-style "right"
 			   :precision precision :start "3pt" :stop "-2pt")))))
+
+(defun color-palette-horizontal (plottingarea x-pos y-pos width height z-min z-max
+				 &optional (cols *colors*))
+  "Draw the colors of the z-axis horizontally with ticks and a black box around it."
+  (let* ((nrect (1- (length cols)))
+	 (poses (make-range 0.0 (/ width nrect) (1+ nrect))))
+    (format (ostream plottingarea) "\\pgfdeclarehorizontalshading{myshadingD}~%{~acm}{" height)
+    (format (ostream plottingarea) "color(~acm)=(~a)" (car poses) (car cols))
+    (mapc (lambda (pos col)
+	    (format (ostream plottingarea) "; color(~acm)=(~a)" pos col)) 
+	  (cdr poses) (cdr cols))
+    (format (ostream plottingarea)
+	    "}~%\\pgftext[at=\\pgfpoint{~acm}{~acm}] {\\pgfuseshading{myshadingD}}" 
+	    (+ x-pos (* 0.5 width)) (+ y-pos (* 0.5 height)))
+    ;;Use a subfigure to get z-tranformations in the y-axis direction..
+    (with-subfigure (plottingarea t2 x-pos (+ y-pos height) width y-pos z-min z-max 0 1)
+      (multiple-value-bind (ticks precision) (auto-ticks-x t2 t 4 10)
+	(draw-axis-ticks-x t2 ticks :text-style "above"
+			   ;;:y-shift (format nil "~scm" height)
+			   :precision precision :start "3pt" :stop "-2pt")
+	(draw-axis-rectangle t2 :x-list nil :y-list nil)))))

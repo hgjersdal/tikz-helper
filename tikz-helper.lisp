@@ -259,7 +259,8 @@ text-style: style of text node."
   (format stream "\\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi~%")
   (latex-command stream "usepackage" "usenames,dvipsnames,svgnames,table" "xcolor")
   (mapc (lambda (x) (latex-command stream "usepackage" nil x)) (list "tikz" "color" "siunitx"))
-  (latex-command stream "usetikzlibrary" nil "arrows,shapes"))
+  (latex-command stream "usetikzlibrary" nil "arrows,shapes")
+  (latex-command stream "usetikzlibrary" nil "decorations.markings"))
 
 (defparameter *tikz-preamble*
 "%%% AUTO GENERATED CODE
