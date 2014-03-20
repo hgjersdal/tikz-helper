@@ -170,7 +170,7 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
 
 (defun color-palette-horizontal (plottingarea x-pos y-pos width height z-min z-max
 				 &optional (cols *colors*))
-  "Draw the colors of the z-axis horizontally with ticks and a black box around it."
+  "Draw the colors of the z-axis horizontally with ticks."
   (let* ((nrect (1- (length cols)))
 	 (poses (make-range 0.0 (/ width nrect) (1+ nrect))))
     (format (ostream plottingarea) "\\pgfdeclarehorizontalshading{myshadingD}~%{~acm}{" height)
@@ -186,5 +186,4 @@ x- or y- list: List of tick marks. If nil, no ticks are drawn. If it is a list, 
       (multiple-value-bind (ticks precision) (auto-ticks-x t2 t 4 10)
 	(draw-axis-ticks-x t2 ticks :text-style "above"
 			   ;;:y-shift (format nil "~scm" height)
-			   :precision precision :start "3pt" :stop "-2pt")
-	(draw-axis-rectangle t2 :x-list nil :y-list nil)))))
+			   :precision precision :start "3pt" :stop "-2pt")))))

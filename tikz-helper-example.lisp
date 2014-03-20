@@ -16,9 +16,9 @@
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "evince" "A program to view the resulting pdf file.")
-(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
-;;Stuff to generate the documentation file examples.tex
+;;Code for  generating the documentation file examples.tex
 (eval-when (:compile-toplevel)
   (defparameter *examples* nil "Stuff that makes up the example tex file."))
 
@@ -336,13 +336,13 @@ Here is a function with a zoomed view of a region of interest."
       (draw-function tikz2 #'erf-gauss 100 "red"))))
 
 (with-example-plot ("sub-histo" 0.0 10.0 -6.0 6.0 :none)
-    "Horizontal histograms, in sub figures side by side. The mean and $\\sigma$ are indicated in red."
+    "Horizontal histograms, in sub figures side by side. The mean and $\\sigma$ are indicated by red verical bars."
   (flet ((draw-sub-histo (offset mean sigma)
 	   (with-subfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
 	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
 	       (transform (tikz2)
 		 (multiple-value-bind (y x) (tikz::make-histogram-path-points histo)
-		   (draw-path tikz x y "fill=blue!20,draw=blue!20" t))
+		   (draw-path tikz x y "fill=black!20,draw=black!80" t))
 		 (draw-line tikz 0 -6 0 6 "thick,black")
 		 (draw-profilepoint tikz2 (* 0.5 (reduce #'max (getf histo :data)))
 				    mean sigma "red,fill=red,thick" :node (make-node-string "circle" 4 4)))))))
@@ -417,15 +417,8 @@ especially if the binning is fine."
     "2D histogram drawn as filled contour regions. The points making up the contour lines 
 are just linear interpolation between neighbors on either side of the contour height."
   (let* ((histo (make-2d-histo)))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 t)
+    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 50 t :color-lines t)
     (color-palette tikz 10.2 0 0.5 5.0 1 (* 0.9 (histo2d-get-max histo)))))
-
-(with-example-plot ("histo-rect-cont" -2.5 2.5 -2.5 2.5 :popped-out)
-    "2D histogram drawn as filled rectangles with contour lines."
-  (let* ((histo (make-2d-histo)))
-    (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 10 nil :color-lines t)
-    (color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
 
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)
     "2D histograms drawn as nodes of varying sizes."
@@ -434,7 +427,7 @@ are just linear interpolation between neighbors on either side of the contour he
 
 (with-example-plot ("histo-cont2" 0 22 0 16 :none)
     "2D histogram drawn as filled contour regions, not using rainbow colors, and using
-non uniformly distributed tick marks."
+non uniformly distributed tick marks. Showing how to manipulate axes and colors."
   (let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
 	 (*colors* (list "red" "white" "blue")))
     (dotimes (i 220000)
