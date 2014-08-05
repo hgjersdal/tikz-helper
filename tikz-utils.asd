@@ -1,5 +1,5 @@
 (defpackage :tikz-utils
-  (:use :cl)
+  (:use :cl :cffi)
   (:documentation "Some functions used in examples")
   (:nicknames :tut)
   (:export :gamma :gaussian-random :gauss :erf :make-random-list))

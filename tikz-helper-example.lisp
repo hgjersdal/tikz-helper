@@ -417,7 +417,7 @@ especially if the binning is fine."
     "2D histogram drawn as filled contour regions. The points making up the contour lines 
 are just linear interpolation between neighbors on either side of the contour height."
   (let* ((histo (make-2d-histo)))
-    (draw-histo2d-contour tikz histo 0 (* 0.9 (histo2d-get-max histo)) 50 t :color-lines t)
+    (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 50 t :color-lines t)
     (color-palette tikz 10.2 0 0.5 5.0 1 (* 0.9 (histo2d-get-max histo)))))
 
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)

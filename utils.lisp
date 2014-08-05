@@ -64,3 +64,21 @@
 	       (* tc (exp (* x x -1.0d0))
 		  (+ a1 (* tc (+ a2 (* tc (+ a3 (* tc (+ a4 (* a5 tc))))))))))))
     (* sign y)))
+
+
+(define-foreign-library libgsl
+  (:unix "/usr/lib/libgsl.so.0"))
+
+(define-foreign-library libgslblas
+  (:unix "/usr/lib/libgslcblas.so.0"))
+
+(use-foreign-library libgslblas)
+(use-foreign-library libgsl)
+
+(defcfun "gsl_sf_gamma_inc" :double (a :double) (x :double))
+(defcfun "gsl_sf_gamma_inc_Q" :double (a :double) (x :double))
+(defcfun "gsl_sf_gamma_inc_P" :double (a :double) (x :double))
+
+(defun p-val (chi2 ndof)
+  (- 1.0d0 (gsl-sf-gamma-inc-q (/ ndof 2.0d0) (/ chi2 2.0d0))))
+

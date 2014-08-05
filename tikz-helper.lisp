@@ -258,6 +258,8 @@ text-style: style of text node."
   (when use-standalone (latex-command stream "usepackage" nil "standalone"))
   (format stream "\\ifx\\HCode\\UnDef\\else\\def\\pgfsysdriver{pgfsys-tex4ht.def}\\fi~%")
   (latex-command stream "usepackage" "usenames,dvipsnames,svgnames,table" "xcolor")
+  (latex-command stream "usepackage" "utf8" "inputenc")
+  (latex-command stream "usepackage" "" "textcomp")
   (mapc (lambda (x) (latex-command stream "usepackage" nil x)) (list "tikz" "color" "siunitx"))
   (latex-command stream "usetikzlibrary" nil "arrows,shapes")
   (latex-command stream "usetikzlibrary" nil "decorations.markings"))
