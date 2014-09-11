@@ -449,7 +449,7 @@ non uniformly distributed tick marks. Showing how to manipulate axes and colors.
 	(t (* 1 (sqrt (- (* r r) (* x x)))))))
 
 (with-example-plot ("velocity-field2" -3 3 0 1 :popped-out :width 7 :height 7)
-    "Velocity field with streamlines as a parametrized function."
+    "Velocity field with streamlines as parametrized functions."
   (let ((vectorfield (make-vectorfield2d -3 0.5 13 0.0 0.1 10
 					 :function (lambda (x z) (vector (get-v 3 x) z)))))
     (draw-node tikz -1.0 3.5 "" "" "$z$")
@@ -464,44 +464,52 @@ non uniformly distributed tick marks. Showing how to manipulate axes and colors.
 					      pi (* 2 pi) 25 "red,thick"))
 	     (make-range 0.0 0.001 25))))))
 
-(comment :section "Volumes")
+(comment :section "3D scalar fields")
 
-(comment :text "Volumes, or 3D histograms, can be vizualized by projecting 3D scalar data
-into a plane, a 2D histogram. Three methods are implemented for doing this. The first method
-uses a line integral along the line from the camera position, through the projection bin.")
+(comment :text "3D histograms can be visualized by projecting 3D scalar data into a 2D
+histogram in a projection plane. The camera is pointed towards a reference point. The
+projection has a horizontal axis parallel to the cross product of the difference vector
+between the camera and the reference point, and the z-axis. The vertical axis is parallel to
+the cross product between the difference and the horizontal axis. The hight and width of the
+projection is measured along the axes around the reference point. Rays are emitted from the
+bins in the projection plane, moving away from the camera. The distance from the camera to
+the projection plane is specified in units of the distance from the camera to the
+reference. The reference point is only in the projection plane if this distance in 1. If the
+projection plane is inside the 3D scalar field, only data further away from the camera will
+be used in the visualization.
 
-
-(comment :text "Explain cam, reference, height, width, distance")
+Three projection methods are implemented. The first method uses a line integral along the
+ray emitting from the projection bin.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "scull1" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull2" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull3" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head2" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
-(comment :text "The second method is the maximum intensity projection. Similar to the first
-method, but extracting only the maximum value along each line.")
+(comment :text "The second method is the Maximum Intensity Projection (MIP). The maximum
+value the ray passes through is used.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "scull1-mip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull2-mip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull3-mip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1-mip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head2-mip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3-mip" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 
-(comment :text "The third method is the local maximum intensity projection. Similar to the second
-method, but extracting only the first value above a threshold.")
+(comment :text "The third method is the Local Maximum Intensity Projection (LMIP). This is
+similar to MIP, but the first value above a threshold passed by each ray is returned.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "scull1-lmip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull2-lmip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "scull3-lmip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1-lmip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head2-lmip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3-lmip" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 

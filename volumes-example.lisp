@@ -15,7 +15,7 @@ compiled with pdflatex, the results are viewed with *viewer*."
        (when *compilep* (pdflatex-compile-view ,fname *viewer*)))))
 
 
-(defun read-scull ()
+(defun read-head ()
   (let* ((histo (make-histogram3d (list 0.0d0 0.0d0 0.0d0) (list 1.0d0 1.0d0 2.0d0) (list 256 256 113)))
 	 (data (getf histo :data)))
     (dotimes (z 113)
@@ -29,12 +29,12 @@ compiled with pdflatex, the results are viewed with *viewer*."
 	      (setf (aref data x y z) (coerce val 'double-float)))))))
     histo))
 
-(defparameter *scull* (read-scull))
+(defparameter *head* (read-head))
 
 (defun draw-projection (name cam projection-fun)
   (let ((*compilep* t))    
     (with-volume-example (name 0 200 0 200 :none)
-      (let* ((histo (funcall projection-fun *scull*
+      (let* ((histo (funcall projection-fun *head*
 			     (coerce #(128.0 128.0 107.0) '(simple-array double-float (3)))
 			     (coerce cam '(simple-array double-float (3)))
 			     200.0d0 200.0d0
@@ -44,22 +44,18 @@ compiled with pdflatex, the results are viewed with *viewer*."
 	(draw-histo2d-contour tikz histo (* 0.00 max) (* 1.0 max) 20 t :color-lines t :opacity-gradient t :cols (list "white" "black"))))))
 
 (let ((cam #(528.0d0 128.0d0 107.0d0)))
-  (draw-projection "scull1" cam #'get-integral-projection-histo)
-  (draw-projection "scull1-mip" cam #'get-mip-projection-histo)
-  (draw-projection "scull1-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c w h 1.0d0 sp))))
+  (draw-projection "head1" cam #'get-integral-projection-histo)
+  (draw-projection "head1-mip" cam #'get-mip-projection-histo)
+  (draw-projection "head1-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c w h 1.0d0 sp))))
 
 (let* ((dist (/ (sqrt (* 400 400)) 2.0d0))
        (cam (vector (+ 128 dist) (+ 128 dist) 107.0d0)))
-  (draw-projection "scull2" cam #'get-integral-projection-histo)
-  (draw-projection "scull2-mip" cam #'get-mip-projection-histo)
-  (draw-projection "scull2-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
+  (draw-projection "head2" cam #'get-integral-projection-histo)
+  (draw-projection "head2-mip" cam #'get-mip-projection-histo)
+  (draw-projection "head2-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
 
 (let ((cam #(128.0d0 528.0d0 107.0d0)))
-  (draw-projection "scull3" cam #'get-integral-projection-histo)
-  (draw-projection "scull3-mip" cam #'get-mip-projection-histo)
-  (draw-projection "scull3-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
+  (draw-projection "head3" cam #'get-integral-projection-histo)
+  (draw-projection "head3-mip" cam #'get-mip-projection-histo)
+  (draw-projection "head3-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
 
-(let ((cam #(-272.0d0 128.0d0 107.0d0)))
-  ;;(draw-projection "scull4" cam #'get-integral-projection-histo)
-  ;;(draw-projection "scull4-mip" cam #'get-mip-projection-histo)
-  (draw-projection "scull4-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 2500.0d0 sp))))
