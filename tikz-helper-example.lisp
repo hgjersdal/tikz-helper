@@ -16,7 +16,7 @@
 (defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
 (defparameter *viewer* "evince" "A program to view the resulting pdf file.")
-(defparameter *compilep* t "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
+(defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Code for  generating the documentation file examples.tex
 (eval-when (:compile-toplevel)
@@ -420,6 +420,11 @@ are just linear interpolation between neighbors on either side of the contour he
     (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 50 t :color-lines t)
     (color-palette tikz 10.2 0 0.5 5.0 1 (* 0.9 (histo2d-get-max histo)))))
 
+(with-example-plot ("histo-opacity" -2.5 2.5 -2.5 2.5 :popped-out)
+    "2D histogram drawn as filled contour regions, with varying opacity."
+  (let* ((histo (make-2d-histo)))
+    (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 50 t :color-lines t :opacity-gradient t :cols (list "white" "black"))))
+
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)
     "2D histograms drawn as nodes of varying sizes."
   (let* ((histo (make-2d-histo)))
@@ -438,13 +443,6 @@ non uniformly distributed tick marks. Showing how to manipulate axes and colors.
     (draw-axis-popped-out tikz :x-list (list 0 6 7 9 10 22)
 			  :y-list (list 0 6 7 9 10 16))
     (color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6))))
-
-(with-example-plot ("vectorfield" -3 3 -3 3 :popped-out :width 7 :height 7) 
-    "Vector field of f(x,y) = sin(y),sin(x)"
-  (let ((vectorfield (make-vectorfield2d -3 0.5 13 -3 0.5 13
-					 :function (lambda (x y) (vector (sin y) (sin x))))))
-    (scope (tikz "draw=blue,thick")
-      (draw-vectorfield2d tikz vectorfield 0.1 :scale 0.3))))
 
 (defun get-v (r x)
   (cond ((>= (* x x) (* r r)) 0.0)
@@ -465,7 +463,48 @@ non uniformly distributed tick marks. Showing how to manipulate axes and colors.
 									   (* z0 (exp theta))))
 					      pi (* 2 pi) 25 "red,thick"))
 	     (make-range 0.0 0.001 25))))))
-	
+
+(comment :section "Volumes")
+
+(comment :text "Volumes, or 3D histograms, can be vizualized by projecting 3D scalar data
+into a plane, a 2D histogram. Three methods are implemented for doing this. The first method
+uses a line integral along the line from the camera position, through the projection bin.")
+
+
+(comment :text "Explain cam, reference, height, width, distance")
+
+(let ((text (format nil "\\includegraphics\{~a\}
+\\includegraphics\{~a\}
+\\includegraphics\{~a\}"
+		    (namestring (merge-pathnames (make-pathname :name "scull1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull2" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull3" :type "pdf") *plotting-dir*)))))
+  (comment :text text))
+
+(comment :text "The second method is the maximum intensity projection. Similar to the first
+method, but extracting only the maximum value along each line.")
+
+(let ((text (format nil "\\includegraphics\{~a\}
+\\includegraphics\{~a\}
+\\includegraphics\{~a\}"
+		    (namestring (merge-pathnames (make-pathname :name "scull1-mip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull2-mip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull3-mip" :type "pdf") *plotting-dir*)))))
+  (comment :text text))
+
+
+(comment :text "The third method is the local maximum intensity projection. Similar to the second
+method, but extracting only the first value above a threshold.")
+
+(let ((text (format nil "\\includegraphics\{~a\}
+\\includegraphics\{~a\}
+\\includegraphics\{~a\}"
+		    (namestring (merge-pathnames (make-pathname :name "scull1-lmip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull2-lmip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "scull3-lmip" :type "pdf") *plotting-dir*)))))
+  (comment :text text))
+
+
 (defun make-example-tex ()
   "Generate a tex file containing all the example plots above. 
 Make sure *examples* looks right before use, or just C-c C-k."
@@ -489,3 +528,4 @@ Make sure *examples* looks right before use, or just C-c C-k."
     (pdflatex-compile-view fname "evince")))
 
 (make-example-tex)
+

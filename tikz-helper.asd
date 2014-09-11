@@ -16,7 +16,8 @@
 	   :path-stroke-to :path-use :region-of-interest-zoom :pdflatex-compile 
 	   :pdflatex-compile-view :color-palette :*colors*
 	   :histo2d-incf :histo2d-get-max :draw-histo2d-rectangles :draw-histo2d-contour :draw-histo2d-nodes :make-histogram2d
-	   :make-vectorfield2d :draw-vectorfield2d))
+	   :make-vectorfield2d :draw-vectorfield2d
+	   :make-histogram3d :get-integral-projection-histo :get-mip-projection-histo :get-lmip-projection-histo :get-projection-histo))
 
 (defsystem tikz-helper
   :name "tikz-helper"
@@ -27,4 +28,5 @@
   :components ((:file "tikz-helper")
 	       (:file "axis" :depends-on ("tikz-helper"))
 	       (:file "histo2d" :depends-on ("tikz-helper" "axis"))
-	       (:file "vectorfield2d" :depends-on ("tikz-helper" "axis" "histo2d"))))
+	       (:file "vectorfield2d" :depends-on ("tikz-helper" "axis" "histo2d"))
+	       (:file "volumes" :depends-on ("histo2d"))))
