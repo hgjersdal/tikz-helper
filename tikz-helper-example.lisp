@@ -432,7 +432,7 @@ are just linear interpolation between neighbors on either side of the contour he
 
 (with-example-plot ("histo-cont2" 0 22 0 16 :none)
     "2D histogram drawn as filled contour regions, not using rainbow colors, and using
-non uniformly distributed tick marks. Showing how to manipulate axes and colors."
+non uniformly distributed tick marks."
   (let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
 	 (*colors* (list "red" "white" "blue")))
     (dotimes (i 220000)

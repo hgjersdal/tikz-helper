@@ -76,21 +76,7 @@ compiled with pdflatex, the results are viewed with *viewer*."
 	      (setf (aref data x y z) (coerce val 'double-float)))))))
     histo))
 
-(defun reread-brain (data)
-  (dotimes (z 109)
-    (with-open-file (f (namestring (merge-pathnames (make-pathname :name "MRbrain" :type (format nil "~a" (+ z 1))) *data-dir*))
-		      :element-type '(unsigned-byte 8))
-      (dotimes (x (* 256))
-	(dotimes (y (* 256))
-	  (let ((val 0))
-	    (setf (ldb (byte 8 8) val) (read-byte f))
-	    (setf (ldb (byte 8 0) val) (read-byte f))
-	    (setf (aref data y x z) (coerce val 'double-float))))))))
-
 (defparameter *brain* (read-brain))
-
-(reread-brain (getf *brain* :data))
-
 
 (defun draw-brain-projection (name cam projection-fun histo-case)
   (let ((*compilep* t))    
