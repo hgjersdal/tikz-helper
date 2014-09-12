@@ -484,9 +484,9 @@ ray emitting from the projection bin.")
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3" :type "pdf") *plotting-dir*))
 		    (namestring (merge-pathnames (make-pathname :name "head2" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head3" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 (comment :text "The second method is the Maximum Intensity Projection (MIP). The maximum
@@ -495,21 +495,22 @@ value the ray passes through is used.")
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head1-mip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3-mip" :type "pdf") *plotting-dir*))
 		    (namestring (merge-pathnames (make-pathname :name "head2-mip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head3-mip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1-mip" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 
 (comment :text "The third method is the Local Maximum Intensity Projection (LMIP). This is
-similar to MIP, but the first value above a threshold passed by each ray is returned.")
+similar to MIP, but the first value above a threshold passed by each ray is returned. If the
+treshold is set very low, the projection plane can be studied as a cut plane.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head1-lmip" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3-lmip" :type "pdf") *plotting-dir*))
 		    (namestring (merge-pathnames (make-pathname :name "head2-lmip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head3-lmip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1-lmip" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 

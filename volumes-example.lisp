@@ -31,7 +31,7 @@ compiled with pdflatex, the results are viewed with *viewer*."
 
 (defparameter *head* (read-head))
 
-(defun draw-projection (name cam projection-fun)
+(defun draw-projection (name cam projection-fun histo-case)
   (let ((*compilep* t))    
     (with-volume-example (name 0 200 0 200 :none)
       (let* ((histo (funcall projection-fun *head*
@@ -41,21 +41,72 @@ compiled with pdflatex, the results are viewed with *viewer*."
 			     1.0d0))
 	     (max (histo2d-get-max histo)))
 	(format t "contouring~%")
-	(draw-histo2d-contour tikz histo (* 0.00 max) (* 1.0 max) 20 t :color-lines t :opacity-gradient t :cols (list "white" "black"))))))
+	(case histo-case 
+	  (1 (draw-histo2d-contour tikz histo (* 0.0 max) (* 1.0 max) 20 t :color-lines t :opacity-gradient t :cols (list "white" "black")))
+	  (2 (draw-histo2d-contour tikz histo (* 0.2 max) (* 0.7 max) 20 t :color-lines t :cols (list "yellow" "orange" "red" "white" "gray"))))))))
 
 (let ((cam #(528.0d0 128.0d0 107.0d0)))
-  (draw-projection "head1" cam #'get-integral-projection-histo)
-  (draw-projection "head1-mip" cam #'get-mip-projection-histo)
-  (draw-projection "head1-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c w h 1.0d0 sp))))
+  (draw-projection "head1" cam #'get-integral-projection-histo 1)
+  (draw-projection "head1-mip" cam #'get-mip-projection-histo 1)
+  (draw-projection "head1-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c w h 1.0d0 sp)) 2))
 
 (let* ((dist (/ (sqrt (* 400 400)) 2.0d0))
        (cam (vector (+ 128 dist) (+ 128 dist) 107.0d0)))
-  (draw-projection "head2" cam #'get-integral-projection-histo)
-  (draw-projection "head2-mip" cam #'get-mip-projection-histo)
-  (draw-projection "head2-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
+  (draw-projection "head2" cam #'get-integral-projection-histo 1)
+  (draw-projection "head2-mip" cam #'get-mip-projection-histo 1)
+  (draw-projection "head2-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp)) 2))
 
 (let ((cam #(128.0d0 528.0d0 107.0d0)))
-  (draw-projection "head3" cam #'get-integral-projection-histo)
-  (draw-projection "head3-mip" cam #'get-mip-projection-histo)
-  (draw-projection "head3-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp))))
+  (draw-projection "head3" cam #'get-integral-projection-histo 1)
+  (draw-projection "head3-mip" cam #'get-mip-projection-histo 1)
+  (draw-projection "head3-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c h w 1.0d0 sp)) 2))
 
+
+(defun read-brain ()
+  (let* ((histo (make-histogram3d (list 0.0d0 0.0d0 0.0d0) (list 1.0d0 1.0d0 2.0d0) (list 256 256 109)))
+	 (data (getf histo :data)))
+    (dotimes (z 109)
+      (with-open-file (f (namestring (merge-pathnames (make-pathname :name "MRbrain" :type (format nil "~a" (+ z 1))) *data-dir*))
+			:element-type '(unsigned-byte 8))
+	(dotimes (x (* 256))
+	  (dotimes (y (* 256))
+	    (let ((val 0))
+	      (setf (ldb (byte 8 8) val) (read-byte f))
+	      (setf (ldb (byte 8 0) val) (read-byte f))
+	      (setf (aref data x y z) (coerce val 'double-float)))))))
+    histo))
+
+(defun reread-brain (data)
+  (dotimes (z 109)
+    (with-open-file (f (namestring (merge-pathnames (make-pathname :name "MRbrain" :type (format nil "~a" (+ z 1))) *data-dir*))
+		      :element-type '(unsigned-byte 8))
+      (dotimes (x (* 256))
+	(dotimes (y (* 256))
+	  (let ((val 0))
+	    (setf (ldb (byte 8 8) val) (read-byte f))
+	    (setf (ldb (byte 8 0) val) (read-byte f))
+	    (setf (aref data y x z) (coerce val 'double-float))))))))
+
+(defparameter *brain* (read-brain))
+
+(reread-brain (getf *brain* :data))
+
+
+(defun draw-brain-projection (name cam projection-fun histo-case)
+  (let ((*compilep* t))    
+    (with-volume-example (name 0 200 0 200 :none)
+      (let* ((histo (funcall projection-fun *brain*
+			     (coerce #(128.0 128.0 104.5) '(simple-array double-float (3)))
+			     (coerce cam '(simple-array double-float (3)))
+			     200.0d0 200.0d0
+			     1.0d0))
+	     (max (histo2d-get-max histo)))
+	(format t "contouring~%")
+	(case histo-case 
+	  (1 (draw-histo2d-contour tikz histo (* 0.2 max) (* 0.9 max) 20 t :color-lines t :cols (list "black" "white")))
+	  (2 (draw-histo2d-contour tikz histo (* 0.1 max) (* 1.0 max) 20 t :color-lines t)))))))
+
+(let ((cam #(128.0d0 128.0d0 507.0d0)))
+  ;;(draw-brain-projection "brain1" cam #'get-integral-projection-histo 1)
+  ;;(draw-brain-projection "brain1-mip" cam #'get-mip-projection-histo 1)
+  (draw-brain-projection "brain1-lmip" cam (lambda (s r c h w sp) (get-lmip-projection-histo s r c w h 2.0d0 sp)) 1))
