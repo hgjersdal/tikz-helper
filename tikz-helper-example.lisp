@@ -420,29 +420,15 @@ are just linear interpolation between neighbors on either side of the contour he
     (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 50 t :color-lines t)
     (color-palette tikz 10.2 0 0.5 5.0 1 (* 0.9 (histo2d-get-max histo)))))
 
-(with-example-plot ("histo-opacity" -2.5 2.5 -2.5 2.5 :popped-out)
-    "2D histogram drawn as filled contour regions, with varying opacity."
+(with-example-plot ("histo-isolines" -2.5 2.5 -2.5 2.5 :popped-out)
+    "2D histogram drawn as isolines."
   (let* ((histo (make-2d-histo)))
-    (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 50 t :color-lines t :opacity-gradient t :cols (list "white" "black"))))
+    (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 10 nil :color-lines t)))
 
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)
     "2D histograms drawn as nodes of varying sizes."
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-nodes tikz histo 0 (+ 500 (histo2d-get-max histo)) "rectangle" "draw=blue!80,fill=blue!50")))
-
-(with-example-plot ("histo-cont2" 0 22 0 16 :none)
-    "2D histogram drawn as filled contour regions, not using rainbow colors, and using
-non uniformly distributed tick marks."
-  (let* ((histo (make-histogram2d 0 (/ 22 20) 20 0 (/ 16 20) 20))
-	 (*colors* (list "red" "white" "blue")))
-    (dotimes (i 220000)
-      (multiple-value-bind (g1 g2) (tut:gaussian-random)
-	(when (< i 160000) (histo2d-incf histo (+ 8 (* g1 1.3)) (random 16.0)))
-	(histo2d-incf histo (random 22.0) (+ (* g2 1.3) 8.0))))
-    (draw-histo2d-contour tikz histo 0 (/ (histo2d-get-max histo) 2.6) 2 t)
-    (draw-axis-popped-out tikz :x-list (list 0 6 7 9 10 22)
-			  :y-list (list 0 6 7 9 10 16))
-    (color-palette tikz 10.2 0 0.5 5.0 0 (/ (histo2d-get-max histo) 2.6))))
 
 (defun get-v (r x)
   (cond ((>= (* x x) (* r r)) 0.0)
@@ -476,41 +462,43 @@ bins in the projection plane, moving away from the camera. The distance from the
 the projection plane is specified in units of the distance from the camera to the
 reference. The reference point is only in the projection plane if this distance in 1. If the
 projection plane is inside the 3D scalar field, only data further away from the camera will
-be used in the visualization.
+be used in the visualization. The plots are generated in the file volumes-example.lisp.
 
-Three projection methods are implemented. The first method uses a line integral along the
-ray emitting from the projection bin.")
+Three projection methods are implemented. The first method uses a line integral along the ray
+emitting from the projection bin. The data is from \\\\
+http://www.cg.tuwien.ac.at/research/publications/2005/dataset-stagbeetle/")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head3" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head2" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head1" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "beetle1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "beetle2" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "beetle3" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 (comment :text "The second method is the Maximum Intensity Projection (MIP). The maximum
-value the ray passes through is used.")
+value the ray passes through is used. The data is from \\\\ http://graphics.stanford.edu/data/voldata/CThead.tar.gz.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head3-mip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head2-mip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head1-mip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "head1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head2" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "head3" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 
 (comment :text "The third method is the Local Maximum Intensity Projection (LMIP). This is
 similar to MIP, but the first value above a threshold passed by each ray is returned. If the
-treshold is set very low, the projection plane can be studied as a cut plane.")
+treshold is set very low, the projection plane can be studied as a cut plane. The data is from \\\\
+http://graphics.stanford.edu/data/voldata/MRbrain.tar.gz.")
 
 (let ((text (format nil "\\includegraphics\{~a\}
 \\includegraphics\{~a\}
 \\includegraphics\{~a\}"
-		    (namestring (merge-pathnames (make-pathname :name "head3-lmip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head2-lmip" :type "pdf") *plotting-dir*))
-		    (namestring (merge-pathnames (make-pathname :name "head1-lmip" :type "pdf") *plotting-dir*)))))
+		    (namestring (merge-pathnames (make-pathname :name "brain1" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "brain2" :type "pdf") *plotting-dir*))
+		    (namestring (merge-pathnames (make-pathname :name "brain3" :type "pdf") *plotting-dir*)))))
   (comment :text text))
 
 
@@ -537,4 +525,3 @@ Make sure *examples* looks right before use, or just C-c C-k."
     (pdflatex-compile-view fname "evince")))
 
 (make-example-tex)
-

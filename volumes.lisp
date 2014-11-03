@@ -25,7 +25,7 @@ If b_x > x_max and db_x/ds is larger  than 0, abort.
 |#
 
 (defun make-histogram3d (min-list bin-size-list nbins-list)
-  (let ((data (make-array nbins-list :element-type 'double-float :initial-element 0.0d0)))
+  (let ((data (make-array nbins-list :element-type '(unsigned-byte 16) :initial-element 0)))
     (list :mins (coerce min-list '(simple-array double-float (3)))
 	  :bin-sizes (coerce bin-size-list '(simple-array double-float (3)))
 	  :nbins (coerce nbins-list '(simple-array integer (3)))
@@ -66,7 +66,8 @@ If b_x > x_max and db_x/ds is larger  than 0, abort.
   (declare (type (simple-array double-float (3)) pos dir-step))
   (incf (aref pos 0) (aref dir-step 0))
   (incf (aref pos 1) (aref dir-step 1))
-  (incf (aref pos 2) (aref dir-step 2)))
+  (incf (aref pos 2) (aref dir-step 2))
+  nil)
 
 (defun sqr (x)
   (declare (type double-float x))
@@ -153,7 +154,7 @@ This can be problematic when scanning angles, with one point with a direction pa
 	   (bin-num (aref x 1) (aref mins 1) (aref sizes 1))
 	   (bin-num (aref x 2) (aref mins 2) (aref sizes 2)))
      ;;return 0
-     0.0d0)))
+     0)))
 
 (defun not-getting-closerp (x dx min size n)
   (declare (type double-float x dx min size)
@@ -187,7 +188,7 @@ This can be problematic when scanning angles, with one point with a direction pa
 
 (defun line-integral (x dx/ds histo value)
   (declare (type (simple-array double-float (3)) x dx/ds)
-	   (type double-float value))
+	   (type integer value))
   (if
    ;;Abort if outside boundaries and moving away
    (vector-not-getting-closerp histo x dx/ds)
@@ -196,30 +197,18 @@ This can be problematic when scanning angles, with one point with a direction pa
      (vector-scale-add x dx/ds 1.0d0 x)
      (line-integral x dx/ds histo (+ value (histo3d-get-value x histo))))))
 
-;;;Making and filling of histogram
+;;;Making and filling of histogram 
 (defun start-line-integral (cam bin-pos histo3d)
-  (line-integral bin-pos (get-dx/ds cam bin-pos)  histo3d 0.0d0))
+  (line-integral bin-pos (get-dx/ds cam bin-pos)  histo3d 0))
 
-;; (defun get-projection-histo (histo3d ref cam width height fun)
-;;   (let ((histo2d (make-histogram2d 0 (/ width 100) 100 0 (/ height 100) 100))
-;; 	(dir (get-direction-step cam ref)))
-;;     (let* ((horizontal (get-horizontal-axis dir))
-;; 	   (vertical (get-vertical-axis dir horizontal))
-;; 	   (bin-pos (make-array 3 :element-type 'double-float :initial-element 0.0d0)))
-;;       (dotimes (i 100)
-;;      	(dotimes (j 100)
-;;        	  (vector-scale-add ref horizontal (+ (* -0.5 width)  (* i (/ width  100.0d0))) bin-pos)
-;;      	  (vector-scale-add bin-pos vertical (+ (* -0.5 height) (* j (/ height 100.0d0))) bin-pos)
-;;      	  (setf (aref (getf histo2d :data) i j) (funcall fun cam bin-pos histo3d)))))
-;;     histo2d))
-
-
-(defun get-projection-histo (histo3d ref cam width height start-plane-pos fun)
+(defun get-projection-histo (histo3d ref cam width height start-plane-pos fun bins)
   "ref is a reference point. height and width are sizes of the projection around this point.
 start-plane-pos is the distance in units of (- ref cam). The projection rays emit from the plane 
 around start-plane-pos, and move away from the camera.
 "
-  (let* ((histo2d (make-histogram2d 0 (/ width 100) 100 0 (/ height 100) 100))
+  (declare (type integer bins)
+	   (type double-float height width))
+  (let* ((histo2d (make-histogram2d 0 (/ width bins) bins 0 (/ height bins) bins))
 	 (dir (get-direction-step cam ref))
 	 (horizontal (get-horizontal-axis dir))
 	 (vertical (get-vertical-axis dir horizontal))
@@ -230,19 +219,19 @@ around start-plane-pos, and move away from the camera.
 	 (bin-pos (make-array 3 :element-type 'double-float :initial-element 0.0d0)))
     (vector-distance ref cam distance)
     (vector-scale-add cam distance start-plane-pos start-ref)
-    (dotimes (i 100)
-      (dotimes (j 100)
-	(vector-scale-add start-ref horizontal (+ (* -0.5 width)  (* i (/ width  100.0d0))) bin-pos)
-	(vector-scale-add bin-pos vertical (+ (* -0.5 height) (* j (/ height 100.0d0))) bin-pos)
-	(setf (aref (getf histo2d :data) i j) (funcall fun cam bin-pos histo3d))))
+    (dotimes (i bins)
+      (dotimes (j bins)
+	(vector-scale-add start-ref horizontal (+ (* -0.5 width)  (* i (/ width  bins))) bin-pos)
+	(vector-scale-add bin-pos vertical (+ (* -0.5 height) (* j (/ height bins))) bin-pos)
+	(setf (aref (getf histo2d :data) i j) (coerce (funcall fun cam bin-pos histo3d) 'double-float))))
     histo2d))
 
-(defun get-integral-projection-histo (histo3d ref cam width height start-plane-pos)
-  (get-projection-histo histo3d ref cam width height start-plane-pos #'start-line-integral))
+(defun get-integral-projection-histo (histo3d ref cam width height start-plane-pos &optional (bins 100))
+  (get-projection-histo histo3d ref cam width height start-plane-pos #'start-line-integral bins))
 
 (defun line-mip (x dx/ds histo value)
   (declare (type (simple-array double-float (3)) x dx/ds)
-	   (type double-float value))
+	   (type integer value))
   (let* ((hval (histo3d-get-value x histo))
 	 (value (if (> hval value) hval value)))
     ;;Abort if outside boundaries and moving away
@@ -254,28 +243,29 @@ around start-plane-pos, and move away from the camera.
 
 ;;;Making and filling of histogram
 (defun start-mip (cam bin-pos histo3d)
-  (line-mip bin-pos (get-dx/ds cam bin-pos)  histo3d 0.0d0))
+  (line-mip bin-pos (get-dx/ds cam bin-pos)  histo3d 0))
 
-(defun get-mip-projection-histo (histo3d ref cam width height start-plane-pos)
-  (get-projection-histo histo3d ref cam width height start-plane-pos #'start-mip))
+(defun get-mip-projection-histo (histo3d ref cam width height start-plane-pos &optional (bins 100))
+  (get-projection-histo histo3d ref cam width height start-plane-pos #'start-mip bins))
 
 (defun line-lmip (x dx/ds histo value thresh)
   (declare (type (simple-array double-float (3)) x dx/ds)
-	   (type double-float value thresh))
+	   (type integer value)
+	   (type fixnum  thresh))
   (let* ((hval (histo3d-get-value x histo))
 	 (value (if (> hval value) hval value)))
     ;;Abort if outside boundaries and moving away
-    (if (or (vector-not-getting-closerp histo x dx/ds )
-	    (> value thresh))
+    (if (or (vector-not-getting-closerp histo x dx/ds)
+	    (<= thresh value))
 	value
 	(progn
 	  (vector-scale-add x dx/ds 1.0d0 x)
 	  (line-lmip x dx/ds histo value thresh)))))
 
 (defun start-lmip (cam bin-pos histo3d thresh)
-  (line-lmip bin-pos (get-dx/ds cam bin-pos) histo3d 0.0d0 thresh))
+  (line-lmip bin-pos (get-dx/ds cam bin-pos) histo3d 0 thresh))
 
-(defun get-lmip-projection-histo (histo3d ref cam width height thresh start-plane-pos)
-  (get-projection-histo histo3d ref cam width height start-plane-pos (lambda (c b h) (start-lmip c b h thresh))))
+(defun get-lmip-projection-histo (histo3d ref cam width height thresh start-plane-pos &optional (bins 100))
+  (get-projection-histo histo3d ref cam width height start-plane-pos (lambda (c b h) (start-lmip c b h thresh)) bins))
 
 
