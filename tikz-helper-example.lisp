@@ -425,6 +425,11 @@ are just linear interpolation between neighbors on either side of the contour he
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-contour tikz histo 0 (* 0.95 (histo2d-get-max histo)) 10 nil :color-lines t)))
 
+(with-example-plot ("histo-opacity" -2.5 2.5 -2.5 2.5 :popped-out)
+    "2D histogram drawn as colored layers with opacity of less than one."
+  (let* ((histo (make-2d-histo)))
+    (draw-histo2d-contour tikz histo 100 (* 0.95 (histo2d-get-max histo)) 10 t :color-lines t :layer-opacity 0.11 :cols (list "black"))))
+
 (with-example-plot ("histo-nodes" -2.5 2.5 -2.5 2.5 :popped-out)
     "2D histograms drawn as nodes of varying sizes."
   (let* ((histo (make-2d-histo)))

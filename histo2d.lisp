@@ -194,7 +194,7 @@ supplied, the histogram can be automatically filled."
 (defun draw-histo2d-contour (plottingarea histo z-min z-max nlines fillp
 			     &key 
 			       (cols *colors*) (color-lines nil) 
-			       (opacity-gradient nil))
+			       (layer-opacity 1.0))
   "Draw possibly filled contour lines."
   (clip-and-transform (plottingarea)
     (let ((cmap (make-array (list (getf histo :x-nbin) (getf histo :y-nbin)) :initial-element nil))
@@ -210,7 +210,7 @@ supplied, the histogram can be automatically filled."
 	  (scope (plottingarea 
 		  (make-color :fill (if fillp color)
 			      :draw (if color-lines color "black")
-			      :opacity (if opacity-gradient height 1.0)))
+			      :opacity layer-opacity))
 	    (mapcar (lambda (x) (mapcar (lambda (y) (start-contour-line x y cmap histo plottingarea height)) ybins)) xbins)
 	    (path-use plottingarea t fillp)))))))
 
