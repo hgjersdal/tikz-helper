@@ -67,9 +67,11 @@
 
 
 (define-foreign-library libgsl
+  (:darwin "/usr/local/Cellar/gsl/1.16/lib/libgsl.0.dylib")
   (:unix "/usr/lib/libgsl.so.0"))
 
 (define-foreign-library libgslblas
+  (:darwin "/usr/local/Cellar/gsl/1.16/lib/libgslcblas.0.dylib")
   (:unix "/usr/lib/libgslcblas.so.0"))
 
 (use-foreign-library libgslblas)

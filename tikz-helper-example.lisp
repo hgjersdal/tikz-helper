@@ -4,7 +4,7 @@
 ;;;; (asdf:operate 'asdf:load-op 'tikz-levmar)
 ;;;; (asdf:operate 'asdf:load-op 'tikz-utils)
 ;;;; Or, if quicklisp is installed:
-;;;; (pushnew "/path-to-tikz/tikz-helper/" asdf:*central-registry* :test #'equal)
+;;;; (pushnew "/Users/haavagj/src/tikz-helper/" asdf:*central-registry* :test #'equal)
 ;;;; (ql:quickload 'tikz-helper)
 ;;;; (ql:quickload 'tikz-levmar)
 ;;;; (ql:quickload 'tikz-utils)
@@ -13,9 +13,9 @@
   (:use :cl :tikz-helper))
 (in-package :tikz-helper-example)
 
-(defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/src/tikz-helper/example/")
+(defparameter *plotting-dir* (make-pathname :defaults "/Users/haavagj/src/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
-(defparameter *viewer* "evince" "A program to view the resulting pdf file.")
+(defparameter *viewer* "open" "A program to view the resulting pdf file.")
 (defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Code for  generating the documentation file examples.tex
@@ -55,7 +55,7 @@ compiled with pdflatex, the results are viewed with *viewer*. Also adds the figu
 (with-example-plot ("transform-and-clip" -1.5 0.5 -2 1 :rectangle)
     "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot,
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
-within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
+xsxcwithin the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
  The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are not scaled, 
 but all points are translated. The black star path is here drawn in the current frame, the red one 
 is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
@@ -527,6 +527,6 @@ Make sure *examples* looks right before use, or just C-c C-k."
 		  (:section  (format tex "\\section{~a}~%" (second entry)))
 		  (:text (format tex "~%~%~a~%~%" (second entry)))))
 	      (remove-duplicates (reverse *examples*) :test #'equal))))
-    (pdflatex-compile-view fname "evince")))
+    (pdflatex-compile-view fname *viewer*)))
 
 (make-example-tex)
