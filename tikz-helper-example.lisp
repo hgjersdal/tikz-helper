@@ -4,7 +4,7 @@
 ;;;; (asdf:operate 'asdf:load-op 'tikz-levmar)
 ;;;; (asdf:operate 'asdf:load-op 'tikz-utils)
 ;;;; Or, if quicklisp is installed:
-;;;; (pushnew "/Users/haavagj/src/tikz-helper/" asdf:*central-registry* :test #'equal)
+;;;; (pushnew "/home/haavagj/git/tikz-helper/" asdf:*central-registry* :test #'equal)
 ;;;; (ql:quickload 'tikz-helper)
 ;;;; (ql:quickload 'tikz-levmar)
 ;;;; (ql:quickload 'tikz-utils)
@@ -13,9 +13,9 @@
   (:use :cl :tikz-helper))
 (in-package :tikz-helper-example)
 
-(defparameter *plotting-dir* (make-pathname :defaults "/Users/haavagj/src/tikz-helper/example/")
+(defparameter *plotting-dir* (make-pathname :defaults "/home/haavagj/git/tikz-helper/example/")
   "The plots produced in the code below will end up in this directory")
-(defparameter *viewer* "open" "A program to view the resulting pdf file.")
+(defparameter *viewer* "evince" "A program to view the resulting pdf file.")
 (defparameter *compilep* nil "The plots will be compiled with pdflatex in path, and viewed with *viewer*")
 
 ;;Code for  generating the documentation file examples.tex
@@ -29,7 +29,7 @@
 (comment :section "Introduction")
 (comment :text "tikz-helper is a set of common lisp functions and macros to make plots. This is done by 
 generating \\LaTeX \\ code using pgf and {Ti\\textit{k}Z}.")
-(comment :text "To generate a plot, one of the macros with-tikz-to-file, with-tikz-to-string or with-tikz-to-stream is called.
+(comment :text "To generate a plot, call either with-tikz-to-file, with-tikz-to-string or with-tikz-to-stream.
 with-tikz-to-file and with-tikz-to-string are just wrappers for with-tikz-to-stream.
 The macros set up the latex environment needed by the figures, collects information needed to perform
 transformations between the data frame and a default frame, and draws axis for the plot. The transformations are
@@ -55,7 +55,7 @@ compiled with pdflatex, the results are viewed with *viewer*. Also adds the figu
 (with-example-plot ("transform-and-clip" -1.5 0.5 -2 1 :rectangle)
     "By default paths and nodes are drawn in a frame where origin is the lower left corner of the plot,
 and the units in x and y is 1cm. The transform macro generates tikz transformations, so that all points
-xsxcwithin the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
+within the scope are drawn in the plot frame, defined by plot- x-min x-max and y-min y-max.
  The clip-and-transform macro also clips the plotting area. Values with units like cm or pt are not scaled, 
 but all points are translated. The black star path is here drawn in the current frame, the red one 
 is shifted by (0.1,0.1) in the current frame, then drawn in units of cm."
@@ -161,7 +161,7 @@ by including the following:.
   (with-example-plot ("test-histo2" 0 10 0 150 :rectangle)
       (format nil "Some Gaussian histograms with different styles and with legend entries. 
 The legend entries are placed in the default cm frame, unless draw-histogram 
-is called within (transform (tikz) ...). With some trickery it is also possible to get 
+is called within (transform (tikz) ...). With some tricks it is also possible to get 
 legends in captions: ~a Histogram 1, ~a Histogram 2, ~a Histogram 3."
 	      (c-legend "draw=gray,fill=blue!50" t) (c-legend "red!80,thick" nil) (c-legend "draw=black,fill=green" t))
     (flet ((draw-histo (sigma ndraws style fill sep legend-y-pos number)
@@ -243,10 +243,10 @@ The bins are named with the draw-axis-ticks function."
   (draw-axis-ticks-x tikz (make-range -2 1 5) :numberp nil
 		     :names (list "$-2\\sigma$" "$-\\sigma$" "$\\mu$" "$\\sigma$" "$2\\sigma$")))
 
-(comment :section "Fitting with Levenberg-Mmarquart")
+(comment :section "Fitting with Levenberg-Marquart")
 (comment :text "The Levenberg-Marquart algorithm minimizes the squared distance in the y-direction
 between a function and a set of data points by changing function parameters. 
-If errors are supplied the $\\chi^2$, or the squared normalized differences, is minimized.")
+If errors are supplied the $\\chi^2$, or the sum of squared normalized differences, is minimized.")
 
 (with-example-plot ("test-fitter" 0 10 0 20 :popped-out)
     "Some Gauss smeared data points, fitted with the Gaussian function. Fit parameters are printed in the plot. 
@@ -313,7 +313,7 @@ in the data frame."
     "Cubic splines, with different end point conditions."
   (let ((x (list 4.0d0  4.35d0 4.57d0 4.76d0 5.26d0 5.88d0))
 	(y (list 4.19d0 5.77d0 6.57d0 6.23d0 4.90d0 4.77d0)))
-    (draw-graph-spline tikz x y "red" "fill=black,draw=black" :legend (legend 5.5 4.0 "Not-a-know splint"))
+    (draw-graph-spline tikz x y "red" "fill=black,draw=black" :legend (legend 5.5 4.0 "Not-a-knot splint"))
     (draw-graph-spline tikz x y "blue" "fill=black,draw=black" :legend (legend 5.5 3.6 "Natural spline") :natural t)))
 
 (comment :section "Sub figures")
@@ -336,7 +336,7 @@ Here is a function with a zoomed view of a region of interest."
       (draw-function tikz2 #'erf-gauss 100 "red"))))
 
 (with-example-plot ("sub-histo" 0.0 10.0 -6.0 6.0 :none)
-    "Horizontal histograms, in sub figures side by side. The mean and $\\sigma$ are indicated by red verical bars."
+    "Horizontal histograms in sub figures side by side. The mean and $\\sigma$ are indicated by red verical bars."
   (flet ((draw-sub-histo (offset mean sigma)
 	   (with-subfigure (tikz tikz2 offset 0.0 2.0 5 0.0 1000 -6.0 6.0)
 	     (let ((histo (make-gaussian-histogram -6.0 0.25 48 mean sigma 10000)))
@@ -408,7 +408,7 @@ Here is a function with a zoomed view of a region of interest."
 
 (with-example-plot ("histo-rect" -2.5 2.5 -2.5 2.5 :popped-out)
     "2D histogram drawn as filled rectangles. Takes a while to compile with pdflatex, 
-especially if the binning is fine."
+especially if there are many bins."
   (let* ((histo (make-2d-histo)))
     (draw-histo2d-rectangles tikz histo 0 (histo2d-get-max histo))
     (color-palette tikz 10.2 0 0.5 5.0 0 (* 0.9 (histo2d-get-max histo)))))
